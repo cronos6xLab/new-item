@@ -431,7 +431,7 @@ select option{background:var(--obsidian);color:var(--bone);}
       </div>
     </section>
 
-    <!-- STEP 5 — ahora solo imágenes, subidas a ImgBB -->
+    <!-- STEP 5 -->
     <section class="step" data-step="5">
       <nav class="steps">
         <button type="button" class="step-tab" data-goto="1"><span class="step-num">01</span> Solicitante</button>
@@ -507,6 +507,8 @@ select option{background:var(--obsidian);color:var(--bone);}
 <script>
 /* ============================================================================
    ⚙️  CONFIGURACIÓN
+   ----------------------------------------------------------------------------
+   👇 REEMPLAZA ESTA URL POR LA DE TU CUSTOM WEBHOOK DE MAKE.COM
    ============================================================================ */
 const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/x9nsypb1b9tmmh4243wfybiraejqi7j5';
 const IMGBB_API_KEY = '67a9b5942ab0fcd92480a4ffc981ba07';
@@ -842,7 +844,6 @@ document.addEventListener('DOMContentLoaded', function () {
     renderRecetaList();
     clearRecetaError();
 
-    // Subir todas las nuevas en paralelo
     for (const entry of nuevos) {
       try {
         const url = await uploadToImgBB(entry.file);
@@ -924,7 +925,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (n === 5) {
-      // Al menos una imagen de receta Y todas deben tener URL válida (o estar subiendo)
       if (state.archivosReceta.length === 0) {
         if (!firstInvalid) firstInvalid = dropReceta;
         errReceta.textContent = 'Debes adjuntar al menos una imagen de receta o insumos.';
@@ -1030,17 +1030,20 @@ document.addEventListener('DOMContentLoaded', function () {
     p.append('imagen_url', snap.imagenUrl);
     p.append('imagen_nombre', snap.imagenNombre);
 
-    // Archivos de receta: ahora enviamos también la URL de ImgBB de cada uno
-    p.append('archivos_receta_total', String(snap.archivosReceta.length));
+    /* -----------------------------------------------------------------
+       ARCHIVOS DE RECETA — NOMBRES NUEVOS PARA FORZAR RE-DETECCIÓN
+       (antes: archivo_receta_N_url → ahora: receta_N_link)
+       ----------------------------------------------------------------- */
+    p.append('receta_total', String(snap.archivosReceta.length));
     snap.archivosReceta.forEach((f, i) => {
       const idx = i + 1;
-      p.append('archivo_receta_' + idx + '_nombre', f.nombre);
-      p.append('archivo_receta_' + idx + '_tipo', f.tipo || '');
-      p.append('archivo_receta_' + idx + '_tamano', f.tamano);
-      p.append('archivo_receta_' + idx + '_url', f.url || '');
+      p.append('receta_' + idx + '_nombre', f.nombre);
+      p.append('receta_' + idx + '_tipo', f.tipo || '');
+      p.append('receta_' + idx + '_tamano', f.tamano);
+      p.append('receta_' + idx + '_link', f.url || '');
     });
-    // Campo resumen con todas las URLs de receta
-    p.append('archivos_receta_urls', snap.archivosReceta.map(f => f.url).filter(u => u && u.startsWith('http')).join(' | '));
+    // Campo resumen con todos los links de receta
+    p.append('recetas_links', snap.archivosReceta.map(f => f.url).filter(u => u && u.startsWith('http')).join(' | '));
 
     return p;
   }
@@ -1274,7 +1277,7 @@ document.addEventListener('DOMContentLoaded', function () {
       .then(res => {
         console.log('[Submit] Éxito:', res);
         showStatus('ok', '✓ Solicitud enviada correctamente a Make (' + res.status + ')',
-          'Ve a Make → Webhook → "Redetermine data structure" para ver los campos.',
+          'Ve a Make → Webhook → "Redetermine data structure" para ver los campos nuevos (receta_1_link, recetas_links).',
           10000);
         const toast = document.getElementById('toast');
         toast.classList.add('show');
@@ -1314,6 +1317,11 @@ document.addEventListener('DOMContentLoaded', function () {
   renderRecetaList();
   renderCostList();
   renderHistory();
+
+  console.log('=== DIAGNÓSTICO ===');
+  console.log('Webhook URL:', MAKE_WEBHOOK_URL);
+  console.log('ImgBB Key:', IMGBB_API_KEY ? IMGBB_API_KEY.slice(0, 8) + '...' : '(vacía)');
+  console.log('Campos de receta ahora se llaman: receta_1_link, receta_2_link, ... recetas_links');
 });
 </script>
 </body>
