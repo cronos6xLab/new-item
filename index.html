@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Solicitud de adición de nuevo producto · AMG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   FRAMER — DESIGN TOKENS
+   ============================================================ */
+:root{
+  --void:#000000;
+  --graphite:#111111;
+  --obsidian:#171717;
+  --slate:#242424;
+  --ash:#333333;
+  --smoke:#666666;
+  --fog:#888888;
+  --mist:#999999;
+  --pearl:#cccccc;
+  --bone:#ffffff;
+
+  --electric-blue:#0099ff;
+  --deep-current:#00406b;
+  --midnight-tide:#002238;
+  --vivid-violet:#0066ff;
+  --signal-green:#4cd963;
+  --alert-red:#ff0022;
+
+  --font-display:'Inter Tight','GT Walsheim',ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --font-body:'Inter','Inter Variable',ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --font-mono:'JetBrains Mono','Input Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --sp-4:4px; --sp-5:5px; --sp-6:6px; --sp-7:7px; --sp-8:8px;
+  --sp-10:10px; --sp-11:11px; --sp-14:14px; --sp-15:15px;
+  --sp-20:20px; --sp-25:25px; --sp-30:30px; --sp-40:40px;
+  --sp-47:47px; --sp-60:60px; --sp-120:120px;
+
+  --r-icon:8px;
+  --r-input:8px;
+  --r-nav:15px;
+  --r-feature:15px;
+  --r-card:20px;
+  --r-large:25px;
+  --r-pill:9999px;
+
+  --shadow-sm:rgba(0,0,0,0.25) 0px 4px 8px 0px;
+  --shadow-sm-2:rgba(0,0,0,0.2) 0px 2px 6px 0px;
+  --shadow-glow:rgba(0,153,255,0.2) 0px 5px 5px 0px;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-body);
+  background:var(--void);
+  color:var(--bone);
+  line-height:1.35;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"cv01","cv05","cv09","cv11","ss03";
+}
+button{font-family:inherit;}
+input,select,textarea{font-family:inherit;}
+
+.page{
+  max-width:1200px;
+  margin:0 auto;
+  padding:var(--sp-40) var(--sp-30) var(--sp-120);
+}
+
+/* ============================================================
+   BRAND
+   ============================================================ */
+.brand{
+  display:flex;align-items:center;gap:var(--sp-14);
+  margin-bottom:var(--sp-40);
+}
+.brand-mark{
+  font-family:var(--font-display);font-size:22px;font-weight:700;
+  letter-spacing:-0.05em;color:var(--bone);line-height:1;
+}
+.brand-divider{width:1px;height:18px;background:var(--slate);}
+.brand-sub{
+  font-size:11px;font-weight:500;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--mist);
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 12px;border:1px solid var(--electric-blue);
+  border-radius:var(--r-pill);font-size:11px;font-weight:500;
+  letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--electric-blue);margin-bottom:var(--sp-20);background:transparent;
+}
+.eyebrow::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--electric-blue);box-shadow:0 0 8px var(--electric-blue);
+}
+h1.hero-title{
+  font-family:var(--font-display);font-size:54px;line-height:0.95;
+  letter-spacing:-0.04em;font-weight:500;margin:0 0 var(--sp-20);
+  color:var(--bone);max-width:820px;
+}
+.lede{
+  font-size:16px;line-height:1.5;color:var(--mist);max-width:600px;
+  margin:0 0 var(--sp-47);letter-spacing:-0.005em;
+}
+@media(max-width:640px){
+  h1.hero-title{font-size:38px;letter-spacing:-0.035em;}
+  .lede{font-size:15px;}
+}
+
+/* ============================================================
+   STEPS BAR
+   ============================================================ */
+.steps{
+  display:flex;gap:var(--sp-8);margin-bottom:var(--sp-47);
+  padding-bottom:var(--sp-20);border-bottom:1px solid var(--graphite);
+  overflow-x:auto;scrollbar-width:none;
+}
+.steps::-webkit-scrollbar{display:none;}
+.step-tab{
+  flex:1 1 0;min-width:120px;padding:var(--sp-10) var(--sp-14);
+  background:transparent;border:1px solid transparent;
+  border-radius:var(--r-pill);cursor:pointer;text-align:center;
+  font-family:var(--font-body);font-size:12px;font-weight:500;
+  color:var(--mist);letter-spacing:-0.005em;transition:all .25s ease;
+  display:flex;align-items:center;justify-content:center;
+  gap:8px;white-space:nowrap;
+}
+.step-tab:hover{color:var(--pearl);}
+.step-tab.active{
+  background:var(--obsidian);border-color:var(--electric-blue);
+  color:var(--bone);box-shadow:var(--shadow-glow);
+}
+.step-tab.done{color:var(--pearl);border-color:var(--slate);}
+.step-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;border-radius:50%;background:var(--slate);
+  color:var(--mist);font-family:var(--font-mono);font-size:10px;
+  font-weight:700;flex:none;
+}
+.step-tab.active .step-num{background:var(--electric-blue);color:var(--void);}
+.step-tab.done .step-num{
+  background:transparent;color:var(--electric-blue);
+  border:1px solid var(--electric-blue);
+}
+
+/* ============================================================
+   STEP CONTENT
+   ============================================================ */
+.step{display:none;animation:fadeUp .35s ease;}
+.step.active{display:block;}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(8px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.step-head{margin-bottom:var(--sp-32);}
+.step-head h2{
+  font-family:var(--font-display);font-size:32px;line-height:1.05;
+  letter-spacing:-0.04em;font-weight:500;margin:0 0 var(--sp-10);
+  color:var(--bone);
+}
+.step-head p{
+  font-size:14px;color:var(--mist);margin:0;max-width:560px;
+  letter-spacing:-0.005em;
+}
+@media(max-width:640px){.step-head h2{font-size:26px;}}
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.card{
+  background:var(--graphite);border:1px solid var(--slate);
+  border-radius:var(--r-large);padding:var(--sp-40);
+  margin-bottom:var(--sp-20);transition:border-color .3s, box-shadow .3s;
+}
+.card.deep{background:var(--obsidian);}
+.card.tide{background:var(--midnight-tide);border-color:var(--deep-current);}
+.card h3{
+  font-family:var(--font-body);font-size:15px;font-weight:600;
+  margin:0 0 var(--sp-20);color:var(--bone);letter-spacing:-0.02em;
+}
+.card.error{
+  border-color:var(--alert-red);
+  box-shadow:0 0 0 3px rgba(255,0,34,0.15);
+}
+@media(max-width:640px){.card{padding:var(--sp-25);}}
+
+/* ============================================================
+   FIELDS
+   ============================================================ */
+.field{margin-bottom:var(--sp-20);}
+.field:last-child{margin-bottom:0;}
+.field > label,
+.field-label{
+  display:block;font-size:12px;font-weight:500;color:var(--mist);
+  margin-bottom:var(--sp-8);letter-spacing:-0.005em;
+}
+.req{color:var(--electric-blue);margin-left:3px;}
+.hint{
+  display:block;font-size:11px;color:var(--smoke);font-weight:400;
+  margin-top:6px;letter-spacing:0.01em;
+}
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="number"],
+select,
+textarea{
+  width:100%;padding:11px 14px;font-size:14px;color:var(--bone);
+  background:var(--obsidian);border:1px solid var(--slate);
+  border-radius:var(--r-input);outline:none;
+  transition:border-color .2s, box-shadow .2s, background .2s;
+  letter-spacing:-0.005em;line-height:1.35;
+}
+input::placeholder,
+textarea::placeholder{color:var(--smoke);}
+input:focus,select:focus,textarea:focus{
+  background:var(--slate);border-color:var(--electric-blue);
+  box-shadow:0 0 0 3px rgba(0,153,255,0.12);
+}
+textarea{resize:vertical;min-height:96px;line-height:1.5;}
+select{
+  appearance:none;
+  background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999999' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
+  background-size:16px;padding-right:40px;
+}
+select option{background:var(--obsidian);color:var(--bone);}
+.counter{
+  float:right;font-family:var(--font-mono);font-size:11px;
+  font-weight:400;color:var(--smoke);letter-spacing:0;
+}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--sp-20);}
+@media(max-width:560px){.grid-2{grid-template-columns:1fr;}}
+
+/* ============================================================
+   CHIPS
+   ============================================================ */
+.chips{display:flex;flex-wrap:wrap;gap:var(--sp-8);}
+.chip{position:relative;display:inline-flex;}
+.chip input{position:absolute;opacity:0;width:0;height:0;}
+.chip span{
+  display:inline-block;padding:8px 14px;font-size:12px;font-weight:500;
+  border:1px solid var(--slate);border-radius:var(--r-pill);
+  background:var(--obsidian);color:var(--mist);cursor:pointer;
+  user-select:none;transition:all .2s ease;letter-spacing:-0.005em;
+}
+.chip span:hover{border-color:var(--fog);color:var(--pearl);}
+.chip input:checked + span{
+  border-color:var(--electric-blue);background:var(--midnight-tide);
+  color:var(--bone);
+  box-shadow:0 0 0 1px var(--electric-blue), var(--shadow-glow);
+}
+.chip input:focus-visible + span{box-shadow:0 0 0 3px rgba(0,153,255,0.25);}
+
+/* ============================================================
+   CUSTOM OPTIONS
+   ============================================================ */
+.custom-add{display:flex;gap:var(--sp-8);margin-top:var(--sp-14);}
+.custom-add input{flex:1;}
+.custom-list{display:flex;flex-wrap:wrap;gap:var(--sp-8);margin-top:var(--sp-14);}
+.custom-list:empty{display:none;}
+.custom-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 10px 6px 12px;font-size:12px;font-weight:500;
+  background:var(--midnight-tide);border:1px solid var(--deep-current);
+  border-radius:var(--r-pill);color:var(--pearl);
+}
+.custom-chip button{
+  background:none;border:none;padding:0;width:16px;height:16px;
+  line-height:1;font-size:14px;color:var(--mist);cursor:pointer;
+  border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+}
+.custom-chip button:hover{color:var(--bone);background:rgba(255,255,255,0.08);}
+
+/* ============================================================
+   COST LIST
+   ============================================================ */
+.cost-list{
+  display:flex;flex-direction:column;gap:var(--sp-8);
+}
+.cost-item{
+  display:flex;align-items:center;gap:var(--sp-14);
+  padding:12px 14px;
+  background:var(--obsidian);
+  border:1px solid var(--slate);
+  border-radius:var(--r-feature);
+  transition:border-color .2s, background .2s;
+  flex-wrap:wrap;
+}
+.cost-item.active{
+  border-color:var(--deep-current);
+  background:var(--midnight-tide);
+}
+.cost-check{
+  display:flex;align-items:center;gap:10px;
+  cursor:pointer;flex:1;min-width:180px;
+  position:relative;
+}
+.cost-check input{
+  position:absolute;opacity:0;width:0;height:0;
+}
+.check-mark{
+  width:18px;height:18px;border-radius:5px;
+  border:1.5px solid var(--fog);background:transparent;
+  flex:none;display:inline-flex;align-items:center;justify-content:center;
+  transition:all .2s;position:relative;
+}
+.cost-check input:checked + .check-mark{
+  background:var(--electric-blue);
+  border-color:var(--electric-blue);
+}
+.cost-check input:checked + .check-mark::after{
+  content:'';width:4px;height:8px;
+  border:solid var(--void);border-width:0 2px 2px 0;
+  transform:rotate(45deg) translate(-1px, -1px);
+}
+.cost-check input:focus-visible + .check-mark{
+  box-shadow:0 0 0 3px rgba(0,153,255,0.25);
+}
+.cost-name{
+  font-size:13px;font-weight:500;color:var(--bone);
+  letter-spacing:-0.005em;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.cost-name .tag{
+  display:inline-block;margin-left:8px;padding:1px 7px;
+  border-radius:var(--r-pill);font-family:var(--font-mono);
+  font-size:9px;font-weight:700;letter-spacing:0.06em;
+  text-transform:uppercase;background:var(--midnight-tide);
+  color:var(--electric-blue);border:1px solid var(--deep-current);
+  vertical-align:middle;
+}
+.cost-prices{
+  display:flex;gap:10px;flex-wrap:wrap;
+  opacity:0.35;transition:opacity .2s;
+  pointer-events:none;
+}
+.cost-item.active .cost-prices{
+  opacity:1;
+  pointer-events:auto;
+}
+.price-field{
+  display:flex;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:11px;color:var(--mist);
+  letter-spacing:0.02em;
+}
+.price-field input{
+  width:92px;padding:7px 9px;font-size:12px;
+  font-family:var(--font-mono);text-align:right;
+  background:var(--slate);border:1px solid var(--ash);
+}
+.price-field input:disabled{
+  opacity:0.4;cursor:not-allowed;
+}
+.cost-empty{
+  padding:16px;text-align:center;font-size:13px;color:var(--mist);
+  border:1px dashed var(--slate);border-radius:var(--r-feature);
+  letter-spacing:-0.005em;
+}
+@media(max-width:640px){
+  .cost-item{flex-direction:column;align-items:stretch;}
+  .cost-check{min-width:0;}
+  .cost-prices{justify-content:flex-end;}
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:10px 18px;font-family:var(--font-body);font-size:12px;
+  font-weight:500;letter-spacing:-0.005em;border-radius:var(--r-pill);
+  cursor:pointer;border:1px solid transparent;transition:all .25s ease;
+  text-decoration:none;white-space:nowrap;
+}
+.btn-primary{
+  background:var(--vivid-violet);color:var(--bone);
+  border-color:var(--vivid-violet);
+}
+.btn-primary:hover{
+  background:#0052d6;border-color:#0052d6;
+  box-shadow:0 0 24px rgba(0,102,255,0.35);
+}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;}
+.btn-ghost{
+  background:rgba(255,255,255,0.04);border-color:var(--slate);
+  color:var(--pearl);
+}
+.btn-ghost:hover{
+  background:rgba(255,255,255,0.08);border-color:var(--fog);
+  color:var(--bone);
+}
+.btn-sm{padding:6px 14px;font-size:11px;}
+
+/* ============================================================
+   STEP NAV
+   ============================================================ */
+.step-nav{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:var(--sp-15);margin-top:var(--sp-40);
+  padding-top:var(--sp-30);border-top:1px solid var(--graphite);
+}
+.step-nav .spacer{flex:1;}
+
+/* ============================================================
+   FILE DROP
+   ============================================================ */
+.file-drop{
+  display:block;border:1px dashed var(--slate);
+  border-radius:var(--r-feature);padding:var(--sp-40) var(--sp-25);
+  text-align:center;cursor:pointer;background:var(--obsidian);
+  transition:border-color .25s ease, background .25s ease, box-shadow .25s ease;
+}
+.file-drop:hover{
+  border-color:var(--electric-blue);background:var(--graphite);
+  box-shadow:var(--shadow-glow);
+}
+.file-drop input{display:none;}
+.file-drop .icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:48px;height:48px;border-radius:var(--r-icon);
+  background:var(--slate);border:1px solid var(--ash);
+  margin-bottom:var(--sp-14);color:var(--electric-blue);
+}
+.file-drop .label{
+  display:block;font-size:14px;font-weight:500;color:var(--bone);
+  margin-bottom:4px;letter-spacing:-0.005em;
+}
+.file-drop .sub{
+  display:block;font-size:11px;color:var(--smoke);
+  letter-spacing:0.02em;font-family:var(--font-mono);
+}
+.file-drop.has-error{
+  border-color:var(--alert-red);
+  box-shadow:0 0 0 3px rgba(255,0,34,0.12);
+}
+.drop-required{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:10px;font-weight:700;
+  letter-spacing:0.08em;color:var(--electric-blue);
+  margin-bottom:var(--sp-14);
+}
+
+/* ============================================================
+   FILE PREVIEW
+   ============================================================ */
+.file-preview{margin-top:var(--sp-20);}
+.file-item{
+  display:flex;align-items:center;gap:var(--sp-14);
+  padding:12px 14px;background:var(--obsidian);
+  border:1px solid var(--slate);border-radius:var(--r-feature);
+  margin-bottom:8px;transition:border-color .2s;
+}
+.file-item:hover{border-color:var(--ash);}
+.file-thumb{
+  width:44px;height:44px;border-radius:var(--r-icon);
+  background:var(--slate);flex:none;display:flex;
+  align-items:center;justify-content:center;color:var(--mist);
+  overflow:hidden;font-family:var(--font-mono);font-size:9px;
+  font-weight:700;letter-spacing:0.06em;
+}
+.file-thumb img{width:100%;height:100%;object-fit:cover;}
+.file-meta{flex:1;min-width:0;}
+.file-meta strong{
+  display:block;font-size:13px;font-weight:500;color:var(--bone);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  letter-spacing:-0.005em;
+}
+.file-meta span{
+  display:block;font-family:var(--font-mono);font-size:10px;
+  color:var(--smoke);letter-spacing:0.02em;margin-top:2px;
+}
+.file-remove{
+  background:none;border:1px solid transparent;padding:6px;
+  border-radius:8px;cursor:pointer;color:var(--smoke);
+  font-size:16px;line-height:1;transition:all .2s;
+}
+.file-remove:hover{
+  color:var(--alert-red);background:rgba(255,0,34,0.08);
+  border-color:rgba(255,0,34,0.2);
+}
+
+/* ============================================================
+   ERROR TEXT
+   ============================================================ */
+.error-text{
+  display:none;margin-top:var(--sp-10);font-size:12px;
+  font-weight:500;color:var(--alert-red);letter-spacing:-0.005em;
+}
+.error-text.show{display:block;}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast{
+  display:none;margin:var(--sp-40) auto 0;max-width:520px;
+  padding:16px 22px;border-radius:var(--r-pill);font-size:13px;
+  font-weight:500;text-align:center;background:var(--midnight-tide);
+  border:1px solid var(--electric-blue);color:var(--bone);
+  box-shadow:var(--shadow-glow);letter-spacing:-0.005em;
+}
+.toast.show{display:block;animation:fadeUp .35s ease;}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footnote{
+  text-align:center;font-family:var(--font-mono);font-size:10px;
+  color:var(--smoke);margin-top:var(--sp-120);
+  letter-spacing:0.08em;text-transform:uppercase;
+}
+.divider{
+  height:1px;
+  background:linear-gradient(90deg, transparent, var(--slate), transparent);
+  margin:var(--sp-40) 0;border:none;
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="brand">
+    <div class="brand-mark">AMG</div>
+    <div class="brand-divider"></div>
+    <div class="brand-sub">Hospitality Group</div>
+  </header>
+
+  <form id="productoForm" novalidate>
+
+    <!-- =========================================================
+         STEP 1 — SOLICITANTE
+         ========================================================= -->
+    <section class="step active" data-step="1">
+      <div class="eyebrow">Sistemas y Tecnología</div>
+      <h1 class="hero-title">Solicitud de adición de nuevo producto en sistema</h1>
+      <p class="lede">Completa cada paso para registrar el producto, sus modificadores, precios y los archivos de receta requeridos para el descuento correcto de inventario.</p>
+
+      <nav class="steps">
+        <button type="button" class="step-tab active" data-goto="1"><span class="step-num">01</span> Solicitante</button>
+        <button type="button" class="step-tab" data-goto="2"><span class="step-num">02</span> Producto</button>
+        <button type="button" class="step-tab" data-goto="3"><span class="step-num">03</span> Modificadores</button>
+        <button type="button" class="step-tab" data-goto="4"><span class="step-num">04</span> Precios</button>
+        <button type="button" class="step-tab" data-goto="5"><span class="step-num">05</span> Insumos</button>
+      </nav>
+
+      <div class="step-head">
+        <h2>Datos del solicitante</h2>
+        <p>¿Quién está solicitando el alta de este producto?</p>
+      </div>
+
+      <div class="card">
+        <div class="field">
+          <label for="nombre">Nombre completo <span class="req">*</span></label>
+          <input type="text" id="nombre" name="nombre" required />
+        </div>
+        <div class="field">
+          <label for="area">Área <span class="req">*</span></label>
+          <input type="text" id="area" name="area" required />
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label for="telefono">Teléfono <span style="color:var(--smoke);font-weight:400;">(opcional)</span></label>
+            <input type="tel" id="telefono" name="telefono" />
+          </div>
+          <div class="field">
+            <label for="correo">Correo <span style="color:var(--smoke);font-weight:400;">(opcional)</span></label>
+            <input type="email" id="correo" name="correo" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         STEP 2 — PRODUCTO
+         ========================================================= -->
+    <section class="step" data-step="2">
+      <nav class="steps">
+        <button type="button" class="step-tab" data-goto="1"><span class="step-num">01</span> Solicitante</button>
+        <button type="button" class="step-tab active" data-goto="2"><span class="step-num">02</span> Producto</button>
+        <button type="button" class="step-tab" data-goto="3"><span class="step-num">03</span> Modificadores</button>
+        <button type="button" class="step-tab" data-goto="4"><span class="step-num">04</span> Precios</button>
+        <button type="button" class="step-tab" data-goto="5"><span class="step-num">05</span> Insumos</button>
+      </nav>
+
+      <div class="step-head">
+        <h2>Datos del producto</h2>
+        <p>Información general del platillo o bebida a dar de alta.</p>
+      </div>
+
+      <div class="card">
+        <div class="field">
+          <span class="field-label">Marca <span class="req">*</span></span>
+          <div class="chips" id="marcaChips">
+            <label class="chip"><input type="radio" name="marca" value="Chubbies" required /><span>Chubbies</span></label>
+            <label class="chip"><input type="radio" name="marca" value="Muy Gallito" /><span>Muy Gallito</span></label>
+            <label class="chip"><input type="radio" name="marca" value="Fat Bastard" /><span>Fat Bastard</span></label>
+            <label class="chip"><input type="radio" name="marca" value="Brass Monkey" /><span>Brass Monkey</span></label>
+            <label class="chip"><input type="radio" name="marca" value="Kab Khao" /><span>Kab Khao</span></label>
+            <label class="chip"><input type="radio" name="marca" value="Tiin Thai" /><span>Tiin Thai</span></label>
+            <label class="chip"><input type="radio" name="marca" value="Palermo" /><span>Palermo</span></label>
+            <label class="chip"><input type="radio" name="marca" value="Costillas" /><span>Costillas</span></label>
+            <label class="chip"><input type="radio" name="marca" value="Otro" data-otro="1" /><span>Otro</span></label>
+          </div>
+        </div>
+
+        <div class="field" id="marcaOtroField" style="display:none;">
+          <label for="marca_otro">Especifica la marca</label>
+          <input type="text" id="marca_otro" name="marca_otro" placeholder="Nombre de la marca" />
+        </div>
+
+        <div class="field">
+          <label for="nombre_producto">
+            Nombre del producto <span class="req">*</span>
+            <span class="counter" id="cntNombre">0/30</span>
+          </label>
+          <input type="text" id="nombre_producto" name="nombre_producto" maxlength="30" required />
+          <span class="hint">Máx. 30 caracteres incluidos espacios.</span>
+        </div>
+
+        <div class="field">
+          <label for="descripcion_producto">
+            Descripción del producto <span class="req">*</span>
+            <span class="counter" id="cntDesc">0/180</span>
+          </label>
+          <textarea id="descripcion_producto" name="descripcion_producto" maxlength="180" required></textarea>
+          <span class="hint">Máx. 180 caracteres incluidos espacios.</span>
+        </div>
+
+        <div class="field">
+          <label for="categoria">Categoría del producto <span class="req">*</span></label>
+          <select id="categoria" name="categoria" required>
+            <option value="">Selecciona una categoría…</option>
+            <option>Burgers</option>
+            <option>Fries</option>
+            <option>Postres</option>
+            <option>Bebidas</option>
+            <option>Extras</option>
+            <option>Merch</option>
+            <option>Entradas</option>
+            <option>Combos</option>
+            <option>Pizzas</option>
+            <option>Otra</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Válido para <span class="req">*</span></span>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" name="valido_para" value="Todo" data-exclusive /><span>Todo</span></label>
+            <label class="chip"><input type="checkbox" name="valido_para" value="Foodbot (Ecom)" /><span>Foodbot (Ecom)</span></label>
+            <label class="chip"><input type="checkbox" name="valido_para" value="Foodbot (POS)" /><span>Foodbot (POS)</span></label>
+            <label class="chip"><input type="checkbox" name="valido_para" value="Uber" /><span>Uber</span></label>
+            <label class="chip"><input type="checkbox" name="valido_para" value="Rappi" /><span>Rappi</span></label>
+            <label class="chip"><input type="checkbox" name="valido_para" value="Didi" /><span>Didi</span></label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         STEP 3 — MODIFICADORES (costos seleccionables + Foodbot/Apps)
+         ========================================================= -->
+    <section class="step" data-step="3">
+      <nav class="steps">
+        <button type="button" class="step-tab" data-goto="1"><span class="step-num">01</span> Solicitante</button>
+        <button type="button" class="step-tab" data-goto="2"><span class="step-num">02</span> Producto</button>
+        <button type="button" class="step-tab active" data-goto="3"><span class="step-num">03</span> Modificadores</button>
+        <button type="button" class="step-tab" data-goto="4"><span class="step-num">04</span> Precios</button>
+        <button type="button" class="step-tab" data-goto="5"><span class="step-num">05</span> Insumos</button>
+      </nav>
+
+      <div class="step-head">
+        <h2>Modificadores o agregadores</h2>
+        <p>Selecciona los modificadores aplicables y añade opciones personalizadas si es necesario.</p>
+      </div>
+
+      <div class="card">
+        <div class="field">
+          <span class="field-label">Modificadores predefinidos</span>
+          <div class="chips" id="modsChips">
+            <label class="chip"><input type="checkbox" name="modificadores" value="Doble" /><span>Doble</span></label>
+            <label class="chip"><input type="checkbox" name="modificadores" value="Onion" /><span>Onion</span></label>
+            <label class="chip"><input type="checkbox" name="modificadores" value="Tiras de tocino" /><span>Tiras de tocino</span></label>
+            <label class="chip"><input type="checkbox" name="modificadores" value="Agranda papas" /><span>Agranda papas</span></label>
+            <label class="chip"><input type="checkbox" name="modificadores" value="Añade extras chubbies (Mermelada aderezos)" /><span>Añade extras chubbies</span></label>
+            <label class="chip"><input type="checkbox" name="modificadores" value="Añade extras Gallito (Mermelada salsas dips)" /><span>Añade extras Gallito</span></label>
+            <label class="chip"><input type="checkbox" name="modificadores" value="Deseas añadir bebidas?" /><span>¿Deseas añadir bebidas?</span></label>
+            <label class="chip"><input type="checkbox" name="modificadores" value="Elige tus papas" /><span>Elige tus papas</span></label>
+            <label class="chip"><input type="checkbox" name="modificadores" value="Elige tu refresco" /><span>Elige tu refresco</span></label>
+            <label class="chip"><input type="checkbox" name="modificadores" value="Proteína" /><span>Proteína</span></label>
+            <label class="chip"><input type="checkbox" name="modificadores" value="Ninguno" data-exclusive /><span>Ninguno</span></label>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="field">
+          <span class="field-label">Añadir opción personalizada</span>
+          <div class="custom-add">
+            <input type="text" id="customModInput" placeholder="Ej. Sin cebolla, Salsa extra, Término medio…" />
+            <button type="button" class="btn btn-ghost" id="btnAddCustomMod">Añadir</button>
+          </div>
+          <div class="custom-list" id="customModList"></div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="field">
+          <span class="field-label">¿Hay modificadores con costo adicional? <span class="req">*</span></span>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="modificadores_costo" value="SI" id="radioCostoSI" required /><span>Sí</span></label>
+            <label class="chip"><input type="radio" name="modificadores_costo" value="NO" id="radioCostoNO" /><span>No</span></label>
+          </div>
+        </div>
+
+        <!-- Lista de modificadores seleccionables con costo Foodbot + Apps -->
+        <div class="field" id="costListField" style="display:none;">
+          <span class="field-label">
+            Marca los modificadores que llevan costo y asigna sus precios <span class="req">*</span>
+          </span>
+          <span class="hint" style="margin-top:0;margin-bottom:var(--sp-14);display:block;">
+            Elige los modificadores a los que se les añadirá precio y define cuánto cuesta en Foodbot y en Apps.
+          </span>
+          <div class="cost-list" id="costList"></div>
+          <span class="error-text" id="errCost">Marca al menos un modificador y asigna sus precios Foodbot y Apps (mayor a 0).</span>
+        </div>
+
+        <div class="field">
+          <label for="detalle_modificadores">¿Cómo deben visualizar los clientes estos modificadores en el producto?</label>
+          <textarea id="detalle_modificadores" name="detalle_modificadores"
+            placeholder="Ejemplo: Los clientes deben poder elegir si desean tallarines o arroz; también, como es un combo que lleva refresco, deben poder elegir su sabor; y deben poder elegir entre los distintos tamaños del platillo, que considera un precio adicional de +$20 el mediano y +$30 el grande, etc."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         STEP 4 — PRECIOS E IMAGEN
+         ========================================================= -->
+    <section class="step" data-step="4">
+      <nav class="steps">
+        <button type="button" class="step-tab" data-goto="1"><span class="step-num">01</span> Solicitante</button>
+        <button type="button" class="step-tab" data-goto="2"><span class="step-num">02</span> Producto</button>
+        <button type="button" class="step-tab" data-goto="3"><span class="step-num">03</span> Modificadores</button>
+        <button type="button" class="step-tab active" data-goto="4"><span class="step-num">04</span> Precios</button>
+        <button type="button" class="step-tab" data-goto="5"><span class="step-num">05</span> Insumos</button>
+      </nav>
+
+      <div class="step-head">
+        <h2>Precios e imagen</h2>
+        <p>Define los precios por canal y adjunta la fotografía del producto.</p>
+      </div>
+
+      <div class="card">
+        <h3>Precios</h3>
+        <div class="grid-2">
+          <div class="field">
+            <label for="precio_foodbot">Precio Foodbot (Ecom y POS)</label>
+            <input type="number" id="precio_foodbot" name="precio_foodbot" step="0.01" min="0" placeholder="0.00" />
+          </div>
+          <div class="field">
+            <label for="precio_apps">Precio apps</label>
+            <input type="number" id="precio_apps" name="precio_apps" step="0.01" min="0" placeholder="0.00" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="cardImagen">
+        <h3>Imagen del producto <span class="req">*</span></h3>
+        <label class="file-drop" for="imagen_file" id="dropImagen">
+          <input type="file" id="imagen_file" accept="image/*" />
+          <span class="drop-required">● OBLIGATORIO</span>
+          <span class="icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="3"/>
+              <circle cx="9" cy="9" r="2"/>
+              <path d="M21 15l-5-5L5 21"/>
+            </svg>
+          </span>
+          <span class="label">Haz clic para subir una imagen</span>
+          <span class="sub">PNG · JPG · WEBP — MÁX. 5 MB</span>
+        </label>
+        <div class="file-preview" id="imagenPreview"></div>
+        <span class="error-text" id="errImagen">Debes adjuntar una imagen del producto.</span>
+      </div>
+
+      <div class="card">
+        <h3>Comentarios adicionales</h3>
+        <div class="field" style="margin-bottom:0;">
+          <textarea id="comentarios" name="comentarios" placeholder="¿Algo que debamos saber sobre este producto?" style="min-height:110px;"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         STEP 5 — INSUMOS Y EMPAQUE
+         ========================================================= -->
+    <section class="step" data-step="5">
+      <nav class="steps">
+        <button type="button" class="step-tab" data-goto="1"><span class="step-num">01</span> Solicitante</button>
+        <button type="button" class="step-tab" data-goto="2"><span class="step-num">02</span> Producto</button>
+        <button type="button" class="step-tab" data-goto="3"><span class="step-num">03</span> Modificadores</button>
+        <button type="button" class="step-tab" data-goto="4"><span class="step-num">04</span> Precios</button>
+        <button type="button" class="step-tab active" data-goto="5"><span class="step-num">05</span> Insumos</button>
+      </nav>
+
+      <div class="step-head">
+        <h2>Insumos y empaque</h2>
+        <p>Adjunta el archivo que contiene la receta, ficha técnica o listado de insumos requeridos para programar el descuento correcto en sistema.</p>
+      </div>
+
+      <div class="card deep">
+        <h3>¿Qué se debe restar para la gestión de inventario?</h3>
+        <div class="field" style="margin-bottom:0;">
+          <textarea id="restar_inventario" name="restar_inventario"
+            placeholder="Describe brevemente qué insumos y empaques deben descontarse del inventario al vender este producto."></textarea>
+        </div>
+      </div>
+
+      <div class="card" id="cardReceta">
+        <h3>Archivo de receta o insumos requeridos <span class="req">*</span></h3>
+        <p style="font-size:13px;color:var(--mist);margin:0 0 20px;line-height:1.5;letter-spacing:-0.005em;">
+          Sube la receta, ficha técnica o cualquier archivo que contenga la información de insumos y cantidades a programar. Puede ser una imagen, PDF, Excel o Word.
+        </p>
+        <label class="file-drop" for="archivos_receta" id="dropReceta">
+          <input type="file" id="archivos_receta" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt" />
+          <span class="drop-required">● OBLIGATORIO</span>
+          <span class="icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </span>
+          <span class="label">Haz clic o arrastra el archivo aquí</span>
+          <span class="sub">IMAGEN · PDF · WORD · EXCEL — PUEDES SUBIR VARIOS</span>
+        </label>
+        <div class="file-preview" id="archivosRecetaList"></div>
+        <span class="error-text" id="errReceta">Debes adjuntar al menos un archivo de receta o insumos.</span>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         STEP NAVIGATION
+         ========================================================= -->
+    <div class="step-nav">
+      <button type="button" class="btn btn-ghost" id="btnPrev" style="visibility:hidden;">← Anterior</button>
+      <div class="spacer"></div>
+      <button type="button" class="btn btn-primary" id="btnNext">Siguiente →</button>
+      <button type="submit" class="btn btn-primary" id="btnSubmit" style="display:none;">Enviar solicitud</button>
+    </div>
+
+    <div class="toast" id="toast">✓ Solicitud enviada — el equipo de Sistemas la revisará en breve.</div>
+  </form>
+
+  <div class="footnote">Sistemas & Tecnología — AMG Hospitality Group</div>
+</div>
+
+<script>
+/* ============================================================================
+   ⚙️  CONFIGURACIÓN
+   ----------------------------------------------------------------------------
+   👇 REEMPLAZA ESTA URL POR LA DE TU CUSTOM WEBHOOK DE MAKE.COM
+   ============================================================================ */
+const MAKE_WEBHOOK_URL = 'https://hook.us1.make.com/REEMPLAZA_ESTE_ID_POR_TU_CUSTOM_WEBHOOK';
+/* ========================================================================== */
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  const state = {
+    current: 1,
+    total: 5,
+    imagenFile: null,
+    archivosReceta: [],
+    customMods: [],
+    /**
+     * Mapa: nombre de modificador → { selected, foodbot, apps }
+     * - selected: el usuario marcó este modificador como "lleva costo"
+     * - foodbot / apps: precios como string
+     */
+    modCosts: {}
+  };
+
+  const form      = document.getElementById('productoForm');
+  const steps     = Array.from(document.querySelectorAll('.step'));
+  const btnPrev   = document.getElementById('btnPrev');
+  const btnNext   = document.getElementById('btnNext');
+  const btnSubmit = document.getElementById('btnSubmit');
+
+  const $  = (sel, root) => (root || document).querySelector(sel);
+  const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+
+  const txt   = (id) => { const el = document.getElementById(id); return el ? String(el.value || '').trim() : ''; };
+  const radio = (name) => { const el = form.querySelector('input[name="' + name + '"]:checked'); return el ? String(el.value) : ''; };
+  const checks= (name) => Array.from(form.querySelectorAll('input[name="' + name + '"]:checked')).map(i => String(i.value)).join(' | ');
+
+  function formatBytes(bytes) {
+    if (!bytes) return '0 B';
+    const k = 1024, units = ['B','KB','MB','GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return (bytes / Math.pow(k, i)).toFixed(1) + ' ' + units[i];
+  }
+
+  /* ------------------------------------------------------------------
+     NAVEGACIÓN
+  ------------------------------------------------------------------ */
+  function renderStep(n) {
+    state.current = n;
+    steps.forEach(s => s.classList.toggle('active', Number(s.dataset.step) === n));
+    $$('.step-tab').forEach(t => {
+      const i = Number(t.dataset.goto);
+      const inActiveStep = t.closest('.step') === steps[n - 1];
+      t.classList.toggle('active', i === n && inActiveStep);
+      t.classList.toggle('done', i < n);
+    });
+    btnPrev.style.visibility = n === 1 ? 'hidden' : 'visible';
+    btnNext.style.display    = n === state.total ? 'none' : 'inline-flex';
+    btnSubmit.style.display  = n === state.total ? 'inline-flex' : 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function clearErrors(stepEl) {
+    $$('.card.error', stepEl).forEach(c => c.classList.remove('error'));
+    $$('.file-drop.has-error', stepEl).forEach(c => c.classList.remove('has-error'));
+    $$('.error-text', stepEl).forEach(e => e.classList.remove('show'));
+  }
+
+  function flagError(el) {
+    if (!el) return;
+    if (el.classList.contains('file-drop')) {
+      el.classList.add('has-error');
+      const card = el.closest('.card');
+      if (card) card.classList.add('error');
+      return;
+    }
+    const card = el.closest('.card') || el;
+    card.classList.add('error');
+  }
+
+  /* ------------------------------------------------------------------
+     COSTOS DE MODIFICADORES — seleccionables + Foodbot/Apps
+  ------------------------------------------------------------------ */
+  const costListField = document.getElementById('costListField');
+  const costList      = document.getElementById('costList');
+  const errCost       = document.getElementById('errCost');
+  const radioCostoSI  = document.getElementById('radioCostoSI');
+  const radioCostoNO  = document.getElementById('radioCostoNO');
+
+  function getSelectedModNames() {
+    const predefined = Array.from(
+      form.querySelectorAll('input[name="modificadores"]:checked')
+    ).map(i => i.value);
+    // custom primero para que aparezcan arriba en la lista
+    return [...state.customMods, ...predefined];
+  }
+
+  function isCostMode() {
+    return radio('modificadores_costo') === 'SI';
+  }
+
+  function ensureModCostEntry(name) {
+    if (!state.modCosts[name]) {
+      state.modCosts[name] = { selected: false, foodbot: '', apps: '' };
+    }
+    return state.modCosts[name];
+  }
+
+  // Elimina entradas de modificadores que ya no están seleccionados arriba
+  function pruneModCosts() {
+    const current = new Set(getSelectedModNames());
+    Object.keys(state.modCosts).forEach(k => {
+      if (!current.has(k)) delete state.modCosts[k];
+    });
+  }
+
+  function renderCostList() {
+    const active = isCostMode() && getSelectedModNames().length > 0;
+    costListField.style.display = active ? 'block' : 'none';
+
+    if (!active) {
+      costList.innerHTML = '';
+      errCost.classList.remove('show');
+      return;
+    }
+
+    const names = getSelectedModNames();
+    const customSet = new Set(state.customMods);
+
+    costList.innerHTML = '';
+    names.forEach(name => {
+      const entry = ensureModCostEntry(name);
+
+      const row = document.createElement('div');
+      row.className = 'cost-item';
+      if (entry.selected) row.classList.add('active');
+
+      /* ----- Checkbox + nombre ----- */
+      const checkWrap = document.createElement('label');
+      checkWrap.className = 'cost-check';
+
+      const check = document.createElement('input');
+      check.type = 'checkbox';
+      check.checked = entry.selected;
+
+      const checkMark = document.createElement('span');
+      checkMark.className = 'check-mark';
+
+      const nameEl = document.createElement('span');
+      nameEl.className = 'cost-name';
+      nameEl.title = name;
+      nameEl.textContent = name;
+      if (customSet.has(name)) {
+        const tag = document.createElement('span');
+        tag.className = 'tag';
+        tag.textContent = 'Custom';
+        nameEl.appendChild(tag);
+      }
+
+      checkWrap.appendChild(check);
+      checkWrap.appendChild(checkMark);
+      checkWrap.appendChild(nameEl);
+
+      /* ----- Precios Foodbot / Apps ----- */
+      const prices = document.createElement('div');
+      prices.className = 'cost-prices';
+
+      // Foodbot
+      const fLabel = document.createElement('label');
+      fLabel.className = 'price-field';
+      const fText = document.createElement('span');
+      fText.textContent = 'Foodbot $';
+      const fInput = document.createElement('input');
+      fInput.type = 'number';
+      fInput.step = '0.01';
+      fInput.min = '0';
+      fInput.placeholder = '0.00';
+      fInput.value = entry.foodbot || '';
+      fInput.disabled = !entry.selected;
+      fInput.setAttribute('aria-label', 'Precio Foodbot de ' + name);
+      fInput.addEventListener('input', () => {
+        entry.foodbot = fInput.value;
+        if (Number(entry.foodbot) > 0) errCost.classList.remove('show');
+      });
+      fLabel.appendChild(fText);
+      fLabel.appendChild(fInput);
+
+      // Apps
+      const aLabel = document.createElement('label');
+      aLabel.className = 'price-field';
+      const aText = document.createElement('span');
+      aText.textContent = 'Apps $';
+      const aInput = document.createElement('input');
+      aInput.type = 'number';
+      aInput.step = '0.01';
+      aInput.min = '0';
+      aInput.placeholder = '0.00';
+      aInput.value = entry.apps || '';
+      aInput.disabled = !entry.selected;
+      aInput.setAttribute('aria-label', 'Precio Apps de ' + name);
+      aInput.addEventListener('input', () => {
+        entry.apps = aInput.value;
+        if (Number(entry.apps) > 0) errCost.classList.remove('show');
+      });
+      aLabel.appendChild(aText);
+      aLabel.appendChild(aInput);
+
+      prices.appendChild(fLabel);
+      prices.appendChild(aLabel);
+
+      /* ----- Toggle ----- */
+      check.addEventListener('change', () => {
+        entry.selected = check.checked;
+        // Re-render para activar/desactivar inputs y cambiar estilo
+        renderCostList();
+      });
+
+      row.appendChild(checkWrap);
+      row.appendChild(prices);
+      costList.appendChild(row);
+    });
+  }
+
+  // Escuchar cambios en los modificadores predefinidos
+  form.querySelectorAll('input[name="modificadores"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      pruneModCosts();
+      renderCostList();
+    });
+  });
+
+  // Escuchar cambios en el radio SI/NO
+  radioCostoSI.addEventListener('change', renderCostList);
+  radioCostoNO.addEventListener('change', renderCostList);
+
+  /* ------------------------------------------------------------------
+     CHIPS EXCLUSIVOS
+  ------------------------------------------------------------------ */
+  form.querySelectorAll('input[type="checkbox"][data-exclusive]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      if (!cb.checked) return;
+      form.querySelectorAll('input[name="' + cb.name + '"]').forEach(o => { if (o !== cb) o.checked = false; });
+      pruneModCosts();
+      renderCostList();
+    });
+  });
+  form.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      if (!cb.checked || cb.hasAttribute('data-exclusive')) return;
+      form.querySelectorAll('input[name="' + cb.name + '"][data-exclusive]').forEach(ex => { ex.checked = false; });
+    });
+  });
+
+  /* ------------------------------------------------------------------
+     MARCA "OTRO"
+  ------------------------------------------------------------------ */
+  const marcaOtroField = document.getElementById('marcaOtroField');
+  form.querySelectorAll('input[name="marca"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const esOtro = r.checked && r.hasAttribute('data-otro');
+      marcaOtroField.style.display = esOtro ? 'block' : 'none';
+      if (!esOtro) document.getElementById('marca_otro').value = '';
+    });
+  });
+
+  /* ------------------------------------------------------------------
+     CONTADORES
+  ------------------------------------------------------------------ */
+  function bindCounter(inputId, counterId, max) {
+    const input = document.getElementById(inputId);
+    const counter = document.getElementById(counterId);
+    if (!input || !counter) return;
+    const update = () => { counter.textContent = input.value.length + '/' + max; };
+    input.addEventListener('input', update);
+    update();
+  }
+  bindCounter('nombre_producto', 'cntNombre', 30);
+  bindCounter('descripcion_producto', 'cntDesc', 180);
+
+  /* ------------------------------------------------------------------
+     MODIFICADORES PERSONALIZADOS
+  ------------------------------------------------------------------ */
+  const customModInput  = document.getElementById('customModInput');
+  const customModList   = document.getElementById('customModList');
+  const btnAddCustomMod = document.getElementById('btnAddCustomMod');
+
+  function renderCustomMods() {
+    customModList.innerHTML = '';
+    state.customMods.forEach((text, idx) => {
+      const chip = document.createElement('span');
+      chip.className = 'custom-chip';
+      const label = document.createElement('span');
+      label.textContent = text;
+      const rm = document.createElement('button');
+      rm.type = 'button';
+      rm.setAttribute('aria-label', 'Eliminar');
+      rm.textContent = '×';
+      rm.addEventListener('click', () => {
+        state.customMods.splice(idx, 1);
+        pruneModCosts();
+        renderCustomMods();
+      });
+      chip.appendChild(label);
+      chip.appendChild(rm);
+      customModList.appendChild(chip);
+    });
+    renderCostList();
+  }
+
+  function addCustomMod() {
+    const v = String(customModInput.value || '').trim();
+    if (!v) return;
+    if (state.customMods.includes(v)) { customModInput.value = ''; return; }
+    state.customMods.push(v);
+    customModInput.value = '';
+    renderCustomMods();
+  }
+  btnAddCustomMod.addEventListener('click', addCustomMod);
+  customModInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); addCustomMod(); }
+  });
+
+  /* ------------------------------------------------------------------
+     IMAGEN DEL PRODUCTO
+  ------------------------------------------------------------------ */
+  const imagenInput   = document.getElementById('imagen_file');
+  const imagenPreview = document.getElementById('imagenPreview');
+  const dropImagen    = document.getElementById('dropImagen');
+  const errImagen     = document.getElementById('errImagen');
+
+  function renderImagenPreview() {
+    imagenPreview.innerHTML = '';
+    if (!state.imagenFile) return;
+    const f = state.imagenFile;
+
+    const item = document.createElement('div');
+    item.className = 'file-item';
+
+    const thumb = document.createElement('div');
+    thumb.className = 'file-thumb';
+    if (f.type.startsWith('image/')) {
+      const img = document.createElement('img');
+      img.alt = '';
+      const url = URL.createObjectURL(f);
+      img.src = url;
+      img.onload = () => URL.revokeObjectURL(url);
+      thumb.appendChild(img);
+    } else { thumb.textContent = 'IMG'; }
+
+    const meta = document.createElement('div');
+    meta.className = 'file-meta';
+    const name = document.createElement('strong'); name.textContent = f.name;
+    const size = document.createElement('span'); size.textContent = formatBytes(f.size);
+    meta.appendChild(name); meta.appendChild(size);
+
+    const rm = document.createElement('button');
+    rm.type = 'button';
+    rm.className = 'file-remove';
+    rm.setAttribute('aria-label', 'Eliminar imagen');
+    rm.textContent = '×';
+    rm.addEventListener('click', () => {
+      state.imagenFile = null;
+      imagenInput.value = '';
+      renderImagenPreview();
+    });
+
+    item.appendChild(thumb); item.appendChild(meta); item.appendChild(rm);
+    imagenPreview.appendChild(item);
+  }
+
+  imagenInput.addEventListener('change', (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (!f) { state.imagenFile = null; renderImagenPreview(); return; }
+    if (f.size > 5 * 1024 * 1024) {
+      alert('La imagen supera los 5 MB permitidos.');
+      imagenInput.value = '';
+      state.imagenFile = null;
+      renderImagenPreview();
+      return;
+    }
+    state.imagenFile = f;
+    renderImagenPreview();
+    dropImagen.classList.remove('has-error');
+    errImagen.classList.remove('show');
+    const card = dropImagen.closest('.card');
+    if (card) card.classList.remove('error');
+  });
+
+  /* ------------------------------------------------------------------
+     ARCHIVOS DE RECETA
+  ------------------------------------------------------------------ */
+  const recetaInput = document.getElementById('archivos_receta');
+  const recetaList  = document.getElementById('archivosRecetaList');
+  const dropReceta  = document.getElementById('dropReceta');
+  const errReceta   = document.getElementById('errReceta');
+
+  function renderRecetaList() {
+    recetaList.innerHTML = '';
+    state.archivosReceta.forEach((f, idx) => {
+      const item = document.createElement('div');
+      item.className = 'file-item';
+
+      const thumb = document.createElement('div');
+      thumb.className = 'file-thumb';
+      if (f.type.startsWith('image/')) {
+        const img = document.createElement('img');
+        img.alt = '';
+        const url = URL.createObjectURL(f);
+        img.src = url;
+        img.onload = () => URL.revokeObjectURL(url);
+        thumb.appendChild(img);
+      } else {
+        const ext = (f.name.split('.').pop() || 'FILE').slice(0, 4).toUpperCase();
+        thumb.textContent = ext;
+      }
+
+      const meta = document.createElement('div');
+      meta.className = 'file-meta';
+      const name = document.createElement('strong'); name.textContent = f.name;
+      const size = document.createElement('span'); size.textContent = formatBytes(f.size) + ' · ' + (f.type || 'archivo');
+      meta.appendChild(name); meta.appendChild(size);
+
+      const rm = document.createElement('button');
+      rm.type = 'button';
+      rm.className = 'file-remove';
+      rm.setAttribute('aria-label', 'Eliminar archivo');
+      rm.textContent = '×';
+      rm.addEventListener('click', () => { state.archivosReceta.splice(idx, 1); renderRecetaList(); });
+
+      item.appendChild(thumb); item.appendChild(meta); item.appendChild(rm);
+      recetaList.appendChild(item);
+    });
+  }
+
+  function clearRecetaError() {
+    if (state.archivosReceta.length > 0) {
+      dropReceta.classList.remove('has-error');
+      errReceta.classList.remove('show');
+      const card = dropReceta.closest('.card');
+      if (card) card.classList.remove('error');
+    }
+  }
+
+  recetaInput.addEventListener('change', (e) => {
+    const files = Array.from(e.target.files || []);
+    files.forEach(f => {
+      const exists = state.archivosReceta.some(x => x.name === f.name && x.size === f.size);
+      if (!exists) state.archivosReceta.push(f);
+    });
+    recetaInput.value = '';
+    renderRecetaList();
+    clearRecetaError();
+  });
+
+  ['dragenter','dragover'].forEach(ev => {
+    dropReceta.addEventListener(ev, (e) => {
+      e.preventDefault(); e.stopPropagation();
+      dropReceta.style.borderColor = 'var(--electric-blue)';
+      dropReceta.style.boxShadow   = 'var(--shadow-glow)';
+      dropReceta.style.background  = 'var(--graphite)';
+    });
+  });
+  ['dragleave','drop'].forEach(ev => {
+    dropReceta.addEventListener(ev, (e) => {
+      e.preventDefault(); e.stopPropagation();
+      dropReceta.style.borderColor = '';
+      dropReceta.style.boxShadow   = '';
+      dropReceta.style.background  = '';
+    });
+  });
+  dropReceta.addEventListener('drop', (e) => {
+    const files = Array.from(e.dataTransfer.files || []);
+    files.forEach(f => {
+      const exists = state.archivosReceta.some(x => x.name === f.name && x.size === f.size);
+      if (!exists) state.archivosReceta.push(f);
+    });
+    renderRecetaList();
+    clearRecetaError();
+  });
+
+  /* ------------------------------------------------------------------
+     LECTURA DE ARCHIVOS COMO DATAURL
+  ------------------------------------------------------------------ */
+  const MAX_B64_FILE_SIZE = 400 * 1024;
+
+  function readFileAsDataURL(file) {
+    return new Promise((resolve) => {
+      try {
+        const reader = new FileReader();
+        reader.onload  = () => resolve(String(reader.result || ''));
+        reader.onerror = () => resolve('');
+        reader.readAsDataURL(file);
+      } catch (e) { resolve(''); }
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     VALIDACIÓN
+  ------------------------------------------------------------------ */
+  function validateStep(n) {
+    const stepEl = steps.find(s => Number(s.dataset.step) === n);
+    if (!stepEl) return true;
+
+    clearErrors(stepEl);
+
+    let firstInvalid = null;
+
+    // 1) Required text/select/textarea
+    $$('input[required], select[required], textarea[required]', stepEl).forEach(el => {
+      if (el.type === 'radio' || el.type === 'checkbox') return;
+      if (!String(el.value || '').trim()) {
+        if (!firstInvalid) firstInvalid = el;
+      }
+    });
+
+    // 2) Required radios
+    const requiredRadios = new Set($$('input[type="radio"][required]', stepEl).map(r => r.name));
+    requiredRadios.forEach(name => {
+      const anyChecked = form.querySelector('input[name="' + name + '"]:checked');
+      if (!anyChecked && !firstInvalid) {
+        firstInvalid = form.querySelector('input[name="' + name + '"]');
+      }
+    });
+
+    // 3) Válido para (step 2)
+    if (n === 2) {
+      const valido = form.querySelectorAll('input[name="valido_para"]:checked');
+      if (valido.length === 0 && !firstInvalid) {
+        firstInvalid = form.querySelector('input[name="valido_para"]');
+      }
+    }
+
+    // 4) Costos (step 3)
+    if (n === 3 && isCostMode()) {
+      const names = getSelectedModNames();
+
+      if (names.length === 0) {
+        errCost.textContent = 'Selecciona al menos un modificador para asignarle costo.';
+        errCost.classList.add('show');
+        if (!firstInvalid) firstInvalid = document.querySelector('#modsChips input');
+      } else {
+        // Deben haber marcado al menos uno
+        const withCost = names.filter(name => state.modCosts[name] && state.modCosts[name].selected);
+        if (withCost.length === 0) {
+          errCost.textContent = 'Marca al menos un modificador y asígnale sus precios.';
+          errCost.classList.add('show');
+          if (!firstInvalid) firstInvalid = costList.querySelector('input[type="checkbox"]') || costListField;
+        } else {
+          // Cada marcado debe tener Foodbot > 0 y Apps > 0
+          let allOk = true;
+          withCost.forEach(name => {
+            const e = state.modCosts[name];
+            const f = Number(e.foodbot), a = Number(e.apps);
+            if (!e.foodbot || f <= 0 || !e.apps || a <= 0) allOk = false;
+          });
+          if (!allOk) {
+            errCost.textContent = 'Asigna precio Foodbot y Apps (mayor a 0) a cada modificador marcado.';
+            errCost.classList.add('show');
+            if (!firstInvalid) {
+              firstInvalid = costList.querySelector('.cost-item.active input[type="number"]') || costListField;
+            }
+          }
+        }
+      }
+    }
+
+    // 5) Imagen (step 4)
+    if (n === 4 && !state.imagenFile) {
+      if (!firstInvalid) firstInvalid = dropImagen;
+      errImagen.classList.add('show');
+    }
+
+    // 6) Receta (step 5)
+    if (n === 5 && state.archivosReceta.length === 0) {
+      if (!firstInvalid) firstInvalid = dropReceta;
+      errReceta.classList.add('show');
+    }
+
+    if (firstInvalid) {
+      flagError(firstInvalid);
+      firstInvalid.scrollIntoView({ behavior:'smooth', block:'center' });
+      try { firstInvalid.focus({ preventScroll:true }); } catch(e){}
+      return false;
+    }
+    return true;
+  }
+
+  btnNext.addEventListener('click', () => {
+    if (!validateStep(state.current)) return;
+    if (state.current < state.total) renderStep(state.current + 1);
+  });
+  btnPrev.addEventListener('click', () => {
+    if (state.current > 1) renderStep(state.current - 1);
+  });
+
+  form.addEventListener('click', (e) => {
+    const t = e.target.closest('.step-tab');
+    if (!t) return;
+    const target = Number(t.dataset.goto);
+    if (target === state.current) return;
+    if (target < state.current) { renderStep(target); return; }
+    for (let i = state.current; i < target; i++) {
+      if (!validateStep(i)) { renderStep(i); return; }
+    }
+    renderStep(target);
+  });
+
+  /* ------------------------------------------------------------------
+     PARÁMETROS Y ENVÍO
+  ------------------------------------------------------------------ */
+  function buildBaseParams() {
+    const params = new URLSearchParams();
+
+    params.append('test', '1');
+    params.append('origen', 'form_alta_producto_web');
+
+    params.append('nombre',   txt('nombre'));
+    params.append('area',     txt('area'));
+    params.append('telefono', txt('telefono'));
+    params.append('correo',   txt('correo'));
+
+    params.append('marca',                radio('marca'));
+    params.append('marca_otro',           txt('marca_otro'));
+    params.append('nombre_producto',      txt('nombre_producto'));
+    params.append('descripcion_producto', txt('descripcion_producto'));
+    params.append('categoria',            txt('categoria'));
+    params.append('valido_para',          checks('valido_para'));
+
+    // Modificadores
+    params.append('modificadores',              checks('modificadores'));
+    params.append('modificadores_costo',        radio('modificadores_costo'));
+    params.append('detalle_modificadores',      txt('detalle_modificadores'));
+    params.append('modificadores_custom_total', String(state.customMods.length));
+    params.append('modificadores_custom',       state.customMods.join(' | '));
+    state.customMods.forEach((m, i) => {
+      params.append('modificador_custom_' + (i + 1), m);
+    });
+
+    // Costos por modificador — solo los que el usuario marcó
+    if (isCostMode()) {
+      const names = getSelectedModNames();
+      const withCost = names.filter(name => state.modCosts[name] && state.modCosts[name].selected);
+      const resumen = [];
+      withCost.forEach((name, i) => {
+        const e = state.modCosts[name];
+        const idx = i + 1;
+        params.append('mod_costo_' + idx + '_nombre',  name);
+        params.append('mod_costo_' + idx + '_foodbot', String(e.foodbot || ''));
+        params.append('mod_costo_' + idx + '_apps',    String(e.apps || ''));
+        resumen.push(name + ': Foodbot $' + e.foodbot + ' / Apps $' + e.apps);
+      });
+      params.append('modificadores_con_costo_total',   String(withCost.length));
+      params.append('modificadores_con_costo_detalle', resumen.join(' | '));
+    } else {
+      params.append('modificadores_con_costo_total',   '0');
+      params.append('modificadores_con_costo_detalle', '');
+    }
+
+    params.append('precio_foodbot', txt('precio_foodbot'));
+    params.append('precio_apps',    txt('precio_apps'));
+    params.append('comentarios',    txt('comentarios'));
+
+    params.append('restar_inventario', txt('restar_inventario'));
+
+    return params;
+  }
+
+  function sendToMake(params) {
+    try {
+      fetch(MAKE_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body: params.toString(),
+        keepalive: true
+      }).catch(() => { /* silencioso */ });
+    } catch (e) { /* silencioso */ }
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    for (let i = 1; i <= state.total; i++) {
+      if (!validateStep(i)) { renderStep(i); return; }
+    }
+
+    const params = buildBaseParams();
+
+    // Metadatos imagen
+    params.append('imagen_nombre', state.imagenFile.name);
+    params.append('imagen_tipo',   state.imagenFile.type || 'application/octet-stream');
+    params.append('imagen_tamano', String(state.imagenFile.size));
+
+    // Metadatos archivos receta
+    params.append('archivos_receta_total', String(state.archivosReceta.length));
+    state.archivosReceta.forEach((f, i) => {
+      const idx = i + 1;
+      params.append('archivo_receta_' + idx + '_nombre', f.name);
+      params.append('archivo_receta_' + idx + '_tipo',   f.type || 'application/octet-stream');
+      params.append('archivo_receta_' + idx + '_tamano', String(f.size));
+    });
+
+    // Feedback inmediato
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 6000);
+
+    // Snapshot
+    const imgFile  = state.imagenFile;
+    const recFiles = state.archivosReceta.slice();
+
+    // Limpieza
+    form.reset();
+    marcaOtroField.style.display = 'none';
+    state.imagenFile = null;
+    state.archivosReceta = [];
+    state.customMods = [];
+    state.modCosts = {};
+    renderImagenPreview();
+    renderRecetaList();
+    renderCustomMods();
+    document.getElementById('cntNombre').textContent = '0/30';
+    document.getElementById('cntDesc').textContent   = '0/180';
+
+    renderStep(1);
+
+    // Lectura asíncrona → fetch final
+    const fileReads = [];
+
+    if (imgFile && imgFile.size <= MAX_B64_FILE_SIZE) {
+      fileReads.push(
+        readFileAsDataURL(imgFile).then(data => {
+          if (data) params.append('imagen_data', data);
+        })
+      );
+    }
+
+    recFiles.forEach((f, i) => {
+      const idx = i + 1;
+      if (f.size <= MAX_B64_FILE_SIZE) {
+        fileReads.push(
+          readFileAsDataURL(f).then(data => {
+            if (data) params.append('archivo_receta_' + idx + '_data', data);
+          })
+        );
+      }
+    });
+
+    Promise.all(fileReads)
+      .then(() => sendToMake(params))
+      .catch(() => sendToMake(params));
+  });
+
+  /* ------------------------------------------------------------------
+     INIT
+  ------------------------------------------------------------------ */
+  renderStep(1);
+  renderCustomMods();
+  renderImagenPreview();
+  renderRecetaList();
+  renderCostList();
+
+});
+</script>
+</body>
+</html>
