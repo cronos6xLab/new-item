@@ -421,6 +421,12 @@ select option{background:var(--obsidian);color:var(--bone);}
   display:block;font-family:var(--font-mono);font-size:10px;
   color:var(--smoke);letter-spacing:0.02em;margin-top:2px;
 }
+.file-meta .url-link{
+  display:block;font-family:var(--font-mono);font-size:10px;
+  color:var(--electric-blue);text-decoration:none;margin-top:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.file-meta .url-link:hover{text-decoration:underline;}
 .file-remove{
   background:none;border:1px solid transparent;padding:6px;
   border-radius:8px;cursor:pointer;color:var(--smoke);
@@ -980,6 +986,8 @@ document.addEventListener('DOMContentLoaded', function () {
     current: 1,
     total: 5,
     imagenFile: null,
+    imagenUrl: '', // Aquí guardaremos la URL de Telegraph
+    isUploading: false,
     archivosReceta: [],
     customMods: [],
     modCosts: {},
@@ -1018,7 +1026,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ============================================================
-     STATUS BANNER (feedback visible)
+     STATUS BANNER
   ============================================================ */
   const statusBanner = document.getElementById('statusBanner');
   const statusText   = document.getElementById('statusText');
@@ -1300,37 +1308,87 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ============================================================
-     IMAGEN
+     SUBIDA DE IMAGEN A TELEGRAPH (para obtener URL pública)
   ============================================================ */
   const imagenInput   = document.getElementById('imagen_file');
   const imagenPreview = document.getElementById('imagenPreview');
   const dropImagen    = document.getElementById('dropImagen');
   const errImagen     = document.getElementById('errImagen');
 
+  async function uploadToTelegraph(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+      const res = await fetch('https://telegra.ph/upload', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      if (Array.isArray(data) && data[0] && data[0].src) {
+        return 'https://telegra.ph' + data[0].src;
+      }
+      throw new Error('Respuesta inválida de Telegraph');
+    } catch (err) {
+      console.error('Error subiendo a Telegraph:', err);
+      throw err;
+    }
+  }
+
   function renderImagenPreview() {
     imagenPreview.innerHTML = '';
-    if (!state.imagenFile) return;
-    const f = state.imagenFile;
+    if (!state.imagenFile && !state.imagenUrl) return;
 
     const item = document.createElement('div');
     item.className = 'file-item';
 
     const thumb = document.createElement('div');
     thumb.className = 'file-thumb';
-    if (f.type.startsWith('image/')) {
+
+    if (state.imagenFile && state.imagenFile.type.startsWith('image/')) {
       const img = document.createElement('img');
       img.alt = '';
-      const url = URL.createObjectURL(f);
+      const url = URL.createObjectURL(state.imagenFile);
       img.src = url;
       img.onload = () => URL.revokeObjectURL(url);
       thumb.appendChild(img);
-    } else { thumb.textContent = 'IMG'; }
+    } else if (state.imagenUrl && state.imagenUrl.startsWith('http')) {
+      const img = document.createElement('img');
+      img.alt = '';
+      img.src = state.imagenUrl;
+      thumb.appendChild(img);
+    } else {
+      thumb.textContent = 'IMG';
+    }
 
     const meta = document.createElement('div');
     meta.className = 'file-meta';
-    const name = document.createElement('strong'); name.textContent = f.name;
-    const size = document.createElement('span'); size.textContent = formatBytes(f.size);
-    meta.appendChild(name); meta.appendChild(size);
+
+    const name = document.createElement('strong');
+    name.textContent = state.imagenFile ? state.imagenFile.name : 'Imagen subida';
+
+    const size = document.createElement('span');
+    if (state.isUploading) {
+      size.textContent = 'Subiendo a Telegraph...';
+    } else if (state.imagenUrl && state.imagenUrl.startsWith('http')) {
+      size.textContent = formatBytes(state.imagenFile ? state.imagenFile.size : 0) + ' · Enlace listo';
+    } else if (state.imagenUrl && state.imagenUrl.startsWith('Error')) {
+      size.textContent = 'Error al subir. Intenta de nuevo.';
+    } else {
+      size.textContent = formatBytes(state.imagenFile ? state.imagenFile.size : 0);
+    }
+
+    meta.appendChild(name);
+    meta.appendChild(size);
+
+    if (state.imagenUrl && state.imagenUrl.startsWith('http')) {
+      const link = document.createElement('a');
+      link.href = state.imagenUrl;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.className = 'url-link';
+      link.textContent = state.imagenUrl;
+      meta.appendChild(link);
+    }
 
     const rm = document.createElement('button');
     rm.type = 'button';
@@ -1339,6 +1397,7 @@ document.addEventListener('DOMContentLoaded', function () {
     rm.textContent = '×';
     rm.addEventListener('click', () => {
       state.imagenFile = null;
+      state.imagenUrl = '';
       imagenInput.value = '';
       renderImagenPreview();
     });
@@ -1347,26 +1406,49 @@ document.addEventListener('DOMContentLoaded', function () {
     imagenPreview.appendChild(item);
   }
 
-  imagenInput.addEventListener('change', (e) => {
+  imagenInput.addEventListener('change', async (e) => {
     const f = e.target.files && e.target.files[0];
-    if (!f) { state.imagenFile = null; renderImagenPreview(); return; }
+    if (!f) {
+      state.imagenFile = null;
+      state.imagenUrl = '';
+      renderImagenPreview();
+      return;
+    }
     if (f.size > 5 * 1024 * 1024) {
       alert('La imagen supera los 5 MB permitidos.');
       imagenInput.value = '';
       state.imagenFile = null;
+      state.imagenUrl = '';
       renderImagenPreview();
       return;
     }
+
     state.imagenFile = f;
+    state.imagenUrl = '';
+    state.isUploading = true;
     renderImagenPreview();
+
+    // Ocultar errores previos
     dropImagen.classList.remove('has-error');
     errImagen.classList.remove('show');
     const card = dropImagen.closest('.card');
     if (card) card.classList.remove('error');
+
+    try {
+      // Subida asíncrona a Telegraph
+      const url = await uploadToTelegraph(f);
+      state.imagenUrl = url;
+    } catch (err) {
+      state.imagenUrl = 'Error al subir';
+      showStatus('err', 'No se pudo subir la imagen a Telegraph. Revisa tu conexión e intenta de nuevo.', 6000);
+    } finally {
+      state.isUploading = false;
+      renderImagenPreview();
+    }
   });
 
   /* ============================================================
-     ARCHIVOS DE RECETA
+     ARCHIVOS DE RECETA (solo metadata, no se suben)
   ============================================================ */
   const recetaInput = document.getElementById('archivos_receta');
   const recetaList  = document.getElementById('archivosRecetaList');
@@ -1518,9 +1600,18 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    if (n === 4 && !state.imagenFile) {
-      if (!firstInvalid) firstInvalid = dropImagen;
-      errImagen.classList.add('show');
+    if (n === 4) {
+      if (!state.imagenFile) {
+        if (!firstInvalid) firstInvalid = dropImagen;
+        errImagen.classList.add('show');
+      } else if (state.isUploading) {
+        showStatus('info', 'Espera un momento mientras la imagen termina de subirse...', 4000);
+        return false;
+      } else if (state.imagenUrl && state.imagenUrl.startsWith('Error')) {
+        if (!firstInvalid) firstInvalid = dropImagen;
+        errImagen.textContent = 'Hubo un error al subir la imagen. Por favor, intenta de nuevo.';
+        errImagen.classList.add('show');
+      }
     }
 
     if (n === 5 && state.archivosReceta.length === 0) {
@@ -1558,7 +1649,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ============================================================
-     SNAPSHOT DE DATOS (para historial y payload)
+     SNAPSHOT DE DATOS
   ============================================================ */
   function snapshotData() {
     const modsCostDetails = [];
@@ -1577,34 +1668,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
     return {
       timestamp: new Date().toISOString(),
-      // Solicitante
       nombre: txt('nombre'),
       area: txt('area'),
       telefono: txt('telefono'),
       correo: txt('correo'),
-      // Producto
       marca: radio('marca'),
       marca_otro: txt('marca_otro'),
       nombre_producto: txt('nombre_producto'),
       descripcion_producto: txt('descripcion_producto'),
       categoria: txt('categoria'),
       valido_para: checksArr('valido_para'),
-      // Modificadores
       modificadores: checksArr('modificadores'),
       modificadores_custom: state.customMods.slice(),
       modificadores_costo: radio('modificadores_costo'),
       detalle_modificadores: txt('detalle_modificadores'),
       modCosts: JSON.parse(JSON.stringify(state.modCosts)),
-      // Precios
       precio_foodbot: txt('precio_foodbot'),
       precio_apps: txt('precio_apps'),
       comentarios: txt('comentarios'),
-      // Insumos
       restar_inventario: txt('restar_inventario'),
-      // Archivos (solo metadata)
       imagenNombre: state.imagenFile ? state.imagenFile.name : '',
-      imagenTipo:   state.imagenFile ? state.imagenFile.type : '',
-      imagenTamano: state.imagenFile ? String(state.imagenFile.size) : '',
+      imagenUrl: state.imagenUrl || '',
       archivosReceta: state.archivosReceta.map(f => ({
         nombre: f.name, tipo: f.type, tamano: String(f.size)
       }))
@@ -1642,7 +1726,6 @@ document.addEventListener('DOMContentLoaded', function () {
       p.append('modificador_custom_' + (i + 1), m);
     });
 
-    // Costos por modificador (solo los que se marcaron)
     const modsWithCost = [];
     if (snap.modificadores_costo === 'SI') {
       Object.keys(snap.modCosts || {}).forEach(name => {
@@ -1664,13 +1747,11 @@ document.addEventListener('DOMContentLoaded', function () {
     p.append('precio_foodbot', snap.precio_foodbot);
     p.append('precio_apps', snap.precio_apps);
     p.append('comentarios', snap.comentarios);
-
     p.append('restar_inventario', snap.restar_inventario);
 
-    // Metadata de archivos (sin contenido binario)
+    // ¡Aquí está la magia! Enviamos la URL de la imagen en lugar de base64
+    p.append('imagen_url', snap.imagenUrl);
     p.append('imagen_nombre', snap.imagenNombre);
-    p.append('imagen_tipo', snap.imagenTipo);
-    p.append('imagen_tamano', snap.imagenTamano);
 
     p.append('archivos_receta_total', String(snap.archivosReceta.length));
     snap.archivosReceta.forEach((f, i) => {
@@ -1685,12 +1766,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ============================================================
      ENVÍO AL WEBHOOK
-     -------------------------------------------------------------
-     - SIN keepalive (el body puede pasar de 64 KB y el navegador
-       la descarta silenciosamente)
-     - SIN base64 de archivos (los binarios en un POST urlencoded
-       son enormes y no sirven para Google Sheets)
-     - Con feedback visible del estado real
   ============================================================ */
   function sendToMake(params) {
     return fetch(MAKE_WEBHOOK_URL, {
@@ -1698,7 +1773,6 @@ document.addEventListener('DOMContentLoaded', function () {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
       body: params.toString()
     }).then(res => {
-      // Make responde con "Accepted" (202) cuando el webhook recibe bien
       if (!res.ok) throw new Error('HTTP ' + res.status);
       return { ok: true, status: res.status };
     });
@@ -1806,22 +1880,20 @@ document.addEventListener('DOMContentLoaded', function () {
      RELLENAR DE NUEVO DESDE HISTORIAL
   ============================================================ */
   function refillFromHistory(h) {
-    // Reset visual previo
     form.reset();
     state.imagenFile = null;
+    state.imagenUrl = '';
     state.archivosReceta = [];
     state.customMods = [];
     state.modCosts = {};
     renderImagenPreview();
     renderRecetaList();
 
-    // Solicitante
     document.getElementById('nombre').value   = h.nombre || '';
     document.getElementById('area').value     = h.area || '';
     document.getElementById('telefono').value = h.telefono || '';
     document.getElementById('correo').value   = h.correo || '';
 
-    // Producto
     form.querySelectorAll('input[name="marca"]').forEach(r => {
       r.checked = (r.value === h.marca);
     });
@@ -1836,7 +1908,6 @@ document.addEventListener('DOMContentLoaded', function () {
       cb.checked = valido.includes(cb.value);
     });
 
-    // Modificadores
     const mods = h.modificadores || [];
     form.querySelectorAll('input[name="modificadores"]').forEach(cb => {
       cb.checked = mods.includes(cb.value);
@@ -1845,30 +1916,22 @@ document.addEventListener('DOMContentLoaded', function () {
     state.customMods = Array.isArray(h.modificadores_custom) ? h.modificadores_custom.slice() : [];
     renderCustomMods();
 
-    // Radio SI/NO costo
     form.querySelectorAll('input[name="modificadores_costo"]').forEach(r => {
       r.checked = (r.value === h.modificadores_costo);
     });
 
-    // Costos por modificador
     state.modCosts = JSON.parse(JSON.stringify(h.modCosts || {}));
     renderCostList();
 
     document.getElementById('detalle_modificadores').value = h.detalle_modificadores || '';
-
-    // Precios
     document.getElementById('precio_foodbot').value = h.precio_foodbot || '';
     document.getElementById('precio_apps').value    = h.precio_apps || '';
     document.getElementById('comentarios').value    = h.comentarios || '';
-
-    // Insumos
     document.getElementById('restar_inventario').value = h.restar_inventario || '';
 
-    // Contadores
     document.getElementById('cntNombre').textContent = (h.nombre_producto || '').length + '/30';
     document.getElementById('cntDesc').textContent   = (h.descripcion_producto || '').length + '/180';
 
-    // Cerrar drawer, ir al paso 1
     closeHistory();
     renderStep(1);
     showStatus('info',
@@ -1903,6 +1966,7 @@ document.addEventListener('DOMContentLoaded', function () {
       'Restar inventario: ' + (h.restar_inventario || '—'),
       '',
       'Imagen: ' + (h.imagenNombre || '—'),
+      'URL Imagen: ' + (h.imagenUrl || '—'),
       'Archivos receta: ' + ((h.archivosReceta || []).map(f => f.nombre).join(', ') || '—')
     ];
     alert(lines.join('\n'));
@@ -1933,7 +1997,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'Escape' && drawer.classList.contains('show')) closeHistory();
   });
 
-  // Acciones dentro del historial (delegación)
   historyBody.addEventListener('click', (e) => {
     const btn = e.target.closest('button[data-action]');
     if (!btn) return;
@@ -2013,38 +2076,32 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
+    if (state.isUploading) {
+      showStatus('info', 'Espera a que la imagen termine de subirse antes de enviar.', 4000);
+      return;
+    }
+
     const snap   = snapshotData();
     const params = buildParamsFromSnapshot(snap);
 
-    // Bloquear botón mientras se envía
     btnSubmit.disabled = true;
     btnSubmit.textContent = 'Enviando…';
-
     showStatus('info', 'Enviando solicitud…');
 
     sendToMake(params)
       .then(() => {
-        // Éxito
         showStatus('ok', '✓ Solicitud enviada correctamente al webhook.', 6000);
-
         const toast = document.getElementById('toast');
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 6000);
-
-        // Guardar en historial como OK
         addToHistory(snap, 'ok');
-
-        // Reset del formulario
         resetForm();
       })
       .catch(err => {
-        // Error visible
         showStatus('err',
           'No se pudo enviar: ' + err.message + '. La solicitud se guardó en el historial para reintentar.',
           10000
         );
-
-        // Guardar en historial como ERROR para que pueda reintentarse
         addToHistory(snap, 'err');
       })
       .finally(() => {
@@ -2060,6 +2117,7 @@ document.addEventListener('DOMContentLoaded', function () {
     form.reset();
     marcaOtroField.style.display = 'none';
     state.imagenFile = null;
+    state.imagenUrl = '';
     state.archivosReceta = [];
     state.customMods = [];
     state.modCosts = {};
