@@ -622,9 +622,7 @@ select option{background:var(--obsidian);color:var(--bone);}
 
   <form id="productoForm" novalidate>
 
-    <!-- =========================================================
-         STEP 1
-         ========================================================= -->
+    <!-- STEP 1 -->
     <section class="step active" data-step="1">
       <div class="eyebrow">Sistemas y Tecnología</div>
       <h1 class="hero-title">Solicitud de adición de nuevo producto en sistema</h1>
@@ -665,9 +663,7 @@ select option{background:var(--obsidian);color:var(--bone);}
       </div>
     </section>
 
-    <!-- =========================================================
-         STEP 2
-         ========================================================= -->
+    <!-- STEP 2 -->
     <section class="step" data-step="2">
       <nav class="steps">
         <button type="button" class="step-tab" data-goto="1"><span class="step-num">01</span> Solicitante</button>
@@ -746,9 +742,7 @@ select option{background:var(--obsidian);color:var(--bone);}
       </div>
     </section>
 
-    <!-- =========================================================
-         STEP 3
-         ========================================================= -->
+    <!-- STEP 3 -->
     <section class="step" data-step="3">
       <nav class="steps">
         <button type="button" class="step-tab" data-goto="1"><span class="step-num">01</span> Solicitante</button>
@@ -821,9 +815,7 @@ select option{background:var(--obsidian);color:var(--bone);}
       </div>
     </section>
 
-    <!-- =========================================================
-         STEP 4
-         ========================================================= -->
+    <!-- STEP 4 -->
     <section class="step" data-step="4">
       <nav class="steps">
         <button type="button" class="step-tab" data-goto="1"><span class="step-num">01</span> Solicitante</button>
@@ -879,9 +871,7 @@ select option{background:var(--obsidian);color:var(--bone);}
       </div>
     </section>
 
-    <!-- =========================================================
-         STEP 5
-         ========================================================= -->
+    <!-- STEP 5 -->
     <section class="step" data-step="5">
       <nav class="steps">
         <button type="button" class="step-tab" data-goto="1"><span class="step-num">01</span> Solicitante</button>
@@ -940,9 +930,7 @@ select option{background:var(--obsidian);color:var(--bone);}
   <div class="footnote">Sistemas & Tecnología — AMG Hospitality Group</div>
 </div>
 
-<!-- ============================================================
-     HISTORY DRAWER
-     ============================================================ -->
+<!-- HISTORY DRAWER -->
 <div class="drawer-backdrop" id="drawerBackdrop"></div>
 <aside class="drawer" id="historyDrawer" aria-hidden="true">
   <div class="drawer-head">
@@ -970,14 +958,10 @@ select option{background:var(--obsidian);color:var(--bone);}
 
 <script>
 /* ============================================================================
-   ⚙️  CONFIGURACIÓN DEL WEBHOOK
-   ----------------------------------------------------------------------------
-   👇 Reemplaza esta URL por la de tu Custom Webhook de Make.com
+   ⚙️  CONFIGURACIÓN
    ============================================================================ */
 const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/x9nsypb1b9tmmh4243wfybiraejqi7j5';
-
-/* 👇 Clave de API de ImgBB (obtén la tuya gratis en https://api.imgbb.com/) */
-const IMGBB_API_KEY = 'TU_API_KEY_DE_IMGBB';
+const IMGBB_API_KEY = '67a9b5942ab0fcd92480a4ffc981ba07';
 /* ========================================================================== */
 
 const HISTORY_KEY = 'amg_product_form_history_v1';
@@ -989,7 +973,7 @@ document.addEventListener('DOMContentLoaded', function () {
     current: 1,
     total: 5,
     imagenFile: null,
-    imagenUrl: '', // URL pública devuelta por ImgBB
+    imagenUrl: '',
     isUploading: false,
     archivosReceta: [],
     customMods: [],
@@ -1319,11 +1303,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const errImagen     = document.getElementById('errImagen');
 
   async function uploadToImgBB(file) {
-    // Convertir el archivo a base64 (requerido por ImgBB)
     const base64 = await new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
-        // Quitar el prefijo "data:image/...;base64,"
         const result = String(reader.result || '');
         const commaIdx = result.indexOf(',');
         resolve(commaIdx >= 0 ? result.slice(commaIdx + 1) : result);
@@ -1335,13 +1317,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const formData = new FormData();
     formData.append('image', base64);
 
-    const url = 'https://api.imgbb.com/1/upload?key=' + encodeURIComponent(IMGBB_API_KEY) + '&expiration=0';
+    const url = 'https://api.imgbb.com/1/upload?key=' + encodeURIComponent(IMGBB_API_KEY);
     const res = await fetch(url, { method: 'POST', body: formData });
-    if (!res.ok) throw new Error('HTTP ' + res.status + ' — ImgBB');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
 
     const data = await res.json();
     if (!data || !data.data || !data.data.url) {
-      throw new Error('Respuesta inválida de ImgBB');
+      const msg = data && data.error && data.error.message ? data.error.message : 'Respuesta inválida';
+      throw new Error(msg);
     }
     return data.data.url;
   }
@@ -1435,22 +1418,11 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    // Validar que la API key esté configurada
-    if (!IMGBB_API_KEY || IMGBB_API_KEY === 'TU_API_KEY_DE_IMGBB') {
-      alert('Falta configurar la API key de ImgBB en el código. Obtén una gratis en https://api.imgbb.com/');
-      imagenInput.value = '';
-      state.imagenFile = null;
-      state.imagenUrl = '';
-      renderImagenPreview();
-      return;
-    }
-
     state.imagenFile = f;
     state.imagenUrl = '';
     state.isUploading = true;
     renderImagenPreview();
 
-    // Ocultar errores previos
     dropImagen.classList.remove('has-error');
     errImagen.classList.remove('show');
     const card = dropImagen.closest('.card');
@@ -1464,7 +1436,7 @@ document.addEventListener('DOMContentLoaded', function () {
       console.error('Error ImgBB:', err);
       state.imagenUrl = 'Error al subir';
       showStatus('err',
-        'No se pudo subir la imagen a ImgBB (' + err.message + '). Verifica tu API key y tu conexión.',
+        'No se pudo subir la imagen a ImgBB: ' + err.message + '. Intenta de nuevo.',
         8000
       );
     } finally {
@@ -1474,7 +1446,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ============================================================
-     ARCHIVOS DE RECETA (solo metadata, no se suben)
+     ARCHIVOS DE RECETA
   ============================================================ */
   const recetaInput = document.getElementById('archivos_receta');
   const recetaList  = document.getElementById('archivosRecetaList');
@@ -1675,7 +1647,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ============================================================
-     SNAPSHOT DE DATOS
+     SNAPSHOT
   ============================================================ */
   function snapshotData() {
     const modsCostDetails = [];
@@ -1775,7 +1747,6 @@ document.addEventListener('DOMContentLoaded', function () {
     p.append('comentarios', snap.comentarios);
     p.append('restar_inventario', snap.restar_inventario);
 
-    // URL de la imagen subida a ImgBB
     p.append('imagen_url', snap.imagenUrl);
     p.append('imagen_nombre', snap.imagenNombre);
 
@@ -1790,9 +1761,6 @@ document.addEventListener('DOMContentLoaded', function () {
     return p;
   }
 
-  /* ============================================================
-     ENVÍO AL WEBHOOK
-  ============================================================ */
   function sendToMake(params) {
     return fetch(MAKE_WEBHOOK_URL, {
       method: 'POST',
@@ -1902,9 +1870,6 @@ document.addEventListener('DOMContentLoaded', function () {
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
-  /* ============================================================
-     RELLENAR DE NUEVO DESDE HISTORIAL
-  ============================================================ */
   function refillFromHistory(h) {
     form.reset();
     state.imagenFile = null;
@@ -1998,9 +1963,6 @@ document.addEventListener('DOMContentLoaded', function () {
     alert(lines.join('\n'));
   }
 
-  /* ============================================================
-     DRAWER OPEN / CLOSE
-  ============================================================ */
   function openHistory() {
     renderHistory();
     drawer.classList.add('show');
