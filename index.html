@@ -975,6 +975,9 @@ select option{background:var(--obsidian);color:var(--bone);}
    👇 Reemplaza esta URL por la de tu Custom Webhook de Make.com
    ============================================================================ */
 const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/x9nsypb1b9tmmh4243wfybiraejqi7j5';
+
+/* 👇 Clave de API de ImgBB (obtén la tuya gratis en https://api.imgbb.com/) */
+const IMGBB_API_KEY = 'TU_API_KEY_DE_IMGBB';
 /* ========================================================================== */
 
 const HISTORY_KEY = 'amg_product_form_history_v1';
@@ -986,7 +989,7 @@ document.addEventListener('DOMContentLoaded', function () {
     current: 1,
     total: 5,
     imagenFile: null,
-    imagenUrl: '', // Aquí guardaremos la URL de Telegraph
+    imagenUrl: '', // URL pública devuelta por ImgBB
     isUploading: false,
     archivosReceta: [],
     customMods: [],
@@ -1308,30 +1311,39 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ============================================================
-     SUBIDA DE IMAGEN A TELEGRAPH (para obtener URL pública)
+     SUBIDA DE IMAGEN A IMGBB
   ============================================================ */
   const imagenInput   = document.getElementById('imagen_file');
   const imagenPreview = document.getElementById('imagenPreview');
   const dropImagen    = document.getElementById('dropImagen');
   const errImagen     = document.getElementById('errImagen');
 
-  async function uploadToTelegraph(file) {
+  async function uploadToImgBB(file) {
+    // Convertir el archivo a base64 (requerido por ImgBB)
+    const base64 = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        // Quitar el prefijo "data:image/...;base64,"
+        const result = String(reader.result || '');
+        const commaIdx = result.indexOf(',');
+        resolve(commaIdx >= 0 ? result.slice(commaIdx + 1) : result);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
     const formData = new FormData();
-    formData.append('file', file);
-    try {
-      const res = await fetch('https://telegra.ph/upload', {
-        method: 'POST',
-        body: formData
-      });
-      const data = await res.json();
-      if (Array.isArray(data) && data[0] && data[0].src) {
-        return 'https://telegra.ph' + data[0].src;
-      }
-      throw new Error('Respuesta inválida de Telegraph');
-    } catch (err) {
-      console.error('Error subiendo a Telegraph:', err);
-      throw err;
+    formData.append('image', base64);
+
+    const url = 'https://api.imgbb.com/1/upload?key=' + encodeURIComponent(IMGBB_API_KEY) + '&expiration=0';
+    const res = await fetch(url, { method: 'POST', body: formData });
+    if (!res.ok) throw new Error('HTTP ' + res.status + ' — ImgBB');
+
+    const data = await res.json();
+    if (!data || !data.data || !data.data.url) {
+      throw new Error('Respuesta inválida de ImgBB');
     }
+    return data.data.url;
   }
 
   function renderImagenPreview() {
@@ -1368,7 +1380,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const size = document.createElement('span');
     if (state.isUploading) {
-      size.textContent = 'Subiendo a Telegraph...';
+      size.textContent = 'Subiendo a ImgBB...';
     } else if (state.imagenUrl && state.imagenUrl.startsWith('http')) {
       size.textContent = formatBytes(state.imagenFile ? state.imagenFile.size : 0) + ' · Enlace listo';
     } else if (state.imagenUrl && state.imagenUrl.startsWith('Error')) {
@@ -1423,6 +1435,16 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
+    // Validar que la API key esté configurada
+    if (!IMGBB_API_KEY || IMGBB_API_KEY === 'TU_API_KEY_DE_IMGBB') {
+      alert('Falta configurar la API key de ImgBB en el código. Obtén una gratis en https://api.imgbb.com/');
+      imagenInput.value = '';
+      state.imagenFile = null;
+      state.imagenUrl = '';
+      renderImagenPreview();
+      return;
+    }
+
     state.imagenFile = f;
     state.imagenUrl = '';
     state.isUploading = true;
@@ -1435,12 +1457,16 @@ document.addEventListener('DOMContentLoaded', function () {
     if (card) card.classList.remove('error');
 
     try {
-      // Subida asíncrona a Telegraph
-      const url = await uploadToTelegraph(f);
+      const url = await uploadToImgBB(f);
       state.imagenUrl = url;
+      showStatus('ok', 'Imagen subida correctamente a ImgBB.', 4000);
     } catch (err) {
+      console.error('Error ImgBB:', err);
       state.imagenUrl = 'Error al subir';
-      showStatus('err', 'No se pudo subir la imagen a Telegraph. Revisa tu conexión e intenta de nuevo.', 6000);
+      showStatus('err',
+        'No se pudo subir la imagen a ImgBB (' + err.message + '). Verifica tu API key y tu conexión.',
+        8000
+      );
     } finally {
       state.isUploading = false;
       renderImagenPreview();
@@ -1749,7 +1775,7 @@ document.addEventListener('DOMContentLoaded', function () {
     p.append('comentarios', snap.comentarios);
     p.append('restar_inventario', snap.restar_inventario);
 
-    // ¡Aquí está la magia! Enviamos la URL de la imagen en lugar de base64
+    // URL de la imagen subida a ImgBB
     p.append('imagen_url', snap.imagenUrl);
     p.append('imagen_nombre', snap.imagenNombre);
 
@@ -2050,7 +2076,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }).then(res => {
       if (!res.ok) throw new Error('HTTP ' + res.status);
       showStatus('ok',
-        'Webhook respondió correctamente (' + res.status + '). Si no ves la fila en Google Sheets, revisa el escenario en Make (Run once / logs).',
+        'Webhook respondió correctamente (' + res.status + ').',
         9000
       );
     }).catch(err => {
