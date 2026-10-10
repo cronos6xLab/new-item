@@ -200,60 +200,10 @@ select option{background:var(--obsidian);color:var(--bone);}
 .footnote{text-align:center;font-family:var(--font-mono);font-size:10px;color:var(--smoke);margin-top:var(--sp-120);letter-spacing:0.08em;text-transform:uppercase;}
 .divider{height:1px;background:linear-gradient(90deg, transparent, var(--slate), transparent);margin:var(--sp-40) 0;border:none;}
 
-/* ============ AUTO-SAVE HINT ============ */
-.autosave-bar{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:var(--sp-14);
-  margin-top:var(--sp-14);
-  padding:10px 14px;
-  border-radius:var(--r-feature);
-  background:var(--midnight-tide);
-  border:1px solid var(--deep-current);
-  font-size:12px;
-  color:var(--pearl);
-}
-.autosave-bar .icon{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:16px;height:16px;flex:none;
-  color:var(--electric-blue);
-}
-.autosave-bar .txt{flex:1;min-width:0;line-height:1.4;}
-.autosave-bar .txt strong{color:var(--electric-blue);font-weight:600;}
-.autosave-bar .actions{display:flex;gap:6px;flex-wrap:wrap;}
-.autosave-bar button{
-  background:transparent;
-  border:1px solid var(--slate);
-  color:var(--mist);
-  padding:4px 10px;
-  border-radius:var(--r-pill);
-  font-family:var(--font-body);
-  font-size:11px;
-  font-weight:500;
-  cursor:pointer;
-  transition:all .2s;
-  white-space:nowrap;
-}
-.autosave-bar button:hover{
-  background:rgba(255,255,255,0.06);
-  border-color:var(--fog);
-  color:var(--bone);
-}
-.autosave-bar button.danger:hover{
-  background:rgba(255,0,34,0.08);
-  border-color:var(--alert-red);
-  color:#ff9aa5;
-}
-.saved-dot{
-  display:inline-flex;align-items:center;gap:6px;
-  font-family:var(--font-mono);font-size:10px;
-  letter-spacing:0.06em;text-transform:uppercase;
-  color:var(--signal-green);opacity:0;transition:opacity .3s;
-}
-.saved-dot.show{opacity:1;}
-.saved-dot::before{
-  content:'';width:6px;height:6px;border-radius:50%;
-  background:var(--signal-green);box-shadow:0 0 6px var(--signal-green);
-}
+/* ============ AUTO-SAVE (oculto) ============
+   La barra de auto-guardado se mantiene en el DOM pero nunca se muestra.
+   El guardado/relleno sigue funcionando por detrás. */
+.autosave-bar{display:none !important;}
 
 @media (hover: none) and (pointer: coarse),(max-width: 768px) {
   input[type="text"],input[type="tel"],input[type="email"],input[type="number"],input[type="url"],input[type="search"],select,textarea,.custom-add input,.price-field input,.cost-item input{font-size: 16px !important;}
@@ -310,20 +260,11 @@ select option{background:var(--obsidian);color:var(--bone);}
           <div class="field"><label for="correo">Correo <span style="color:var(--smoke);font-weight:400;">(opcional)</span></label><input type="email" id="correo" name="correo" autocomplete="email" /></div>
         </div>
 
-        <!-- Barra de auto-guardado del solicitante -->
-        <div class="autosave-bar" id="autosaveBar" style="display:none;">
-          <span class="icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-              <polyline points="17 21 17 13 7 13 7 21"/>
-              <polyline points="7 3 7 8 15 8"/>
-            </svg>
-          </span>
-          <span class="txt">
-            <strong>Tus datos están guardados en este dispositivo.</strong>
-            La próxima vez que abras el formulario, los verás ya rellenados.
-          </span>
-          <span class="saved-dot" id="savedDot">Guardado</span>
+        <!-- Barra de auto-guardado (oculta visualmente) -->
+        <div class="autosave-bar" id="autosaveBar" aria-hidden="true">
+          <span class="icon"></span>
+          <span class="txt"></span>
+          <span class="saved-dot" id="savedDot"></span>
           <span class="actions">
             <button type="button" class="danger" id="btnForgetSolicitante">Olvidar datos</button>
           </span>
@@ -589,8 +530,6 @@ const IMGBB_API_KEY = '67a9b5942ab0fcd92480a4ffc981ba07';
 
 const HISTORY_KEY = 'amg_product_form_history_v1';
 const HISTORY_MAX = 30;
-
-/* 🔑 Clave de localStorage para los datos del solicitante */
 const SOLICITANTE_KEY = 'amg_solicitante_data_v1';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -634,17 +573,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ============================================================
-     AUTO-GUARDADO DEL SOLICITANTE
-     ------------------------------------------------------------
+     AUTO-GUARDADO DEL SOLICITANTE (silencioso)
      - Guarda nombre, área, teléfono y correo en localStorage.
      - Se rellena automáticamente al abrir el formulario.
-     - Solo se actualiza cuando el usuario edita esos campos.
-     - Sobrevive a recargas y a reseteos del formulario.
+     - NO muestra ninguna barra ni mensaje al usuario.
   ============================================================ */
   const solicitanteFields = ['nombre', 'area', 'telefono', 'correo'];
-  const autosaveBar = document.getElementById('autosaveBar');
-  const savedDot    = document.getElementById('savedDot');
-  let savedDotTimer = null;
 
   function loadSolicitante() {
     try {
@@ -664,12 +598,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (el) data[id] = String(el.value || '');
       });
       localStorage.setItem(SOLICITANTE_KEY, JSON.stringify(data));
-      // Mostrar el indicador "Guardado" brevemente
-      if (savedDot) {
-        savedDot.classList.add('show');
-        if (savedDotTimer) clearTimeout(savedDotTimer);
-        savedDotTimer = setTimeout(() => savedDot.classList.remove('show'), 1200);
-      }
     } catch (e) { /* silencioso */ }
   }
 
@@ -681,46 +609,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  function clearSolicitante() {
-    try {
-      localStorage.removeItem(SOLICITANTE_KEY);
-      solicitanteFields.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = '';
-      });
-      autosaveBar.style.display = 'none';
-      showStatus('info', 'Datos del solicitante olvidados en este dispositivo.', 'La próxima vez tendrás que escribirlos de nuevo.', 5000);
-    } catch (e) { /* silencioso */ }
-  }
-
-  // Escuchar cambios en los campos del solicitante
+  // Escuchar cambios en los campos del solicitante (guardado silencioso)
   solicitanteFields.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-    el.addEventListener('input', () => {
-      saveSolicitante();
-      // Mostrar la barra de auto-guardado cuando haya al menos un campo con valor
-      const hayDatos = solicitanteFields.some(fid => {
-        const f = document.getElementById(fid);
-        return f && String(f.value || '').trim().length > 0;
-      });
-      autosaveBar.style.display = hayDatos ? 'flex' : 'none';
-    });
+    el.addEventListener('input', saveSolicitante);
     el.addEventListener('blur', saveSolicitante);
-  });
-
-  document.getElementById('btnForgetSolicitante').addEventListener('click', () => {
-    if (!confirm('¿Olvidar los datos del solicitante guardados en este dispositivo?')) return;
-    clearSolicitante();
   });
 
   // Cargar datos guardados al abrir el formulario
   (function initSolicitante() {
     const saved = loadSolicitante();
-    if (saved) {
-      applySolicitante(saved);
-      autosaveBar.style.display = 'flex';
-    }
+    if (saved) applySolicitante(saved);
   })();
 
   /* ============ NAVEGACIÓN ============ */
@@ -1280,14 +1180,11 @@ document.addEventListener('DOMContentLoaded', function () {
     state.customMods = []; state.modCosts = {};
     renderImagenPreview(); renderRecetaList();
 
-    // Nota: NO borramos el solicitante guardado, y rellenamos con lo que viene del historial
     document.getElementById('nombre').value = h.nombre || '';
     document.getElementById('area').value = h.area || '';
     document.getElementById('telefono').value = h.telefono || '';
     document.getElementById('correo').value = h.correo || '';
-    // Guardar los datos del solicitante que venían del historial
     saveSolicitante();
-    autosaveBar.style.display = 'flex';
 
     form.querySelectorAll('input[name="marca"]').forEach(r => { r.checked = (r.value === h.marca); });
     document.getElementById('marca_otro').value = h.marca_otro || '';
@@ -1440,7 +1337,6 @@ document.addEventListener('DOMContentLoaded', function () {
      RESET — NO toca los datos del solicitante (auto-guardado)
   ============================================================ */
   function resetForm() {
-    // Guardar por si acaso los datos del solicitante ANTES del reset
     saveSolicitante();
     const solicitanteSnapshot = {};
     solicitanteFields.forEach(id => {
@@ -1456,14 +1352,10 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('cntNombre').textContent = '0/30';
     document.getElementById('cntDesc').textContent = '0/180';
 
-    // Restaurar los datos del solicitante
     solicitanteFields.forEach(id => {
       const el = document.getElementById(id);
       if (el && solicitanteSnapshot[id]) el.value = solicitanteSnapshot[id];
     });
-    if (solicitanteFields.some(id => solicitanteSnapshot[id])) {
-      autosaveBar.style.display = 'flex';
-    }
 
     renderStep(1);
   }
@@ -1476,11 +1368,6 @@ document.addEventListener('DOMContentLoaded', function () {
   renderRecetaList();
   renderCostList();
   renderHistory();
-
-  console.log('=== DIAGNÓSTICO ===');
-  console.log('Webhook URL:', MAKE_WEBHOOK_URL);
-  console.log('ImgBB Key:', IMGBB_API_KEY ? IMGBB_API_KEY.slice(0, 8) + '...' : '(vacía)');
-  console.log('Datos de solicitante guardados:', !!loadSolicitante());
 });
 </script>
 </body>
