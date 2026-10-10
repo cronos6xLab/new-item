@@ -8,76 +8,44 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* ============================================================
-   FRAMER — DESIGN TOKENS
-   ============================================================ */
 :root{
-  --void:#000000;
-  --graphite:#111111;
-  --obsidian:#171717;
-  --slate:#242424;
-  --ash:#333333;
-  --smoke:#666666;
-  --fog:#888888;
-  --mist:#999999;
-  --pearl:#cccccc;
-  --bone:#ffffff;
-
-  --electric-blue:#0099ff;
-  --deep-current:#00406b;
-  --midnight-tide:#002238;
-  --vivid-violet:#0066ff;
-  --signal-green:#4cd963;
-  --alert-red:#ff0022;
+  --void:#000000; --graphite:#111111; --obsidian:#171717; --slate:#242424;
+  --ash:#333333; --smoke:#666666; --fog:#888888; --mist:#999999;
+  --pearl:#cccccc; --bone:#ffffff;
+  --electric-blue:#0099ff; --deep-current:#00406b; --midnight-tide:#002238;
+  --vivid-violet:#0066ff; --signal-green:#4cd963; --alert-red:#ff0022;
 
   --font-display:'Inter Tight','GT Walsheim',ui-sans-serif,system-ui,-apple-system,sans-serif;
   --font-body:'Inter','Inter Variable',ui-sans-serif,system-ui,-apple-system,sans-serif;
   --font-mono:'JetBrains Mono','Input Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
 
-  --sp-4:4px; --sp-5:5px; --sp-6:6px; --sp-7:7px; --sp-8:8px;
-  --sp-10:10px; --sp-11:11px; --sp-14:14px; --sp-15:15px;
-  --sp-20:20px; --sp-25:25px; --sp-30:30px; --sp-40:40px;
-  --sp-47:47px; --sp-60:60px; --sp-120:120px;
+  --sp-4:4px; --sp-6:6px; --sp-8:8px; --sp-10:10px; --sp-12:12px;
+  --sp-14:14px; --sp-15:15px; --sp-20:20px; --sp-25:25px; --sp-30:30px;
+  --sp-40:40px; --sp-47:47px; --sp-60:60px; --sp-120:120px;
 
-  --r-icon:8px;
-  --r-input:8px;
-  --r-nav:15px;
-  --r-feature:15px;
-  --r-card:20px;
-  --r-large:25px;
-  --r-pill:9999px;
+  --r-icon:8px; --r-input:8px; --r-feature:15px; --r-card:20px;
+  --r-large:25px; --r-pill:9999px;
 
-  --shadow-sm:rgba(0,0,0,0.25) 0px 4px 8px 0px;
-  --shadow-sm-2:rgba(0,0,0,0.2) 0px 2px 6px 0px;
   --shadow-glow:rgba(0,153,255,0.2) 0px 5px 5px 0px;
 }
-
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
 body{
-  font-family:var(--font-body);
-  background:var(--void);
-  color:var(--bone);
-  line-height:1.35;
-  -webkit-font-smoothing:antialiased;
+  font-family:var(--font-body);background:var(--void);color:var(--bone);
+  line-height:1.35;-webkit-font-smoothing:antialiased;
   font-feature-settings:"cv01","cv05","cv09","cv11","ss03";
 }
 button{font-family:inherit;}
 input,select,textarea{font-family:inherit;}
 
-.page{
-  max-width:1200px;
-  margin:0 auto;
-  padding:var(--sp-40) var(--sp-30) var(--sp-120);
-}
+.page{max-width:1200px;margin:0 auto;padding:var(--sp-40) var(--sp-30) var(--sp-120);}
 
-/* ============================================================
-   BRAND
-   ============================================================ */
-.brand{
-  display:flex;align-items:center;gap:var(--sp-14);
-  margin-bottom:var(--sp-40);
+/* ============ HEADER ============ */
+.top-bar{
+  display:flex;justify-content:space-between;align-items:center;gap:var(--sp-20);
+  margin-bottom:var(--sp-40);flex-wrap:wrap;
 }
+.brand{display:flex;align-items:center;gap:var(--sp-14);}
 .brand-mark{
   font-family:var(--font-display);font-size:22px;font-weight:700;
   letter-spacing:-0.05em;color:var(--bone);line-height:1;
@@ -87,15 +55,43 @@ input,select,textarea{font-family:inherit;}
   font-size:11px;font-weight:500;letter-spacing:0.18em;
   text-transform:uppercase;color:var(--mist);
 }
+.header-actions{display:flex;gap:var(--sp-8);flex-wrap:wrap;}
+.badge-count{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:20px;height:20px;padding:0 6px;border-radius:var(--r-pill);
+  background:var(--electric-blue);color:var(--void);
+  font-family:var(--font-mono);font-size:10px;font-weight:700;
+}
 
-/* ============================================================
-   HERO
-   ============================================================ */
+/* ============ STATUS BANNER ============ */
+.status-banner{
+  display:none;margin-bottom:var(--sp-20);padding:12px 16px;
+  border-radius:var(--r-feature);font-size:13px;font-weight:500;
+  letter-spacing:-0.005em;align-items:center;gap:10px;
+}
+.status-banner.show{display:flex;}
+.status-banner.ok{
+  background:rgba(76,217,99,0.08);border:1px solid rgba(76,217,99,0.35);
+  color:#8ce6a1;
+}
+.status-banner.err{
+  background:rgba(255,0,34,0.08);border:1px solid rgba(255,0,34,0.35);
+  color:#ff7a89;
+}
+.status-banner.info{
+  background:var(--midnight-tide);border:1px solid var(--deep-current);
+  color:var(--pearl);
+}
+.status-banner .dot{
+  width:8px;height:8px;border-radius:50%;flex:none;
+  background:currentColor;box-shadow:0 0 8px currentColor;
+}
+
+/* ============ HERO ============ */
 .eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:6px 12px;border:1px solid var(--electric-blue);
-  border-radius:var(--r-pill);font-size:11px;font-weight:500;
-  letter-spacing:0.06em;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:8px;padding:6px 12px;
+  border:1px solid var(--electric-blue);border-radius:var(--r-pill);
+  font-size:11px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;
   color:var(--electric-blue);margin-bottom:var(--sp-20);background:transparent;
 }
 .eyebrow::before{
@@ -116,9 +112,7 @@ h1.hero-title{
   .lede{font-size:15px;}
 }
 
-/* ============================================================
-   STEPS BAR
-   ============================================================ */
+/* ============ STEPS ============ */
 .steps{
   display:flex;gap:var(--sp-8);margin-bottom:var(--sp-47);
   padding-bottom:var(--sp-20);border-bottom:1px solid var(--graphite);
@@ -152,9 +146,7 @@ h1.hero-title{
   border:1px solid var(--electric-blue);
 }
 
-/* ============================================================
-   STEP CONTENT
-   ============================================================ */
+/* ============ STEP CONTENT ============ */
 .step{display:none;animation:fadeUp .35s ease;}
 .step.active{display:block;}
 @keyframes fadeUp{
@@ -173,16 +165,13 @@ h1.hero-title{
 }
 @media(max-width:640px){.step-head h2{font-size:26px;}}
 
-/* ============================================================
-   CARDS
-   ============================================================ */
+/* ============ CARDS ============ */
 .card{
   background:var(--graphite);border:1px solid var(--slate);
   border-radius:var(--r-large);padding:var(--sp-40);
   margin-bottom:var(--sp-20);transition:border-color .3s, box-shadow .3s;
 }
 .card.deep{background:var(--obsidian);}
-.card.tide{background:var(--midnight-tide);border-color:var(--deep-current);}
 .card h3{
   font-family:var(--font-body);font-size:15px;font-weight:600;
   margin:0 0 var(--sp-20);color:var(--bone);letter-spacing:-0.02em;
@@ -193,9 +182,7 @@ h1.hero-title{
 }
 @media(max-width:640px){.card{padding:var(--sp-25);}}
 
-/* ============================================================
-   FIELDS
-   ============================================================ */
+/* ============ FIELDS ============ */
 .field{margin-bottom:var(--sp-20);}
 .field:last-child{margin-bottom:0;}
 .field > label,
@@ -208,20 +195,15 @@ h1.hero-title{
   display:block;font-size:11px;color:var(--smoke);font-weight:400;
   margin-top:6px;letter-spacing:0.01em;
 }
-input[type="text"],
-input[type="tel"],
-input[type="email"],
-input[type="number"],
-select,
-textarea{
+input[type="text"],input[type="tel"],input[type="email"],input[type="number"],
+input[type="url"],select,textarea{
   width:100%;padding:11px 14px;font-size:14px;color:var(--bone);
   background:var(--obsidian);border:1px solid var(--slate);
   border-radius:var(--r-input);outline:none;
   transition:border-color .2s, box-shadow .2s, background .2s;
   letter-spacing:-0.005em;line-height:1.35;
 }
-input::placeholder,
-textarea::placeholder{color:var(--smoke);}
+input::placeholder,textarea::placeholder{color:var(--smoke);}
 input:focus,select:focus,textarea:focus{
   background:var(--slate);border-color:var(--electric-blue);
   box-shadow:0 0 0 3px rgba(0,153,255,0.12);
@@ -241,9 +223,7 @@ select option{background:var(--obsidian);color:var(--bone);}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--sp-20);}
 @media(max-width:560px){.grid-2{grid-template-columns:1fr;}}
 
-/* ============================================================
-   CHIPS
-   ============================================================ */
+/* ============ CHIPS ============ */
 .chips{display:flex;flex-wrap:wrap;gap:var(--sp-8);}
 .chip{position:relative;display:inline-flex;}
 .chip input{position:absolute;opacity:0;width:0;height:0;}
@@ -259,11 +239,8 @@ select option{background:var(--obsidian);color:var(--bone);}
   color:var(--bone);
   box-shadow:0 0 0 1px var(--electric-blue), var(--shadow-glow);
 }
-.chip input:focus-visible + span{box-shadow:0 0 0 3px rgba(0,153,255,0.25);}
 
-/* ============================================================
-   CUSTOM OPTIONS
-   ============================================================ */
+/* ============ CUSTOM OPTIONS ============ */
 .custom-add{display:flex;gap:var(--sp-8);margin-top:var(--sp-14);}
 .custom-add input{flex:1;}
 .custom-list{display:flex;flex-wrap:wrap;gap:var(--sp-8);margin-top:var(--sp-14);}
@@ -281,33 +258,20 @@ select option{background:var(--obsidian);color:var(--bone);}
 }
 .custom-chip button:hover{color:var(--bone);background:rgba(255,255,255,0.08);}
 
-/* ============================================================
-   COST LIST
-   ============================================================ */
-.cost-list{
-  display:flex;flex-direction:column;gap:var(--sp-8);
-}
+/* ============ COST LIST ============ */
+.cost-list{display:flex;flex-direction:column;gap:var(--sp-8);}
 .cost-item{
-  display:flex;align-items:center;gap:var(--sp-14);
-  padding:12px 14px;
-  background:var(--obsidian);
-  border:1px solid var(--slate);
-  border-radius:var(--r-feature);
-  transition:border-color .2s, background .2s;
+  display:flex;align-items:center;gap:var(--sp-14);padding:12px 14px;
+  background:var(--obsidian);border:1px solid var(--slate);
+  border-radius:var(--r-feature);transition:border-color .2s, background .2s;
   flex-wrap:wrap;
 }
-.cost-item.active{
-  border-color:var(--deep-current);
-  background:var(--midnight-tide);
-}
+.cost-item.active{border-color:var(--deep-current);background:var(--midnight-tide);}
 .cost-check{
-  display:flex;align-items:center;gap:10px;
-  cursor:pointer;flex:1;min-width:180px;
-  position:relative;
+  display:flex;align-items:center;gap:10px;cursor:pointer;
+  flex:1;min-width:180px;position:relative;
 }
-.cost-check input{
-  position:absolute;opacity:0;width:0;height:0;
-}
+.cost-check input{position:absolute;opacity:0;width:0;height:0;}
 .check-mark{
   width:18px;height:18px;border-radius:5px;
   border:1.5px solid var(--fog);background:transparent;
@@ -315,21 +279,16 @@ select option{background:var(--obsidian);color:var(--bone);}
   transition:all .2s;position:relative;
 }
 .cost-check input:checked + .check-mark{
-  background:var(--electric-blue);
-  border-color:var(--electric-blue);
+  background:var(--electric-blue);border-color:var(--electric-blue);
 }
 .cost-check input:checked + .check-mark::after{
   content:'';width:4px;height:8px;
   border:solid var(--void);border-width:0 2px 2px 0;
   transform:rotate(45deg) translate(-1px, -1px);
 }
-.cost-check input:focus-visible + .check-mark{
-  box-shadow:0 0 0 3px rgba(0,153,255,0.25);
-}
 .cost-name{
   font-size:13px;font-weight:500;color:var(--bone);
-  letter-spacing:-0.005em;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  letter-spacing:-0.005em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
 .cost-name .tag{
   display:inline-block;margin-left:8px;padding:1px 7px;
@@ -341,13 +300,9 @@ select option{background:var(--obsidian);color:var(--bone);}
 }
 .cost-prices{
   display:flex;gap:10px;flex-wrap:wrap;
-  opacity:0.35;transition:opacity .2s;
-  pointer-events:none;
+  opacity:0.35;transition:opacity .2s;pointer-events:none;
 }
-.cost-item.active .cost-prices{
-  opacity:1;
-  pointer-events:auto;
-}
+.cost-item.active .cost-prices{opacity:1;pointer-events:auto;}
 .price-field{
   display:flex;align-items:center;gap:6px;
   font-family:var(--font-mono);font-size:11px;color:var(--mist);
@@ -358,23 +313,14 @@ select option{background:var(--obsidian);color:var(--bone);}
   font-family:var(--font-mono);text-align:right;
   background:var(--slate);border:1px solid var(--ash);
 }
-.price-field input:disabled{
-  opacity:0.4;cursor:not-allowed;
-}
-.cost-empty{
-  padding:16px;text-align:center;font-size:13px;color:var(--mist);
-  border:1px dashed var(--slate);border-radius:var(--r-feature);
-  letter-spacing:-0.005em;
-}
+.price-field input:disabled{opacity:0.4;cursor:not-allowed;}
 @media(max-width:640px){
   .cost-item{flex-direction:column;align-items:stretch;}
   .cost-check{min-width:0;}
   .cost-prices{justify-content:flex-end;}
 }
 
-/* ============================================================
-   BUTTONS
-   ============================================================ */
+/* ============ BUTTONS ============ */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
   padding:10px 18px;font-family:var(--font-body);font-size:12px;
@@ -383,8 +329,7 @@ select option{background:var(--obsidian);color:var(--bone);}
   text-decoration:none;white-space:nowrap;
 }
 .btn-primary{
-  background:var(--vivid-violet);color:var(--bone);
-  border-color:var(--vivid-violet);
+  background:var(--vivid-violet);color:var(--bone);border-color:var(--vivid-violet);
 }
 .btn-primary:hover{
   background:#0052d6;border-color:#0052d6;
@@ -392,18 +337,20 @@ select option{background:var(--obsidian);color:var(--bone);}
 }
 .btn-primary:disabled{opacity:.4;cursor:not-allowed;}
 .btn-ghost{
-  background:rgba(255,255,255,0.04);border-color:var(--slate);
-  color:var(--pearl);
+  background:rgba(255,255,255,0.04);border-color:var(--slate);color:var(--pearl);
 }
 .btn-ghost:hover{
-  background:rgba(255,255,255,0.08);border-color:var(--fog);
-  color:var(--bone);
+  background:rgba(255,255,255,0.08);border-color:var(--fog);color:var(--bone);
+}
+.btn-danger{
+  background:transparent;border-color:rgba(255,0,34,0.3);color:#ff7a89;
+}
+.btn-danger:hover{
+  background:rgba(255,0,34,0.08);border-color:var(--alert-red);color:#ff9aa5;
 }
 .btn-sm{padding:6px 14px;font-size:11px;}
 
-/* ============================================================
-   STEP NAV
-   ============================================================ */
+/* ============ STEP NAV ============ */
 .step-nav{
   display:flex;justify-content:space-between;align-items:center;
   gap:var(--sp-15);margin-top:var(--sp-40);
@@ -411,9 +358,7 @@ select option{background:var(--obsidian);color:var(--bone);}
 }
 .step-nav .spacer{flex:1;}
 
-/* ============================================================
-   FILE DROP
-   ============================================================ */
+/* ============ FILE DROP ============ */
 .file-drop{
   display:block;border:1px dashed var(--slate);
   border-radius:var(--r-feature);padding:var(--sp-40) var(--sp-25);
@@ -440,8 +385,7 @@ select option{background:var(--obsidian);color:var(--bone);}
   letter-spacing:0.02em;font-family:var(--font-mono);
 }
 .file-drop.has-error{
-  border-color:var(--alert-red);
-  box-shadow:0 0 0 3px rgba(255,0,34,0.12);
+  border-color:var(--alert-red);box-shadow:0 0 0 3px rgba(255,0,34,0.12);
 }
 .drop-required{
   display:inline-flex;align-items:center;gap:6px;
@@ -450,9 +394,7 @@ select option{background:var(--obsidian);color:var(--bone);}
   margin-bottom:var(--sp-14);
 }
 
-/* ============================================================
-   FILE PREVIEW
-   ============================================================ */
+/* ============ FILE PREVIEW ============ */
 .file-preview{margin-top:var(--sp-20);}
 .file-item{
   display:flex;align-items:center;gap:var(--sp-14);
@@ -489,18 +431,14 @@ select option{background:var(--obsidian);color:var(--bone);}
   border-color:rgba(255,0,34,0.2);
 }
 
-/* ============================================================
-   ERROR TEXT
-   ============================================================ */
+/* ============ ERROR ============ */
 .error-text{
   display:none;margin-top:var(--sp-10);font-size:12px;
   font-weight:500;color:var(--alert-red);letter-spacing:-0.005em;
 }
 .error-text.show{display:block;}
 
-/* ============================================================
-   TOAST
-   ============================================================ */
+/* ============ TOAST ============ */
 .toast{
   display:none;margin:var(--sp-40) auto 0;max-width:520px;
   padding:16px 22px;border-radius:var(--r-pill);font-size:13px;
@@ -510,9 +448,124 @@ select option{background:var(--obsidian);color:var(--bone);}
 }
 .toast.show{display:block;animation:fadeUp .35s ease;}
 
-/* ============================================================
-   FOOTER
-   ============================================================ */
+/* ============ HISTORY DRAWER ============ */
+.drawer-backdrop{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);
+  z-index:90;backdrop-filter:blur(4px);
+}
+.drawer-backdrop.show{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;}to{opacity:1;}}
+
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;width:min(520px,100vw);
+  background:var(--void);border-left:1px solid var(--slate);
+  z-index:100;display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .35s cubic-bezier(.22,.61,.36,1);
+}
+.drawer.show{transform:translateX(0);}
+
+.drawer-head{
+  padding:var(--sp-30) var(--sp-30) var(--sp-20);
+  border-bottom:1px solid var(--graphite);
+  display:flex;justify-content:space-between;align-items:flex-start;gap:var(--sp-20);
+}
+.drawer-head h2{
+  font-family:var(--font-display);font-size:24px;line-height:1.1;
+  letter-spacing:-0.03em;font-weight:500;margin:0 0 4px;color:var(--bone);
+}
+.drawer-head p{
+  font-size:12px;color:var(--mist);margin:0;
+  font-family:var(--font-mono);letter-spacing:0.02em;
+}
+.drawer-close{
+  background:transparent;border:1px solid var(--slate);color:var(--mist);
+  width:32px;height:32px;border-radius:8px;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:16px;flex:none;transition:all .2s;
+}
+.drawer-close:hover{background:var(--slate);color:var(--bone);}
+
+.drawer-body{
+  flex:1;overflow-y:auto;padding:var(--sp-20) var(--sp-30) var(--sp-30);
+}
+.drawer-foot{
+  padding:var(--sp-20) var(--sp-30);
+  border-top:1px solid var(--graphite);
+  display:flex;justify-content:space-between;gap:var(--sp-8);
+}
+
+.history-empty{
+  padding:var(--sp-60) var(--sp-20);text-align:center;
+  color:var(--mist);font-size:13px;letter-spacing:-0.005em;
+  border:1px dashed var(--slate);border-radius:var(--r-feature);
+}
+.history-empty strong{
+  display:block;color:var(--pearl);font-size:14px;margin-bottom:6px;
+  font-weight:500;
+}
+
+.history-item{
+  background:var(--graphite);border:1px solid var(--slate);
+  border-radius:var(--r-feature);padding:var(--sp-20);
+  margin-bottom:var(--sp-14);transition:border-color .2s;
+}
+.history-item:hover{border-color:var(--ash);}
+.history-item.err{
+  border-color:rgba(255,0,34,0.35);
+  background:linear-gradient(180deg, rgba(255,0,34,0.04), transparent);
+}
+.history-item-head{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  gap:var(--sp-14);margin-bottom:var(--sp-14);
+}
+.history-item-head strong{
+  display:block;font-size:14px;font-weight:600;color:var(--bone);
+  letter-spacing:-0.01em;line-height:1.3;
+  word-break:break-word;
+}
+.history-meta{
+  display:flex;gap:var(--sp-10);align-items:center;flex-wrap:wrap;
+  margin-top:6px;
+}
+.history-meta span{
+  font-family:var(--font-mono);font-size:10px;color:var(--mist);
+  letter-spacing:0.02em;
+}
+.history-meta .status-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:2px 8px;border-radius:var(--r-pill);
+  font-family:var(--font-mono);font-size:9px;font-weight:700;
+  letter-spacing:0.06em;text-transform:uppercase;
+}
+.history-meta .status-pill.ok{
+  background:rgba(76,217,99,0.12);color:#8ce6a1;
+  border:1px solid rgba(76,217,99,0.3);
+}
+.history-meta .status-pill.err{
+  background:rgba(255,0,34,0.12);color:#ff7a89;
+  border:1px solid rgba(255,0,34,0.3);
+}
+.history-summary{
+  display:flex;flex-direction:column;gap:4px;
+  padding:var(--sp-14) 0;
+  border-top:1px solid var(--slate);
+  border-bottom:1px solid var(--slate);
+  margin-bottom:var(--sp-14);
+}
+.history-summary .row{
+  display:flex;justify-content:space-between;gap:var(--sp-14);
+  font-size:12px;letter-spacing:-0.005em;
+}
+.history-summary .row .lbl{color:var(--smoke);}
+.history-summary .row .val{
+  color:var(--pearl);text-align:right;
+  max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.history-actions{
+  display:flex;gap:var(--sp-8);flex-wrap:wrap;
+}
+
+/* ============ FOOTER ============ */
 .footnote{
   text-align:center;font-family:var(--font-mono);font-size:10px;
   color:var(--smoke);margin-top:var(--sp-120);
@@ -524,25 +577,13 @@ select option{background:var(--obsidian);color:var(--bone);}
   margin:var(--sp-40) 0;border:none;
 }
 
-/* ============================================================
-   iOS ZOOM FIX — evita que Safari haga zoom al enfocar inputs.
-   iOS aplica zoom automático cuando el font-size del control
-   es menor a 16px. Forzamos 16px en dispositivos táctiles y
-   en pantallas pequeñas para que el layout no "salte".
-   ============================================================ */
+/* ============ iOS ZOOM FIX ============ */
 @media (hover: none) and (pointer: coarse),
        (max-width: 768px) {
-  input[type="text"],
-  input[type="tel"],
-  input[type="email"],
-  input[type="number"],
-  input[type="url"],
-  input[type="search"],
-  select,
-  textarea,
-  .custom-add input,
-  .price-field input,
-  .cost-item input {
+  input[type="text"],input[type="tel"],input[type="email"],
+  input[type="number"],input[type="url"],input[type="search"],
+  select,textarea,
+  .custom-add input,.price-field input,.cost-item input {
     font-size: 16px !important;
   }
 }
@@ -552,16 +593,31 @@ select option{background:var(--obsidian);color:var(--bone);}
 
 <div class="page">
 
-  <header class="brand">
-    <div class="brand-mark">AMG</div>
-    <div class="brand-divider"></div>
-    <div class="brand-sub">Hospitality Group</div>
+  <header class="top-bar">
+    <div class="brand">
+      <div class="brand-mark">AMG</div>
+      <div class="brand-divider"></div>
+      <div class="brand-sub">Hospitality Group</div>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="btn btn-ghost btn-sm" id="btnTestWebhook">
+        Probar conexión
+      </button>
+      <button type="button" class="btn btn-ghost btn-sm" id="btnOpenHistory">
+        Historial <span class="badge-count" id="historyCount">0</span>
+      </button>
+    </div>
   </header>
+
+  <div class="status-banner" id="statusBanner">
+    <span class="dot"></span>
+    <span id="statusText"></span>
+  </div>
 
   <form id="productoForm" novalidate>
 
     <!-- =========================================================
-         STEP 1 — SOLICITANTE
+         STEP 1
          ========================================================= -->
     <section class="step active" data-step="1">
       <div class="eyebrow">Sistemas y Tecnología</div>
@@ -604,7 +660,7 @@ select option{background:var(--obsidian);color:var(--bone);}
     </section>
 
     <!-- =========================================================
-         STEP 2 — PRODUCTO
+         STEP 2
          ========================================================= -->
     <section class="step" data-step="2">
       <nav class="steps">
@@ -663,15 +719,9 @@ select option{background:var(--obsidian);color:var(--bone);}
           <label for="categoria">Categoría del producto <span class="req">*</span></label>
           <select id="categoria" name="categoria" required>
             <option value="">Selecciona una categoría…</option>
-            <option>Burgers</option>
-            <option>Fries</option>
-            <option>Postres</option>
-            <option>Bebidas</option>
-            <option>Extras</option>
-            <option>Merch</option>
-            <option>Entradas</option>
-            <option>Combos</option>
-            <option>Pizzas</option>
+            <option>Burgers</option><option>Fries</option><option>Postres</option>
+            <option>Bebidas</option><option>Extras</option><option>Merch</option>
+            <option>Entradas</option><option>Combos</option><option>Pizzas</option>
             <option>Otra</option>
           </select>
         </div>
@@ -691,7 +741,7 @@ select option{background:var(--obsidian);color:var(--bone);}
     </section>
 
     <!-- =========================================================
-         STEP 3 — MODIFICADORES
+         STEP 3
          ========================================================= -->
     <section class="step" data-step="3">
       <nav class="steps">
@@ -766,7 +816,7 @@ select option{background:var(--obsidian);color:var(--bone);}
     </section>
 
     <!-- =========================================================
-         STEP 4 — PRECIOS E IMAGEN
+         STEP 4
          ========================================================= -->
     <section class="step" data-step="4">
       <nav class="steps">
@@ -824,7 +874,7 @@ select option{background:var(--obsidian);color:var(--bone);}
     </section>
 
     <!-- =========================================================
-         STEP 5 — INSUMOS Y EMPAQUE
+         STEP 5
          ========================================================= -->
     <section class="step" data-step="5">
       <nav class="steps">
@@ -871,9 +921,6 @@ select option{background:var(--obsidian);color:var(--bone);}
       </div>
     </section>
 
-    <!-- =========================================================
-         STEP NAVIGATION
-         ========================================================= -->
     <div class="step-nav">
       <button type="button" class="btn btn-ghost" id="btnPrev" style="visibility:hidden;">← Anterior</button>
       <div class="spacer"></div>
@@ -887,14 +934,45 @@ select option{background:var(--obsidian);color:var(--bone);}
   <div class="footnote">Sistemas & Tecnología — AMG Hospitality Group</div>
 </div>
 
+<!-- ============================================================
+     HISTORY DRAWER
+     ============================================================ -->
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<aside class="drawer" id="historyDrawer" aria-hidden="true">
+  <div class="drawer-head">
+    <div>
+      <h2>Historial de solicitudes</h2>
+      <p id="historyMeta">0 guardadas en este dispositivo</p>
+    </div>
+    <button type="button" class="drawer-close" id="btnCloseHistory" aria-label="Cerrar">×</button>
+  </div>
+  <div class="drawer-body" id="historyBody">
+    <div class="history-empty">
+      <strong>Aún no hay solicitudes</strong>
+      Cuando envíes un formulario, aparecerá aquí para que puedas revisarlo o rellenarlo de nuevo.
+    </div>
+  </div>
+  <div class="drawer-foot">
+    <button type="button" class="btn btn-danger btn-sm" id="btnClearHistory">
+      Borrar todo
+    </button>
+    <button type="button" class="btn btn-ghost btn-sm" id="btnCloseHistoryFoot">
+      Cerrar
+    </button>
+  </div>
+</aside>
+
 <script>
 /* ============================================================================
-   ⚙️  CONFIGURACIÓN
+   ⚙️  CONFIGURACIÓN DEL WEBHOOK
    ----------------------------------------------------------------------------
-   👇 REEMPLAZA ESTA URL POR LA DE TU CUSTOM WEBHOOK DE MAKE.COM
+   👇 Reemplaza esta URL por la de tu Custom Webhook de Make.com
    ============================================================================ */
 const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/x9nsypb1b9tmmh4243wfybiraejqi7j5';
 /* ========================================================================== */
+
+const HISTORY_KEY = 'amg_product_form_history_v1';
+const HISTORY_MAX = 30;
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -904,7 +982,8 @@ document.addEventListener('DOMContentLoaded', function () {
     imagenFile: null,
     archivosReceta: [],
     customMods: [],
-    modCosts: {}
+    modCosts: {},
+    history: []
   };
 
   const form      = document.getElementById('productoForm');
@@ -918,7 +997,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const txt   = (id) => { const el = document.getElementById(id); return el ? String(el.value || '').trim() : ''; };
   const radio = (name) => { const el = form.querySelector('input[name="' + name + '"]:checked'); return el ? String(el.value) : ''; };
-  const checks= (name) => Array.from(form.querySelectorAll('input[name="' + name + '"]:checked')).map(i => String(i.value)).join(' | ');
+  const checksArr = (name) => Array.from(form.querySelectorAll('input[name="' + name + '"]:checked')).map(i => String(i.value));
+  const checks = (name) => checksArr(name).join(' | ');
 
   function formatBytes(bytes) {
     if (!bytes) return '0 B';
@@ -927,9 +1007,41 @@ document.addEventListener('DOMContentLoaded', function () {
     return (bytes / Math.pow(k, i)).toFixed(1) + ' ' + units[i];
   }
 
-  /* ------------------------------------------------------------------
+  function fmtDateTime(iso) {
+    try {
+      const d = new Date(iso);
+      return d.toLocaleString('es-MX', {
+        day:'2-digit', month:'short', year:'numeric',
+        hour:'2-digit', minute:'2-digit'
+      });
+    } catch(e) { return iso; }
+  }
+
+  /* ============================================================
+     STATUS BANNER (feedback visible)
+  ============================================================ */
+  const statusBanner = document.getElementById('statusBanner');
+  const statusText   = document.getElementById('statusText');
+  let statusTimer = null;
+
+  function showStatus(kind, text, autoHideMs) {
+    statusBanner.className = 'status-banner show ' + kind;
+    statusText.textContent = text;
+    if (statusTimer) clearTimeout(statusTimer);
+    if (autoHideMs) {
+      statusTimer = setTimeout(() => {
+        statusBanner.classList.remove('show');
+      }, autoHideMs);
+    }
+  }
+  function hideStatus() {
+    statusBanner.classList.remove('show');
+    if (statusTimer) clearTimeout(statusTimer);
+  }
+
+  /* ============================================================
      NAVEGACIÓN
-  ------------------------------------------------------------------ */
+  ============================================================ */
   function renderStep(n) {
     state.current = n;
     steps.forEach(s => s.classList.toggle('active', Number(s.dataset.step) === n));
@@ -963,9 +1075,9 @@ document.addEventListener('DOMContentLoaded', function () {
     card.classList.add('error');
   }
 
-  /* ------------------------------------------------------------------
+  /* ============================================================
      COSTOS DE MODIFICADORES
-  ------------------------------------------------------------------ */
+  ============================================================ */
   const costListField = document.getElementById('costListField');
   const costList      = document.getElementById('costList');
   const errCost       = document.getElementById('errCost');
@@ -973,15 +1085,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const radioCostoNO  = document.getElementById('radioCostoNO');
 
   function getSelectedModNames() {
-    const predefined = Array.from(
-      form.querySelectorAll('input[name="modificadores"]:checked')
-    ).map(i => i.value);
+    const predefined = checksArr('modificadores');
     return [...state.customMods, ...predefined];
   }
 
-  function isCostMode() {
-    return radio('modificadores_costo') === 'SI';
-  }
+  function isCostMode() { return radio('modificadores_costo') === 'SI'; }
 
   function ensureModCostEntry(name) {
     if (!state.modCosts[name]) {
@@ -1099,18 +1207,14 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   form.querySelectorAll('input[name="modificadores"]').forEach(cb => {
-    cb.addEventListener('change', () => {
-      pruneModCosts();
-      renderCostList();
-    });
+    cb.addEventListener('change', () => { pruneModCosts(); renderCostList(); });
   });
-
   radioCostoSI.addEventListener('change', renderCostList);
   radioCostoNO.addEventListener('change', renderCostList);
 
-  /* ------------------------------------------------------------------
+  /* ============================================================
      CHIPS EXCLUSIVOS
-  ------------------------------------------------------------------ */
+  ============================================================ */
   form.querySelectorAll('input[type="checkbox"][data-exclusive]').forEach(cb => {
     cb.addEventListener('change', () => {
       if (!cb.checked) return;
@@ -1126,9 +1230,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ------------------------------------------------------------------
+  /* ============================================================
      MARCA "OTRO"
-  ------------------------------------------------------------------ */
+  ============================================================ */
   const marcaOtroField = document.getElementById('marcaOtroField');
   form.querySelectorAll('input[name="marca"]').forEach(r => {
     r.addEventListener('change', () => {
@@ -1138,9 +1242,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ------------------------------------------------------------------
+  /* ============================================================
      CONTADORES
-  ------------------------------------------------------------------ */
+  ============================================================ */
   function bindCounter(inputId, counterId, max) {
     const input = document.getElementById(inputId);
     const counter = document.getElementById(counterId);
@@ -1152,9 +1256,9 @@ document.addEventListener('DOMContentLoaded', function () {
   bindCounter('nombre_producto', 'cntNombre', 30);
   bindCounter('descripcion_producto', 'cntDesc', 180);
 
-  /* ------------------------------------------------------------------
+  /* ============================================================
      MODIFICADORES PERSONALIZADOS
-  ------------------------------------------------------------------ */
+  ============================================================ */
   const customModInput  = document.getElementById('customModInput');
   const customModList   = document.getElementById('customModList');
   const btnAddCustomMod = document.getElementById('btnAddCustomMod');
@@ -1195,9 +1299,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'Enter') { e.preventDefault(); addCustomMod(); }
   });
 
-  /* ------------------------------------------------------------------
-     IMAGEN DEL PRODUCTO
-  ------------------------------------------------------------------ */
+  /* ============================================================
+     IMAGEN
+  ============================================================ */
   const imagenInput   = document.getElementById('imagen_file');
   const imagenPreview = document.getElementById('imagenPreview');
   const dropImagen    = document.getElementById('dropImagen');
@@ -1261,9 +1365,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (card) card.classList.remove('error');
   });
 
-  /* ------------------------------------------------------------------
+  /* ============================================================
      ARCHIVOS DE RECETA
-  ------------------------------------------------------------------ */
+  ============================================================ */
   const recetaInput = document.getElementById('archivos_receta');
   const recetaList  = document.getElementById('archivosRecetaList');
   const dropReceta  = document.getElementById('dropReceta');
@@ -1353,34 +1457,16 @@ document.addEventListener('DOMContentLoaded', function () {
     clearRecetaError();
   });
 
-  /* ------------------------------------------------------------------
-     LECTURA DE ARCHIVOS COMO DATAURL
-  ------------------------------------------------------------------ */
-  const MAX_B64_FILE_SIZE = 400 * 1024;
-
-  function readFileAsDataURL(file) {
-    return new Promise((resolve) => {
-      try {
-        const reader = new FileReader();
-        reader.onload  = () => resolve(String(reader.result || ''));
-        reader.onerror = () => resolve('');
-        reader.readAsDataURL(file);
-      } catch (e) { resolve(''); }
-    });
-  }
-
-  /* ------------------------------------------------------------------
+  /* ============================================================
      VALIDACIÓN
-  ------------------------------------------------------------------ */
+  ============================================================ */
   function validateStep(n) {
     const stepEl = steps.find(s => Number(s.dataset.step) === n);
     if (!stepEl) return true;
-
     clearErrors(stepEl);
 
     let firstInvalid = null;
 
-    // Required text/select/textarea (incluye los precios principales)
     $$('input[required], select[required], textarea[required]', stepEl).forEach(el => {
       if (el.type === 'radio' || el.type === 'checkbox') return;
       if (!String(el.value || '').trim()) {
@@ -1388,7 +1474,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // Required radios
     const requiredRadios = new Set($$('input[type="radio"][required]', stepEl).map(r => r.name));
     requiredRadios.forEach(name => {
       const anyChecked = form.querySelector('input[name="' + name + '"]:checked');
@@ -1397,7 +1482,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // Válido para (step 2)
     if (n === 2) {
       const valido = form.querySelectorAll('input[name="valido_para"]:checked');
       if (valido.length === 0 && !firstInvalid) {
@@ -1405,10 +1489,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    // Costos (step 3)
     if (n === 3 && isCostMode()) {
       const names = getSelectedModNames();
-
       if (names.length === 0) {
         errCost.textContent = 'Selecciona al menos un modificador para asignarle costo.';
         errCost.classList.add('show');
@@ -1423,8 +1505,7 @@ document.addEventListener('DOMContentLoaded', function () {
           let allOk = true;
           withCost.forEach(name => {
             const e = state.modCosts[name];
-            const f = Number(e.foodbot), a = Number(e.apps);
-            if (!e.foodbot || f <= 0 || !e.apps || a <= 0) allOk = false;
+            if (!e.foodbot || Number(e.foodbot) <= 0 || !e.apps || Number(e.apps) <= 0) allOk = false;
           });
           if (!allOk) {
             errCost.textContent = 'Asigna precio Foodbot y Apps (mayor a 0) a cada modificador marcado.';
@@ -1437,13 +1518,11 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    // Imagen (step 4)
     if (n === 4 && !state.imagenFile) {
       if (!firstInvalid) firstInvalid = dropImagen;
       errImagen.classList.add('show');
     }
 
-    // Receta (step 5)
     if (n === 5 && state.archivosReceta.length === 0) {
       if (!firstInvalid) firstInvalid = dropReceta;
       errReceta.classList.add('show');
@@ -1478,75 +1557,450 @@ document.addEventListener('DOMContentLoaded', function () {
     renderStep(target);
   });
 
-  /* ------------------------------------------------------------------
-     PARÁMETROS Y ENVÍO
-  ------------------------------------------------------------------ */
-  function buildBaseParams() {
-    const params = new URLSearchParams();
-
-    params.append('test', '1');
-    params.append('origen', 'form_alta_producto_web');
-
-    params.append('nombre',   txt('nombre'));
-    params.append('area',     txt('area'));
-    params.append('telefono', txt('telefono'));
-    params.append('correo',   txt('correo'));
-
-    params.append('marca',                radio('marca'));
-    params.append('marca_otro',           txt('marca_otro'));
-    params.append('nombre_producto',      txt('nombre_producto'));
-    params.append('descripcion_producto', txt('descripcion_producto'));
-    params.append('categoria',            txt('categoria'));
-    params.append('valido_para',          checks('valido_para'));
-
-    params.append('modificadores',              checks('modificadores'));
-    params.append('modificadores_costo',        radio('modificadores_costo'));
-    params.append('detalle_modificadores',      txt('detalle_modificadores'));
-    params.append('modificadores_custom_total', String(state.customMods.length));
-    params.append('modificadores_custom',       state.customMods.join(' | '));
-    state.customMods.forEach((m, i) => {
-      params.append('modificador_custom_' + (i + 1), m);
-    });
-
+  /* ============================================================
+     SNAPSHOT DE DATOS (para historial y payload)
+  ============================================================ */
+  function snapshotData() {
+    const modsCostDetails = [];
     if (isCostMode()) {
-      const names = getSelectedModNames();
-      const withCost = names.filter(name => state.modCosts[name] && state.modCosts[name].selected);
-      const resumen = [];
-      withCost.forEach((name, i) => {
-        const e = state.modCosts[name];
-        const idx = i + 1;
-        params.append('mod_costo_' + idx + '_nombre',  name);
-        params.append('mod_costo_' + idx + '_foodbot', String(e.foodbot || ''));
-        params.append('mod_costo_' + idx + '_apps',    String(e.apps || ''));
-        resumen.push(name + ': Foodbot $' + e.foodbot + ' / Apps $' + e.apps);
-      });
-      params.append('modificadores_con_costo_total',   String(withCost.length));
-      params.append('modificadores_con_costo_detalle', resumen.join(' | '));
-    } else {
-      params.append('modificadores_con_costo_total',   '0');
-      params.append('modificadores_con_costo_detalle', '');
+      getSelectedModNames()
+        .filter(name => state.modCosts[name] && state.modCosts[name].selected)
+        .forEach(name => {
+          const e = state.modCosts[name];
+          modsCostDetails.push({
+            nombre: name,
+            foodbot: String(e.foodbot || ''),
+            apps: String(e.apps || '')
+          });
+        });
     }
 
-    params.append('precio_foodbot', txt('precio_foodbot'));
-    params.append('precio_apps',    txt('precio_apps'));
-    params.append('comentarios',    txt('comentarios'));
-
-    params.append('restar_inventario', txt('restar_inventario'));
-
-    return params;
+    return {
+      timestamp: new Date().toISOString(),
+      // Solicitante
+      nombre: txt('nombre'),
+      area: txt('area'),
+      telefono: txt('telefono'),
+      correo: txt('correo'),
+      // Producto
+      marca: radio('marca'),
+      marca_otro: txt('marca_otro'),
+      nombre_producto: txt('nombre_producto'),
+      descripcion_producto: txt('descripcion_producto'),
+      categoria: txt('categoria'),
+      valido_para: checksArr('valido_para'),
+      // Modificadores
+      modificadores: checksArr('modificadores'),
+      modificadores_custom: state.customMods.slice(),
+      modificadores_costo: radio('modificadores_costo'),
+      detalle_modificadores: txt('detalle_modificadores'),
+      modCosts: JSON.parse(JSON.stringify(state.modCosts)),
+      // Precios
+      precio_foodbot: txt('precio_foodbot'),
+      precio_apps: txt('precio_apps'),
+      comentarios: txt('comentarios'),
+      // Insumos
+      restar_inventario: txt('restar_inventario'),
+      // Archivos (solo metadata)
+      imagenNombre: state.imagenFile ? state.imagenFile.name : '',
+      imagenTipo:   state.imagenFile ? state.imagenFile.type : '',
+      imagenTamano: state.imagenFile ? String(state.imagenFile.size) : '',
+      archivosReceta: state.archivosReceta.map(f => ({
+        nombre: f.name, tipo: f.type, tamano: String(f.size)
+      }))
+    };
   }
 
+  /* ============================================================
+     PARÁMETROS → URLSearchParams
+  ============================================================ */
+  function buildParamsFromSnapshot(snap) {
+    const p = new URLSearchParams();
+
+    p.append('test', '1');
+    p.append('origen', 'form_alta_producto_web');
+    p.append('enviado_en', snap.timestamp);
+
+    p.append('nombre', snap.nombre);
+    p.append('area', snap.area);
+    p.append('telefono', snap.telefono);
+    p.append('correo', snap.correo);
+
+    p.append('marca', snap.marca);
+    p.append('marca_otro', snap.marca_otro);
+    p.append('nombre_producto', snap.nombre_producto);
+    p.append('descripcion_producto', snap.descripcion_producto);
+    p.append('categoria', snap.categoria);
+    p.append('valido_para', snap.valido_para.join(' | '));
+
+    p.append('modificadores', snap.modificadores.join(' | '));
+    p.append('modificadores_costo', snap.modificadores_costo);
+    p.append('detalle_modificadores', snap.detalle_modificadores);
+    p.append('modificadores_custom_total', String(snap.modificadores_custom.length));
+    p.append('modificadores_custom', snap.modificadores_custom.join(' | '));
+    snap.modificadores_custom.forEach((m, i) => {
+      p.append('modificador_custom_' + (i + 1), m);
+    });
+
+    // Costos por modificador (solo los que se marcaron)
+    const modsWithCost = [];
+    if (snap.modificadores_costo === 'SI') {
+      Object.keys(snap.modCosts || {}).forEach(name => {
+        const e = snap.modCosts[name];
+        if (e && e.selected) modsWithCost.push({ name, foodbot: e.foodbot, apps: e.apps });
+      });
+    }
+    modsWithCost.forEach((m, i) => {
+      const idx = i + 1;
+      p.append('mod_costo_' + idx + '_nombre', m.name);
+      p.append('mod_costo_' + idx + '_foodbot', String(m.foodbot || ''));
+      p.append('mod_costo_' + idx + '_apps', String(m.apps || ''));
+    });
+    p.append('modificadores_con_costo_total', String(modsWithCost.length));
+    p.append('modificadores_con_costo_detalle',
+      modsWithCost.map(m => m.name + ': Foodbot $' + m.foodbot + ' / Apps $' + m.apps).join(' | ')
+    );
+
+    p.append('precio_foodbot', snap.precio_foodbot);
+    p.append('precio_apps', snap.precio_apps);
+    p.append('comentarios', snap.comentarios);
+
+    p.append('restar_inventario', snap.restar_inventario);
+
+    // Metadata de archivos (sin contenido binario)
+    p.append('imagen_nombre', snap.imagenNombre);
+    p.append('imagen_tipo', snap.imagenTipo);
+    p.append('imagen_tamano', snap.imagenTamano);
+
+    p.append('archivos_receta_total', String(snap.archivosReceta.length));
+    snap.archivosReceta.forEach((f, i) => {
+      const idx = i + 1;
+      p.append('archivo_receta_' + idx + '_nombre', f.nombre);
+      p.append('archivo_receta_' + idx + '_tipo', f.tipo || '');
+      p.append('archivo_receta_' + idx + '_tamano', f.tamano);
+    });
+
+    return p;
+  }
+
+  /* ============================================================
+     ENVÍO AL WEBHOOK
+     -------------------------------------------------------------
+     - SIN keepalive (el body puede pasar de 64 KB y el navegador
+       la descarta silenciosamente)
+     - SIN base64 de archivos (los binarios en un POST urlencoded
+       son enormes y no sirven para Google Sheets)
+     - Con feedback visible del estado real
+  ============================================================ */
   function sendToMake(params) {
+    return fetch(MAKE_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      body: params.toString()
+    }).then(res => {
+      // Make responde con "Accepted" (202) cuando el webhook recibe bien
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return { ok: true, status: res.status };
+    });
+  }
+
+  /* ============================================================
+     HISTORIAL
+  ============================================================ */
+  const drawer         = document.getElementById('historyDrawer');
+  const drawerBackdrop = document.getElementById('drawerBackdrop');
+  const historyBody    = document.getElementById('historyBody');
+  const historyCount   = document.getElementById('historyCount');
+  const historyMeta    = document.getElementById('historyMeta');
+
+  function loadHistory() {
     try {
-      fetch(MAKE_WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-        body: params.toString(),
-        keepalive: true
-      }).catch(() => { /* silencioso */ });
+      const raw = localStorage.getItem(HISTORY_KEY);
+      state.history = raw ? JSON.parse(raw) : [];
+      if (!Array.isArray(state.history)) state.history = [];
+    } catch (e) { state.history = []; }
+  }
+
+  function saveHistory() {
+    try {
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(state.history.slice(0, HISTORY_MAX)));
     } catch (e) { /* silencioso */ }
   }
 
+  function addToHistory(snap, status) {
+    state.history.unshift({ ...snap, status: status || 'ok' });
+    if (state.history.length > HISTORY_MAX) state.history.length = HISTORY_MAX;
+    saveHistory();
+    renderHistory();
+  }
+
+  function truncate(str, n) {
+    str = String(str || '');
+    return str.length > n ? str.slice(0, n - 1) + '…' : str;
+  }
+
+  function renderHistory() {
+    historyCount.textContent = String(state.history.length);
+    historyMeta.textContent  = state.history.length === 1
+      ? '1 guardada en este dispositivo'
+      : state.history.length + ' guardadas en este dispositivo';
+
+    if (state.history.length === 0) {
+      historyBody.innerHTML =
+        '<div class="history-empty">' +
+          '<strong>Aún no hay solicitudes</strong>' +
+          'Cuando envíes un formulario, aparecerá aquí para que puedas revisarlo o rellenarlo de nuevo.' +
+        '</div>';
+      return;
+    }
+
+    historyBody.innerHTML = '';
+    state.history.forEach((h, idx) => {
+      const el = document.createElement('div');
+      el.className = 'history-item' + (h.status === 'err' ? ' err' : '');
+
+      const statusPill = h.status === 'err'
+        ? '<span class="status-pill err">Error</span>'
+        : '<span class="status-pill ok">Enviada</span>';
+
+      const modsTxt = (h.modificadores || []).concat(h.modificadores_custom || []).join(', ') || '—';
+      const validoTxt = (h.valido_para || []).join(', ') || '—';
+
+      el.innerHTML =
+        '<div class="history-item-head">' +
+          '<div style="min-width:0;flex:1;">' +
+            '<strong>' + escapeHtml(truncate(h.nombre_producto || '(sin nombre)', 60)) + '</strong>' +
+            '<div class="history-meta">' +
+              '<span>' + escapeHtml(fmtDateTime(h.timestamp)) + '</span>' +
+              statusPill +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="history-summary">' +
+          '<div class="row"><span class="lbl">Marca</span><span class="val">' + escapeHtml(h.marca || '—') + '</span></div>' +
+          '<div class="row"><span class="lbl">Solicitante</span><span class="val">' + escapeHtml(h.nombre || '—') + '</span></div>' +
+          '<div class="row"><span class="lbl">Área</span><span class="val">' + escapeHtml(h.area || '—') + '</span></div>' +
+          '<div class="row"><span class="lbl">Categoría</span><span class="val">' + escapeHtml(h.categoria || '—') + '</span></div>' +
+          '<div class="row"><span class="lbl">Válido para</span><span class="val">' + escapeHtml(validoTxt) + '</span></div>' +
+          '<div class="row"><span class="lbl">Modificadores</span><span class="val">' + escapeHtml(truncate(modsTxt, 50)) + '</span></div>' +
+          '<div class="row"><span class="lbl">Precio Foodbot</span><span class="val">$' + escapeHtml(h.precio_foodbot || '—') + '</span></div>' +
+          '<div class="row"><span class="lbl">Precio Apps</span><span class="val">$' + escapeHtml(h.precio_apps || '—') + '</span></div>' +
+        '</div>' +
+        '<div class="history-actions">' +
+          '<button type="button" class="btn btn-primary btn-sm" data-action="refill" data-idx="' + idx + '">Rellenar de nuevo</button>' +
+          '<button type="button" class="btn btn-ghost btn-sm" data-action="details" data-idx="' + idx + '">Ver detalles</button>' +
+          '<button type="button" class="btn btn-danger btn-sm" data-action="delete" data-idx="' + idx + '">Eliminar</button>' +
+        '</div>';
+
+      historyBody.appendChild(el);
+    });
+  }
+
+  function escapeHtml(s) {
+    return String(s || '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  /* ============================================================
+     RELLENAR DE NUEVO DESDE HISTORIAL
+  ============================================================ */
+  function refillFromHistory(h) {
+    // Reset visual previo
+    form.reset();
+    state.imagenFile = null;
+    state.archivosReceta = [];
+    state.customMods = [];
+    state.modCosts = {};
+    renderImagenPreview();
+    renderRecetaList();
+
+    // Solicitante
+    document.getElementById('nombre').value   = h.nombre || '';
+    document.getElementById('area').value     = h.area || '';
+    document.getElementById('telefono').value = h.telefono || '';
+    document.getElementById('correo').value   = h.correo || '';
+
+    // Producto
+    form.querySelectorAll('input[name="marca"]').forEach(r => {
+      r.checked = (r.value === h.marca);
+    });
+    document.getElementById('marca_otro').value = h.marca_otro || '';
+    marcaOtroField.style.display = (h.marca === 'Otro') ? 'block' : 'none';
+    document.getElementById('nombre_producto').value = h.nombre_producto || '';
+    document.getElementById('descripcion_producto').value = h.descripcion_producto || '';
+    document.getElementById('categoria').value = h.categoria || '';
+
+    const valido = h.valido_para || [];
+    form.querySelectorAll('input[name="valido_para"]').forEach(cb => {
+      cb.checked = valido.includes(cb.value);
+    });
+
+    // Modificadores
+    const mods = h.modificadores || [];
+    form.querySelectorAll('input[name="modificadores"]').forEach(cb => {
+      cb.checked = mods.includes(cb.value);
+    });
+
+    state.customMods = Array.isArray(h.modificadores_custom) ? h.modificadores_custom.slice() : [];
+    renderCustomMods();
+
+    // Radio SI/NO costo
+    form.querySelectorAll('input[name="modificadores_costo"]').forEach(r => {
+      r.checked = (r.value === h.modificadores_costo);
+    });
+
+    // Costos por modificador
+    state.modCosts = JSON.parse(JSON.stringify(h.modCosts || {}));
+    renderCostList();
+
+    document.getElementById('detalle_modificadores').value = h.detalle_modificadores || '';
+
+    // Precios
+    document.getElementById('precio_foodbot').value = h.precio_foodbot || '';
+    document.getElementById('precio_apps').value    = h.precio_apps || '';
+    document.getElementById('comentarios').value    = h.comentarios || '';
+
+    // Insumos
+    document.getElementById('restar_inventario').value = h.restar_inventario || '';
+
+    // Contadores
+    document.getElementById('cntNombre').textContent = (h.nombre_producto || '').length + '/30';
+    document.getElementById('cntDesc').textContent   = (h.descripcion_producto || '').length + '/180';
+
+    // Cerrar drawer, ir al paso 1
+    closeHistory();
+    renderStep(1);
+    showStatus('info',
+      'Datos cargados desde el historial. Vuelve a adjuntar la imagen y los archivos de receta antes de enviar.',
+      7000
+    );
+  }
+
+  function showHistoryDetails(h) {
+    const lines = [
+      'Nombre: ' + (h.nombre || '—'),
+      'Área: ' + (h.area || '—'),
+      'Teléfono: ' + (h.telefono || '—'),
+      'Correo: ' + (h.correo || '—'),
+      '',
+      'Marca: ' + (h.marca || '—'),
+      'Marca (otro): ' + (h.marca_otro || '—'),
+      'Nombre producto: ' + (h.nombre_producto || '—'),
+      'Descripción: ' + (h.descripcion_producto || '—'),
+      'Categoría: ' + (h.categoria || '—'),
+      'Válido para: ' + ((h.valido_para || []).join(', ') || '—'),
+      '',
+      'Modificadores: ' + ((h.modificadores || []).join(', ') || '—'),
+      'Custom: ' + ((h.modificadores_custom || []).join(', ') || '—'),
+      'Costo adicional: ' + (h.modificadores_costo || '—'),
+      'Detalle: ' + (h.detalle_modificadores || '—'),
+      '',
+      'Precio Foodbot: $' + (h.precio_foodbot || '—'),
+      'Precio Apps: $' + (h.precio_apps || '—'),
+      'Comentarios: ' + (h.comentarios || '—'),
+      '',
+      'Restar inventario: ' + (h.restar_inventario || '—'),
+      '',
+      'Imagen: ' + (h.imagenNombre || '—'),
+      'Archivos receta: ' + ((h.archivosReceta || []).map(f => f.nombre).join(', ') || '—')
+    ];
+    alert(lines.join('\n'));
+  }
+
+  /* ============================================================
+     DRAWER OPEN / CLOSE
+  ============================================================ */
+  function openHistory() {
+    renderHistory();
+    drawer.classList.add('show');
+    drawerBackdrop.classList.add('show');
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeHistory() {
+    drawer.classList.remove('show');
+    drawerBackdrop.classList.remove('show');
+    drawer.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('btnOpenHistory').addEventListener('click', openHistory);
+  document.getElementById('btnCloseHistory').addEventListener('click', closeHistory);
+  document.getElementById('btnCloseHistoryFoot').addEventListener('click', closeHistory);
+  drawerBackdrop.addEventListener('click', closeHistory);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.classList.contains('show')) closeHistory();
+  });
+
+  // Acciones dentro del historial (delegación)
+  historyBody.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const idx = Number(btn.dataset.idx);
+    const entry = state.history[idx];
+    if (!entry) return;
+
+    if (btn.dataset.action === 'refill') {
+      refillFromHistory(entry);
+    } else if (btn.dataset.action === 'details') {
+      showHistoryDetails(entry);
+    } else if (btn.dataset.action === 'delete') {
+      state.history.splice(idx, 1);
+      saveHistory();
+      renderHistory();
+    }
+  });
+
+  document.getElementById('btnClearHistory').addEventListener('click', () => {
+    if (state.history.length === 0) return;
+    if (!confirm('¿Borrar todo el historial de este dispositivo?')) return;
+    state.history = [];
+    saveHistory();
+    renderHistory();
+  });
+
+  /* ============================================================
+     TEST DE WEBHOOK
+  ============================================================ */
+  document.getElementById('btnTestWebhook').addEventListener('click', () => {
+    if (!MAKE_WEBHOOK_URL || MAKE_WEBHOOK_URL.includes('REEMPLAZA')) {
+      showStatus('err', 'Configura primero la URL del webhook en el código (constante MAKE_WEBHOOK_URL).', 6000);
+      return;
+    }
+
+    showStatus('info', 'Enviando ping de prueba al webhook…');
+
+    const p = new URLSearchParams();
+    p.append('test', '1');
+    p.append('origen', 'form_alta_producto_web__ping');
+    p.append('nombre', 'PING');
+    p.append('area', 'TEST');
+    p.append('nombre_producto', 'Ping de prueba');
+    p.append('descripcion_producto', 'Solo verificación de conexión');
+    p.append('enviado_en', new Date().toISOString());
+
+    fetch(MAKE_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      body: p.toString()
+    }).then(res => {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      showStatus('ok',
+        'Webhook respondió correctamente (' + res.status + '). Si no ves la fila en Google Sheets, revisa el escenario en Make (Run once / logs).',
+        9000
+      );
+    }).catch(err => {
+      showStatus('err',
+        'Error al contactar el webhook: ' + err.message + '. Revisa la URL, CORS o si el escenario está activo en Make.',
+        10000
+      );
+    });
+  });
+
+  /* ============================================================
+     SUBMIT
+  ============================================================ */
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -1554,27 +2008,55 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!validateStep(i)) { renderStep(i); return; }
     }
 
-    const params = buildBaseParams();
+    if (!MAKE_WEBHOOK_URL || MAKE_WEBHOOK_URL.includes('REEMPLAZA')) {
+      showStatus('err', 'La URL del webhook no está configurada. Edita la constante MAKE_WEBHOOK_URL.', 8000);
+      return;
+    }
 
-    params.append('imagen_nombre', state.imagenFile.name);
-    params.append('imagen_tipo',   state.imagenFile.type || 'application/octet-stream');
-    params.append('imagen_tamano', String(state.imagenFile.size));
+    const snap   = snapshotData();
+    const params = buildParamsFromSnapshot(snap);
 
-    params.append('archivos_receta_total', String(state.archivosReceta.length));
-    state.archivosReceta.forEach((f, i) => {
-      const idx = i + 1;
-      params.append('archivo_receta_' + idx + '_nombre', f.name);
-      params.append('archivo_receta_' + idx + '_tipo',   f.type || 'application/octet-stream');
-      params.append('archivo_receta_' + idx + '_tamano', String(f.size));
-    });
+    // Bloquear botón mientras se envía
+    btnSubmit.disabled = true;
+    btnSubmit.textContent = 'Enviando…';
 
-    const toast = document.getElementById('toast');
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 6000);
+    showStatus('info', 'Enviando solicitud…');
 
-    const imgFile  = state.imagenFile;
-    const recFiles = state.archivosReceta.slice();
+    sendToMake(params)
+      .then(() => {
+        // Éxito
+        showStatus('ok', '✓ Solicitud enviada correctamente al webhook.', 6000);
 
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 6000);
+
+        // Guardar en historial como OK
+        addToHistory(snap, 'ok');
+
+        // Reset del formulario
+        resetForm();
+      })
+      .catch(err => {
+        // Error visible
+        showStatus('err',
+          'No se pudo enviar: ' + err.message + '. La solicitud se guardó en el historial para reintentar.',
+          10000
+        );
+
+        // Guardar en historial como ERROR para que pueda reintentarse
+        addToHistory(snap, 'err');
+      })
+      .finally(() => {
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'Enviar solicitud';
+      });
+  });
+
+  /* ============================================================
+     RESET
+  ============================================================ */
+  function resetForm() {
     form.reset();
     marcaOtroField.style.display = 'none';
     state.imagenFile = null;
@@ -1586,43 +2068,19 @@ document.addEventListener('DOMContentLoaded', function () {
     renderCustomMods();
     document.getElementById('cntNombre').textContent = '0/30';
     document.getElementById('cntDesc').textContent   = '0/180';
-
     renderStep(1);
+  }
 
-    const fileReads = [];
-
-    if (imgFile && imgFile.size <= MAX_B64_FILE_SIZE) {
-      fileReads.push(
-        readFileAsDataURL(imgFile).then(data => {
-          if (data) params.append('imagen_data', data);
-        })
-      );
-    }
-
-    recFiles.forEach((f, i) => {
-      const idx = i + 1;
-      if (f.size <= MAX_B64_FILE_SIZE) {
-        fileReads.push(
-          readFileAsDataURL(f).then(data => {
-            if (data) params.append('archivo_receta_' + idx + '_data', data);
-          })
-        );
-      }
-    });
-
-    Promise.all(fileReads)
-      .then(() => sendToMake(params))
-      .catch(() => sendToMake(params));
-  });
-
-  /* ------------------------------------------------------------------
+  /* ============================================================
      INIT
-  ------------------------------------------------------------------ */
+  ============================================================ */
+  loadHistory();
   renderStep(1);
   renderCustomMods();
   renderImagenPreview();
   renderRecetaList();
   renderCostList();
+  renderHistory();
 
 });
 </script>
