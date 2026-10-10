@@ -200,6 +200,61 @@ select option{background:var(--obsidian);color:var(--bone);}
 .footnote{text-align:center;font-family:var(--font-mono);font-size:10px;color:var(--smoke);margin-top:var(--sp-120);letter-spacing:0.08em;text-transform:uppercase;}
 .divider{height:1px;background:linear-gradient(90deg, transparent, var(--slate), transparent);margin:var(--sp-40) 0;border:none;}
 
+/* ============ AUTO-SAVE HINT ============ */
+.autosave-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:var(--sp-14);
+  margin-top:var(--sp-14);
+  padding:10px 14px;
+  border-radius:var(--r-feature);
+  background:var(--midnight-tide);
+  border:1px solid var(--deep-current);
+  font-size:12px;
+  color:var(--pearl);
+}
+.autosave-bar .icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:16px;height:16px;flex:none;
+  color:var(--electric-blue);
+}
+.autosave-bar .txt{flex:1;min-width:0;line-height:1.4;}
+.autosave-bar .txt strong{color:var(--electric-blue);font-weight:600;}
+.autosave-bar .actions{display:flex;gap:6px;flex-wrap:wrap;}
+.autosave-bar button{
+  background:transparent;
+  border:1px solid var(--slate);
+  color:var(--mist);
+  padding:4px 10px;
+  border-radius:var(--r-pill);
+  font-family:var(--font-body);
+  font-size:11px;
+  font-weight:500;
+  cursor:pointer;
+  transition:all .2s;
+  white-space:nowrap;
+}
+.autosave-bar button:hover{
+  background:rgba(255,255,255,0.06);
+  border-color:var(--fog);
+  color:var(--bone);
+}
+.autosave-bar button.danger:hover{
+  background:rgba(255,0,34,0.08);
+  border-color:var(--alert-red);
+  color:#ff9aa5;
+}
+.saved-dot{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:10px;
+  letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--signal-green);opacity:0;transition:opacity .3s;
+}
+.saved-dot.show{opacity:1;}
+.saved-dot::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--signal-green);box-shadow:0 0 6px var(--signal-green);
+}
+
 @media (hover: none) and (pointer: coarse),(max-width: 768px) {
   input[type="text"],input[type="tel"],input[type="email"],input[type="number"],input[type="url"],input[type="search"],select,textarea,.custom-add input,.price-field input,.cost-item input{font-size: 16px !important;}
 }
@@ -216,7 +271,6 @@ select option{background:var(--obsidian);color:var(--bone);}
       <div class="brand-sub">Hospitality Group</div>
     </div>
     <div class="header-actions">
-      <button type="button" class="btn btn-ghost btn-sm" id="btnTestWebhook">Probar conexión</button>
       <button type="button" class="btn btn-ghost btn-sm" id="btnViewPayload">Ver último payload</button>
       <button type="button" class="btn btn-ghost btn-sm" id="btnOpenHistory">Historial <span class="badge-count" id="historyCount">0</span></button>
     </div>
@@ -249,11 +303,30 @@ select option{background:var(--obsidian);color:var(--bone);}
       <div class="step-head"><h2>Datos del solicitante</h2><p>¿Quién está solicitando el alta de este producto?</p></div>
 
       <div class="card">
-        <div class="field"><label for="nombre">Nombre completo <span class="req">*</span></label><input type="text" id="nombre" name="nombre" required /></div>
-        <div class="field"><label for="area">Área <span class="req">*</span></label><input type="text" id="area" name="area" required /></div>
+        <div class="field"><label for="nombre">Nombre completo <span class="req">*</span></label><input type="text" id="nombre" name="nombre" required autocomplete="name" /></div>
+        <div class="field"><label for="area">Área <span class="req">*</span></label><input type="text" id="area" name="area" required autocomplete="organization" /></div>
         <div class="grid-2">
-          <div class="field"><label for="telefono">Teléfono <span style="color:var(--smoke);font-weight:400;">(opcional)</span></label><input type="tel" id="telefono" name="telefono" /></div>
-          <div class="field"><label for="correo">Correo <span style="color:var(--smoke);font-weight:400;">(opcional)</span></label><input type="email" id="correo" name="correo" /></div>
+          <div class="field"><label for="telefono">Teléfono <span style="color:var(--smoke);font-weight:400;">(opcional)</span></label><input type="tel" id="telefono" name="telefono" autocomplete="tel" /></div>
+          <div class="field"><label for="correo">Correo <span style="color:var(--smoke);font-weight:400;">(opcional)</span></label><input type="email" id="correo" name="correo" autocomplete="email" /></div>
+        </div>
+
+        <!-- Barra de auto-guardado del solicitante -->
+        <div class="autosave-bar" id="autosaveBar" style="display:none;">
+          <span class="icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+              <polyline points="17 21 17 13 7 13 7 21"/>
+              <polyline points="7 3 7 8 15 8"/>
+            </svg>
+          </span>
+          <span class="txt">
+            <strong>Tus datos están guardados en este dispositivo.</strong>
+            La próxima vez que abras el formulario, los verás ya rellenados.
+          </span>
+          <span class="saved-dot" id="savedDot">Guardado</span>
+          <span class="actions">
+            <button type="button" class="danger" id="btnForgetSolicitante">Olvidar datos</button>
+          </span>
         </div>
       </div>
     </section>
@@ -517,12 +590,14 @@ const IMGBB_API_KEY = '67a9b5942ab0fcd92480a4ffc981ba07';
 const HISTORY_KEY = 'amg_product_form_history_v1';
 const HISTORY_MAX = 30;
 
+/* 🔑 Clave de localStorage para los datos del solicitante */
+const SOLICITANTE_KEY = 'amg_solicitante_data_v1';
+
 document.addEventListener('DOMContentLoaded', function () {
 
   const state = {
     current: 1, total: 5,
     imagenFile: null, imagenUrl: '', isUploading: false,
-    /** archivosReceta: [{ file, url, uploading }, ...] */
     archivosReceta: [],
     customMods: [], modCosts: {}, history: [],
     lastPayload: ''
@@ -557,6 +632,96 @@ document.addEventListener('DOMContentLoaded', function () {
     if (statusTimer) clearTimeout(statusTimer);
     if (autoHideMs) statusTimer = setTimeout(() => statusBanner.classList.remove('show'), autoHideMs);
   }
+
+  /* ============================================================
+     AUTO-GUARDADO DEL SOLICITANTE
+     ------------------------------------------------------------
+     - Guarda nombre, área, teléfono y correo en localStorage.
+     - Se rellena automáticamente al abrir el formulario.
+     - Solo se actualiza cuando el usuario edita esos campos.
+     - Sobrevive a recargas y a reseteos del formulario.
+  ============================================================ */
+  const solicitanteFields = ['nombre', 'area', 'telefono', 'correo'];
+  const autosaveBar = document.getElementById('autosaveBar');
+  const savedDot    = document.getElementById('savedDot');
+  let savedDotTimer = null;
+
+  function loadSolicitante() {
+    try {
+      const raw = localStorage.getItem(SOLICITANTE_KEY);
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      if (!data || typeof data !== 'object') return null;
+      return data;
+    } catch (e) { return null; }
+  }
+
+  function saveSolicitante() {
+    try {
+      const data = {};
+      solicitanteFields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) data[id] = String(el.value || '');
+      });
+      localStorage.setItem(SOLICITANTE_KEY, JSON.stringify(data));
+      // Mostrar el indicador "Guardado" brevemente
+      if (savedDot) {
+        savedDot.classList.add('show');
+        if (savedDotTimer) clearTimeout(savedDotTimer);
+        savedDotTimer = setTimeout(() => savedDot.classList.remove('show'), 1200);
+      }
+    } catch (e) { /* silencioso */ }
+  }
+
+  function applySolicitante(data) {
+    if (!data) return;
+    solicitanteFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && data[id] != null) el.value = data[id];
+    });
+  }
+
+  function clearSolicitante() {
+    try {
+      localStorage.removeItem(SOLICITANTE_KEY);
+      solicitanteFields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      autosaveBar.style.display = 'none';
+      showStatus('info', 'Datos del solicitante olvidados en este dispositivo.', 'La próxima vez tendrás que escribirlos de nuevo.', 5000);
+    } catch (e) { /* silencioso */ }
+  }
+
+  // Escuchar cambios en los campos del solicitante
+  solicitanteFields.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', () => {
+      saveSolicitante();
+      // Mostrar la barra de auto-guardado cuando haya al menos un campo con valor
+      const hayDatos = solicitanteFields.some(fid => {
+        const f = document.getElementById(fid);
+        return f && String(f.value || '').trim().length > 0;
+      });
+      autosaveBar.style.display = hayDatos ? 'flex' : 'none';
+    });
+    el.addEventListener('blur', saveSolicitante);
+  });
+
+  document.getElementById('btnForgetSolicitante').addEventListener('click', () => {
+    if (!confirm('¿Olvidar los datos del solicitante guardados en este dispositivo?')) return;
+    clearSolicitante();
+  });
+
+  // Cargar datos guardados al abrir el formulario
+  (function initSolicitante() {
+    const saved = loadSolicitante();
+    if (saved) {
+      applySolicitante(saved);
+      autosaveBar.style.display = 'flex';
+    }
+  })();
 
   /* ============ NAVEGACIÓN ============ */
   function renderStep(n) {
@@ -781,7 +946,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  /* ============ IMÁGENES DE RECETA (suben a ImgBB) ============ */
+  /* ============ IMÁGENES DE RECETA ============ */
   const recetaInput = document.getElementById('archivos_receta');
   const recetaList  = document.getElementById('archivosRecetaList');
   const dropReceta  = document.getElementById('dropReceta');
@@ -1030,10 +1195,6 @@ document.addEventListener('DOMContentLoaded', function () {
     p.append('imagen_url', snap.imagenUrl);
     p.append('imagen_nombre', snap.imagenNombre);
 
-    /* -----------------------------------------------------------------
-       ARCHIVOS DE RECETA — NOMBRES NUEVOS PARA FORZAR RE-DETECCIÓN
-       (antes: archivo_receta_N_url → ahora: receta_N_link)
-       ----------------------------------------------------------------- */
     p.append('receta_total', String(snap.archivosReceta.length));
     snap.archivosReceta.forEach((f, i) => {
       const idx = i + 1;
@@ -1042,7 +1203,6 @@ document.addEventListener('DOMContentLoaded', function () {
       p.append('receta_' + idx + '_tamano', f.tamano);
       p.append('receta_' + idx + '_link', f.url || '');
     });
-    // Campo resumen con todos los links de receta
     p.append('recetas_links', snap.archivosReceta.map(f => f.url).filter(u => u && u.startsWith('http')).join(' | '));
 
     return p;
@@ -1120,10 +1280,15 @@ document.addEventListener('DOMContentLoaded', function () {
     state.customMods = []; state.modCosts = {};
     renderImagenPreview(); renderRecetaList();
 
+    // Nota: NO borramos el solicitante guardado, y rellenamos con lo que viene del historial
     document.getElementById('nombre').value = h.nombre || '';
     document.getElementById('area').value = h.area || '';
     document.getElementById('telefono').value = h.telefono || '';
     document.getElementById('correo').value = h.correo || '';
+    // Guardar los datos del solicitante que venían del historial
+    saveSolicitante();
+    autosaveBar.style.display = 'flex';
+
     form.querySelectorAll('input[name="marca"]').forEach(r => { r.checked = (r.value === h.marca); });
     document.getElementById('marca_otro').value = h.marca_otro || '';
     marcaOtroField.style.display = (h.marca === 'Otro') ? 'block' : 'none';
@@ -1218,33 +1383,6 @@ document.addEventListener('DOMContentLoaded', function () {
     w.document.title = 'Payload enviado a Make';
   });
 
-  /* ============ TEST WEBHOOK ============ */
-  document.getElementById('btnTestWebhook').addEventListener('click', () => {
-    if (!MAKE_WEBHOOK_URL || MAKE_WEBHOOK_URL.includes('REEMPLAZA')) {
-      showStatus('err', 'Webhook no configurado', 'Edita la constante MAKE_WEBHOOK_URL.', 6000); return;
-    }
-    showStatus('info', 'Enviando ping de prueba al webhook…', MAKE_WEBHOOK_URL);
-    const p = new URLSearchParams();
-    p.append('test', '1');
-    p.append('origen', 'form_alta_producto_web__ping');
-    p.append('nombre', 'PING');
-    p.append('area', 'TEST');
-    p.append('nombre_producto', 'Ping de prueba');
-    p.append('descripcion_producto', 'Solo verificación de conexión');
-    p.append('enviado_en', new Date().toISOString());
-
-    fetch(MAKE_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-      body: p.toString()
-    }).then(res => {
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      showStatus('ok', '✓ Webhook respondió correctamente (' + res.status + ')', 'En Make: haz clic en "Redetermine data structure" para ver los campos.', 9000);
-    }).catch(err => {
-      showStatus('err', 'Error al contactar el webhook: ' + err.message, 'Revisa la URL, CORS o si el escenario está activo en Make.', 10000);
-    });
-  });
-
   /* ============ SUBMIT ============ */
   form.addEventListener('submit', e => {
     e.preventDefault();
@@ -1277,7 +1415,7 @@ document.addEventListener('DOMContentLoaded', function () {
       .then(res => {
         console.log('[Submit] Éxito:', res);
         showStatus('ok', '✓ Solicitud enviada correctamente a Make (' + res.status + ')',
-          'Ve a Make → Webhook → "Redetermine data structure" para ver los campos nuevos (receta_1_link, recetas_links).',
+          'Ve a Make → Webhook → "Redetermine data structure" si es la primera vez con estos campos.',
           10000);
         const toast = document.getElementById('toast');
         toast.classList.add('show');
@@ -1298,7 +1436,18 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   });
 
+  /* ============================================================
+     RESET — NO toca los datos del solicitante (auto-guardado)
+  ============================================================ */
   function resetForm() {
+    // Guardar por si acaso los datos del solicitante ANTES del reset
+    saveSolicitante();
+    const solicitanteSnapshot = {};
+    solicitanteFields.forEach(id => {
+      const el = document.getElementById(id);
+      solicitanteSnapshot[id] = el ? el.value : '';
+    });
+
     form.reset();
     marcaOtroField.style.display = 'none';
     state.imagenFile = null; state.imagenUrl = '';
@@ -1306,6 +1455,16 @@ document.addEventListener('DOMContentLoaded', function () {
     renderImagenPreview(); renderRecetaList(); renderCustomMods();
     document.getElementById('cntNombre').textContent = '0/30';
     document.getElementById('cntDesc').textContent = '0/180';
+
+    // Restaurar los datos del solicitante
+    solicitanteFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && solicitanteSnapshot[id]) el.value = solicitanteSnapshot[id];
+    });
+    if (solicitanteFields.some(id => solicitanteSnapshot[id])) {
+      autosaveBar.style.display = 'flex';
+    }
+
     renderStep(1);
   }
 
@@ -1321,7 +1480,7 @@ document.addEventListener('DOMContentLoaded', function () {
   console.log('=== DIAGNÓSTICO ===');
   console.log('Webhook URL:', MAKE_WEBHOOK_URL);
   console.log('ImgBB Key:', IMGBB_API_KEY ? IMGBB_API_KEY.slice(0, 8) + '...' : '(vacía)');
-  console.log('Campos de receta ahora se llaman: receta_1_link, receta_2_link, ... recetas_links');
+  console.log('Datos de solicitante guardados:', !!loadSolicitante());
 });
 </script>
 </body>
