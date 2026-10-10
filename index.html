@@ -523,6 +523,29 @@ select option{background:var(--obsidian);color:var(--bone);}
   background:linear-gradient(90deg, transparent, var(--slate), transparent);
   margin:var(--sp-40) 0;border:none;
 }
+
+/* ============================================================
+   iOS ZOOM FIX — evita que Safari haga zoom al enfocar inputs.
+   iOS aplica zoom automático cuando el font-size del control
+   es menor a 16px. Forzamos 16px en dispositivos táctiles y
+   en pantallas pequeñas para que el layout no "salte".
+   ============================================================ */
+@media (hover: none) and (pointer: coarse),
+       (max-width: 768px) {
+  input[type="text"],
+  input[type="tel"],
+  input[type="email"],
+  input[type="number"],
+  input[type="url"],
+  input[type="search"],
+  select,
+  textarea,
+  .custom-add input,
+  .price-field input,
+  .cost-item input {
+    font-size: 16px !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -668,7 +691,7 @@ select option{background:var(--obsidian);color:var(--bone);}
     </section>
 
     <!-- =========================================================
-         STEP 3 — MODIFICADORES (costos seleccionables + Foodbot/Apps)
+         STEP 3 — MODIFICADORES
          ========================================================= -->
     <section class="step" data-step="3">
       <nav class="steps">
@@ -723,13 +746,12 @@ select option{background:var(--obsidian);color:var(--bone);}
           </div>
         </div>
 
-        <!-- Lista de modificadores seleccionables con costo Foodbot + Apps -->
         <div class="field" id="costListField" style="display:none;">
           <span class="field-label">
             Marca los modificadores que llevan costo y asigna sus precios <span class="req">*</span>
           </span>
           <span class="hint" style="margin-top:0;margin-bottom:var(--sp-14);display:block;">
-            Elige los modificadores a los que se les añadirá precio y define cuánto cuesta en Foodbot y en Apps.
+            Elige los modificadores a los que se les añadirá precio y define cuánto cuesta en Foodbot y en Apps. Ambos precios son obligatorios.
           </span>
           <div class="cost-list" id="costList"></div>
           <span class="error-text" id="errCost">Marca al menos un modificador y asigna sus precios Foodbot y Apps (mayor a 0).</span>
@@ -764,12 +786,12 @@ select option{background:var(--obsidian);color:var(--bone);}
         <h3>Precios</h3>
         <div class="grid-2">
           <div class="field">
-            <label for="precio_foodbot">Precio Foodbot (Ecom y POS)</label>
-            <input type="number" id="precio_foodbot" name="precio_foodbot" step="0.01" min="0" placeholder="0.00" />
+            <label for="precio_foodbot">Precio Foodbot (Ecom y POS) <span class="req">*</span></label>
+            <input type="number" id="precio_foodbot" name="precio_foodbot" step="0.01" min="0" placeholder="0.00" required />
           </div>
           <div class="field">
-            <label for="precio_apps">Precio apps</label>
-            <input type="number" id="precio_apps" name="precio_apps" step="0.01" min="0" placeholder="0.00" />
+            <label for="precio_apps">Precio apps <span class="req">*</span></label>
+            <input type="number" id="precio_apps" name="precio_apps" step="0.01" min="0" placeholder="0.00" required />
           </div>
         </div>
       </div>
@@ -882,11 +904,6 @@ document.addEventListener('DOMContentLoaded', function () {
     imagenFile: null,
     archivosReceta: [],
     customMods: [],
-    /**
-     * Mapa: nombre de modificador → { selected, foodbot, apps }
-     * - selected: el usuario marcó este modificador como "lleva costo"
-     * - foodbot / apps: precios como string
-     */
     modCosts: {}
   };
 
@@ -947,7 +964,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ------------------------------------------------------------------
-     COSTOS DE MODIFICADORES — seleccionables + Foodbot/Apps
+     COSTOS DE MODIFICADORES
   ------------------------------------------------------------------ */
   const costListField = document.getElementById('costListField');
   const costList      = document.getElementById('costList');
@@ -959,7 +976,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const predefined = Array.from(
       form.querySelectorAll('input[name="modificadores"]:checked')
     ).map(i => i.value);
-    // custom primero para que aparezcan arriba en la lista
     return [...state.customMods, ...predefined];
   }
 
@@ -974,7 +990,6 @@ document.addEventListener('DOMContentLoaded', function () {
     return state.modCosts[name];
   }
 
-  // Elimina entradas de modificadores que ya no están seleccionados arriba
   function pruneModCosts() {
     const current = new Set(getSelectedModNames());
     Object.keys(state.modCosts).forEach(k => {
@@ -1003,7 +1018,6 @@ document.addEventListener('DOMContentLoaded', function () {
       row.className = 'cost-item';
       if (entry.selected) row.classList.add('active');
 
-      /* ----- Checkbox + nombre ----- */
       const checkWrap = document.createElement('label');
       checkWrap.className = 'cost-check';
 
@@ -1029,11 +1043,9 @@ document.addEventListener('DOMContentLoaded', function () {
       checkWrap.appendChild(checkMark);
       checkWrap.appendChild(nameEl);
 
-      /* ----- Precios Foodbot / Apps ----- */
       const prices = document.createElement('div');
       prices.className = 'cost-prices';
 
-      // Foodbot
       const fLabel = document.createElement('label');
       fLabel.className = 'price-field';
       const fText = document.createElement('span');
@@ -1048,12 +1060,11 @@ document.addEventListener('DOMContentLoaded', function () {
       fInput.setAttribute('aria-label', 'Precio Foodbot de ' + name);
       fInput.addEventListener('input', () => {
         entry.foodbot = fInput.value;
-        if (Number(entry.foodbot) > 0) errCost.classList.remove('show');
+        if (Number(entry.foodbot) > 0 && Number(entry.apps) > 0) errCost.classList.remove('show');
       });
       fLabel.appendChild(fText);
       fLabel.appendChild(fInput);
 
-      // Apps
       const aLabel = document.createElement('label');
       aLabel.className = 'price-field';
       const aText = document.createElement('span');
@@ -1068,7 +1079,7 @@ document.addEventListener('DOMContentLoaded', function () {
       aInput.setAttribute('aria-label', 'Precio Apps de ' + name);
       aInput.addEventListener('input', () => {
         entry.apps = aInput.value;
-        if (Number(entry.apps) > 0) errCost.classList.remove('show');
+        if (Number(entry.foodbot) > 0 && Number(entry.apps) > 0) errCost.classList.remove('show');
       });
       aLabel.appendChild(aText);
       aLabel.appendChild(aInput);
@@ -1076,10 +1087,8 @@ document.addEventListener('DOMContentLoaded', function () {
       prices.appendChild(fLabel);
       prices.appendChild(aLabel);
 
-      /* ----- Toggle ----- */
       check.addEventListener('change', () => {
         entry.selected = check.checked;
-        // Re-render para activar/desactivar inputs y cambiar estilo
         renderCostList();
       });
 
@@ -1089,7 +1098,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Escuchar cambios en los modificadores predefinidos
   form.querySelectorAll('input[name="modificadores"]').forEach(cb => {
     cb.addEventListener('change', () => {
       pruneModCosts();
@@ -1097,7 +1105,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Escuchar cambios en el radio SI/NO
   radioCostoSI.addEventListener('change', renderCostList);
   radioCostoNO.addEventListener('change', renderCostList);
 
@@ -1373,7 +1380,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let firstInvalid = null;
 
-    // 1) Required text/select/textarea
+    // Required text/select/textarea (incluye los precios principales)
     $$('input[required], select[required], textarea[required]', stepEl).forEach(el => {
       if (el.type === 'radio' || el.type === 'checkbox') return;
       if (!String(el.value || '').trim()) {
@@ -1381,7 +1388,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // 2) Required radios
+    // Required radios
     const requiredRadios = new Set($$('input[type="radio"][required]', stepEl).map(r => r.name));
     requiredRadios.forEach(name => {
       const anyChecked = form.querySelector('input[name="' + name + '"]:checked');
@@ -1390,7 +1397,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // 3) Válido para (step 2)
+    // Válido para (step 2)
     if (n === 2) {
       const valido = form.querySelectorAll('input[name="valido_para"]:checked');
       if (valido.length === 0 && !firstInvalid) {
@@ -1398,7 +1405,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    // 4) Costos (step 3)
+    // Costos (step 3)
     if (n === 3 && isCostMode()) {
       const names = getSelectedModNames();
 
@@ -1407,14 +1414,12 @@ document.addEventListener('DOMContentLoaded', function () {
         errCost.classList.add('show');
         if (!firstInvalid) firstInvalid = document.querySelector('#modsChips input');
       } else {
-        // Deben haber marcado al menos uno
         const withCost = names.filter(name => state.modCosts[name] && state.modCosts[name].selected);
         if (withCost.length === 0) {
           errCost.textContent = 'Marca al menos un modificador y asígnale sus precios.';
           errCost.classList.add('show');
           if (!firstInvalid) firstInvalid = costList.querySelector('input[type="checkbox"]') || costListField;
         } else {
-          // Cada marcado debe tener Foodbot > 0 y Apps > 0
           let allOk = true;
           withCost.forEach(name => {
             const e = state.modCosts[name];
@@ -1432,13 +1437,13 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    // 5) Imagen (step 4)
+    // Imagen (step 4)
     if (n === 4 && !state.imagenFile) {
       if (!firstInvalid) firstInvalid = dropImagen;
       errImagen.classList.add('show');
     }
 
-    // 6) Receta (step 5)
+    // Receta (step 5)
     if (n === 5 && state.archivosReceta.length === 0) {
       if (!firstInvalid) firstInvalid = dropReceta;
       errReceta.classList.add('show');
@@ -1494,7 +1499,6 @@ document.addEventListener('DOMContentLoaded', function () {
     params.append('categoria',            txt('categoria'));
     params.append('valido_para',          checks('valido_para'));
 
-    // Modificadores
     params.append('modificadores',              checks('modificadores'));
     params.append('modificadores_costo',        radio('modificadores_costo'));
     params.append('detalle_modificadores',      txt('detalle_modificadores'));
@@ -1504,7 +1508,6 @@ document.addEventListener('DOMContentLoaded', function () {
       params.append('modificador_custom_' + (i + 1), m);
     });
 
-    // Costos por modificador — solo los que el usuario marcó
     if (isCostMode()) {
       const names = getSelectedModNames();
       const withCost = names.filter(name => state.modCosts[name] && state.modCosts[name].selected);
@@ -1553,12 +1556,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const params = buildBaseParams();
 
-    // Metadatos imagen
     params.append('imagen_nombre', state.imagenFile.name);
     params.append('imagen_tipo',   state.imagenFile.type || 'application/octet-stream');
     params.append('imagen_tamano', String(state.imagenFile.size));
 
-    // Metadatos archivos receta
     params.append('archivos_receta_total', String(state.archivosReceta.length));
     state.archivosReceta.forEach((f, i) => {
       const idx = i + 1;
@@ -1567,16 +1568,13 @@ document.addEventListener('DOMContentLoaded', function () {
       params.append('archivo_receta_' + idx + '_tamano', String(f.size));
     });
 
-    // Feedback inmediato
     const toast = document.getElementById('toast');
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 6000);
 
-    // Snapshot
     const imgFile  = state.imagenFile;
     const recFiles = state.archivosReceta.slice();
 
-    // Limpieza
     form.reset();
     marcaOtroField.style.display = 'none';
     state.imagenFile = null;
@@ -1591,7 +1589,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     renderStep(1);
 
-    // Lectura asíncrona → fetch final
     const fileReads = [];
 
     if (imgFile && imgFile.size <= MAX_B64_FILE_SIZE) {
