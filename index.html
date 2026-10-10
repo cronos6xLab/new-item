@@ -200,9 +200,7 @@ select option{background:var(--obsidian);color:var(--bone);}
 .footnote{text-align:center;font-family:var(--font-mono);font-size:10px;color:var(--smoke);margin-top:var(--sp-120);letter-spacing:0.08em;text-transform:uppercase;}
 .divider{height:1px;background:linear-gradient(90deg, transparent, var(--slate), transparent);margin:var(--sp-40) 0;border:none;}
 
-/* ============ AUTO-SAVE (oculto) ============
-   La barra de auto-guardado se mantiene en el DOM pero nunca se muestra.
-   El guardado/relleno sigue funcionando por detrás. */
+/* AUTO-SAVE oculto */
 .autosave-bar{display:none !important;}
 
 @media (hover: none) and (pointer: coarse),(max-width: 768px) {
@@ -260,14 +258,8 @@ select option{background:var(--obsidian);color:var(--bone);}
           <div class="field"><label for="correo">Correo <span style="color:var(--smoke);font-weight:400;">(opcional)</span></label><input type="email" id="correo" name="correo" autocomplete="email" /></div>
         </div>
 
-        <!-- Barra de auto-guardado (oculta visualmente) -->
         <div class="autosave-bar" id="autosaveBar" aria-hidden="true">
-          <span class="icon"></span>
-          <span class="txt"></span>
           <span class="saved-dot" id="savedDot"></span>
-          <span class="actions">
-            <button type="button" class="danger" id="btnForgetSolicitante">Olvidar datos</button>
-          </span>
         </div>
       </div>
     </section>
@@ -522,10 +514,14 @@ select option{background:var(--obsidian);color:var(--bone);}
 /* ============================================================================
    ⚙️  CONFIGURACIÓN
    ----------------------------------------------------------------------------
-   👇 REEMPLAZA ESTA URL POR LA DE TU CUSTOM WEBHOOK DE MAKE.COM
+   👇 REEMPLAZA ESTAS 3 CONSTANTES CON TUS VALORES REALES
    ============================================================================ */
 const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/x9nsypb1b9tmmh4243wfybiraejqi7j5';
-const IMGBB_API_KEY = '67a9b5942ab0fcd92480a4ffc981ba07';
+const IMGBB_API_KEY    = '67a9b5942ab0fcd92480a4ffc981ba07';
+/* 🔐 Token secreto que SOLO este formulario conoce.
+      En Make configura un filtro: form_secret = este valor exacto.
+      Cambia este string por algo único y largo (nadie más debe saberlo). */
+const FORM_SECRET      = 'amg_prod_7Kx9mP2qR5vN8wZ4tY6bH1jL3sD0fG';
 /* ========================================================================== */
 
 const HISTORY_KEY = 'amg_product_form_history_v1';
@@ -574,9 +570,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ============================================================
      AUTO-GUARDADO DEL SOLICITANTE (silencioso)
-     - Guarda nombre, área, teléfono y correo en localStorage.
-     - Se rellena automáticamente al abrir el formulario.
-     - NO muestra ninguna barra ni mensaje al usuario.
   ============================================================ */
   const solicitanteFields = ['nombre', 'area', 'telefono', 'correo'];
 
@@ -609,7 +602,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Escuchar cambios en los campos del solicitante (guardado silencioso)
   solicitanteFields.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -617,7 +609,6 @@ document.addEventListener('DOMContentLoaded', function () {
     el.addEventListener('blur', saveSolicitante);
   });
 
-  // Cargar datos guardados al abrir el formulario
   (function initSolicitante() {
     const saved = loadSolicitante();
     if (saved) applySolicitante(saved);
@@ -1052,6 +1043,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function buildParamsFromSnapshot(snap) {
     const p = new URLSearchParams();
+
+    /* 🔐 Token secreto — Make lo valida en un filtro. Sin esto, se ignora. */
+    p.append('form_secret', FORM_SECRET);
+
     p.append('test', '1');
     p.append('origen', 'form_alta_producto_web');
     p.append('enviado_en', snap.timestamp);
@@ -1333,9 +1328,6 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   });
 
-  /* ============================================================
-     RESET — NO toca los datos del solicitante (auto-guardado)
-  ============================================================ */
   function resetForm() {
     saveSolicitante();
     const solicitanteSnapshot = {};
