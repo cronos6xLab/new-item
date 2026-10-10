@@ -14,584 +14,194 @@
   --pearl:#cccccc; --bone:#ffffff;
   --electric-blue:#0099ff; --deep-current:#00406b; --midnight-tide:#002238;
   --vivid-violet:#0066ff; --signal-green:#4cd963; --alert-red:#ff0022;
-
   --font-display:'Inter Tight','GT Walsheim',ui-sans-serif,system-ui,-apple-system,sans-serif;
   --font-body:'Inter','Inter Variable',ui-sans-serif,system-ui,-apple-system,sans-serif;
   --font-mono:'JetBrains Mono','Input Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
-
   --sp-4:4px; --sp-6:6px; --sp-8:8px; --sp-10:10px; --sp-12:12px;
   --sp-14:14px; --sp-15:15px; --sp-20:20px; --sp-25:25px; --sp-30:30px;
   --sp-40:40px; --sp-47:47px; --sp-60:60px; --sp-120:120px;
-
   --r-icon:8px; --r-input:8px; --r-feature:15px; --r-card:20px;
   --r-large:25px; --r-pill:9999px;
-
   --shadow-glow:rgba(0,153,255,0.2) 0px 5px 5px 0px;
 }
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
-body{
-  font-family:var(--font-body);background:var(--void);color:var(--bone);
-  line-height:1.35;-webkit-font-smoothing:antialiased;
-  font-feature-settings:"cv01","cv05","cv09","cv11","ss03";
-}
+body{font-family:var(--font-body);background:var(--void);color:var(--bone);line-height:1.35;-webkit-font-smoothing:antialiased;}
 button{font-family:inherit;}
 input,select,textarea{font-family:inherit;}
-
 .page{max-width:1200px;margin:0 auto;padding:var(--sp-40) var(--sp-30) var(--sp-120);}
 
-/* ============ HEADER ============ */
-.top-bar{
-  display:flex;justify-content:space-between;align-items:center;gap:var(--sp-20);
-  margin-bottom:var(--sp-40);flex-wrap:wrap;
-}
+.top-bar{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-20);margin-bottom:var(--sp-40);flex-wrap:wrap;}
 .brand{display:flex;align-items:center;gap:var(--sp-14);}
-.brand-mark{
-  font-family:var(--font-display);font-size:22px;font-weight:700;
-  letter-spacing:-0.05em;color:var(--bone);line-height:1;
-}
+.brand-mark{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-0.05em;color:var(--bone);line-height:1;}
 .brand-divider{width:1px;height:18px;background:var(--slate);}
-.brand-sub{
-  font-size:11px;font-weight:500;letter-spacing:0.18em;
-  text-transform:uppercase;color:var(--mist);
-}
+.brand-sub{font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--mist);}
 .header-actions{display:flex;gap:var(--sp-8);flex-wrap:wrap;}
-.badge-count{
-  display:inline-flex;align-items:center;justify-content:center;
-  min-width:20px;height:20px;padding:0 6px;border-radius:var(--r-pill);
-  background:var(--electric-blue);color:var(--void);
-  font-family:var(--font-mono);font-size:10px;font-weight:700;
-}
+.badge-count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:var(--r-pill);background:var(--electric-blue);color:var(--void);font-family:var(--font-mono);font-size:10px;font-weight:700;}
 
-/* ============ STATUS BANNER ============ */
-.status-banner{
-  display:none;margin-bottom:var(--sp-20);padding:12px 16px;
-  border-radius:var(--r-feature);font-size:13px;font-weight:500;
-  letter-spacing:-0.005em;align-items:center;gap:10px;
-}
+.status-banner{display:none;margin-bottom:var(--sp-20);padding:12px 16px;border-radius:var(--r-feature);font-size:13px;font-weight:500;align-items:flex-start;gap:10px;}
 .status-banner.show{display:flex;}
-.status-banner.ok{
-  background:rgba(76,217,99,0.08);border:1px solid rgba(76,217,99,0.35);
-  color:#8ce6a1;
-}
-.status-banner.err{
-  background:rgba(255,0,34,0.08);border:1px solid rgba(255,0,34,0.35);
-  color:#ff7a89;
-}
-.status-banner.info{
-  background:var(--midnight-tide);border:1px solid var(--deep-current);
-  color:var(--pearl);
-}
-.status-banner .dot{
-  width:8px;height:8px;border-radius:50%;flex:none;
-  background:currentColor;box-shadow:0 0 8px currentColor;
-}
+.status-banner.ok{background:rgba(76,217,99,0.08);border:1px solid rgba(76,217,99,0.35);color:#8ce6a1;}
+.status-banner.err{background:rgba(255,0,34,0.08);border:1px solid rgba(255,0,34,0.35);color:#ff7a89;}
+.status-banner.info{background:var(--midnight-tide);border:1px solid var(--deep-current);color:var(--pearl);}
+.status-banner .dot{width:8px;height:8px;border-radius:50%;flex:none;background:currentColor;box-shadow:0 0 8px currentColor;margin-top:5px;}
+.status-banner .body{flex:1;min-width:0;}
+.status-banner .body strong{display:block;margin-bottom:2px;}
+.status-banner .body .detail{font-family:var(--font-mono);font-size:11px;opacity:0.85;word-break:break-all;margin-top:4px;white-space:pre-wrap;}
 
-/* ============ HERO ============ */
-.eyebrow{
-  display:inline-flex;align-items:center;gap:8px;padding:6px 12px;
-  border:1px solid var(--electric-blue);border-radius:var(--r-pill);
-  font-size:11px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;
-  color:var(--electric-blue);margin-bottom:var(--sp-20);background:transparent;
-}
-.eyebrow::before{
-  content:'';width:5px;height:5px;border-radius:50%;
-  background:var(--electric-blue);box-shadow:0 0 8px var(--electric-blue);
-}
-h1.hero-title{
-  font-family:var(--font-display);font-size:54px;line-height:0.95;
-  letter-spacing:-0.04em;font-weight:500;margin:0 0 var(--sp-20);
-  color:var(--bone);max-width:820px;
-}
-.lede{
-  font-size:16px;line-height:1.5;color:var(--mist);max-width:600px;
-  margin:0 0 var(--sp-47);letter-spacing:-0.005em;
-}
-@media(max-width:640px){
-  h1.hero-title{font-size:38px;letter-spacing:-0.035em;}
-  .lede{font-size:15px;}
-}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--electric-blue);border-radius:var(--r-pill);font-size:11px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--electric-blue);margin-bottom:var(--sp-20);}
+.eyebrow::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--electric-blue);box-shadow:0 0 8px var(--electric-blue);}
+h1.hero-title{font-family:var(--font-display);font-size:54px;line-height:0.95;letter-spacing:-0.04em;font-weight:500;margin:0 0 var(--sp-20);color:var(--bone);max-width:820px;}
+.lede{font-size:16px;line-height:1.5;color:var(--mist);max-width:600px;margin:0 0 var(--sp-47);}
+@media(max-width:640px){h1.hero-title{font-size:38px;} .lede{font-size:15px;}}
 
-/* ============ STEPS ============ */
-.steps{
-  display:flex;gap:var(--sp-8);margin-bottom:var(--sp-47);
-  padding-bottom:var(--sp-20);border-bottom:1px solid var(--graphite);
-  overflow-x:auto;scrollbar-width:none;
-}
+.steps{display:flex;gap:var(--sp-8);margin-bottom:var(--sp-47);padding-bottom:var(--sp-20);border-bottom:1px solid var(--graphite);overflow-x:auto;scrollbar-width:none;}
 .steps::-webkit-scrollbar{display:none;}
-.step-tab{
-  flex:1 1 0;min-width:120px;padding:var(--sp-10) var(--sp-14);
-  background:transparent;border:1px solid transparent;
-  border-radius:var(--r-pill);cursor:pointer;text-align:center;
-  font-family:var(--font-body);font-size:12px;font-weight:500;
-  color:var(--mist);letter-spacing:-0.005em;transition:all .25s ease;
-  display:flex;align-items:center;justify-content:center;
-  gap:8px;white-space:nowrap;
-}
+.step-tab{flex:1 1 0;min-width:120px;padding:var(--sp-10) var(--sp-14);background:transparent;border:1px solid transparent;border-radius:var(--r-pill);cursor:pointer;text-align:center;font-family:var(--font-body);font-size:12px;font-weight:500;color:var(--mist);transition:all .25s ease;display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;}
 .step-tab:hover{color:var(--pearl);}
-.step-tab.active{
-  background:var(--obsidian);border-color:var(--electric-blue);
-  color:var(--bone);box-shadow:var(--shadow-glow);
-}
+.step-tab.active{background:var(--obsidian);border-color:var(--electric-blue);color:var(--bone);box-shadow:var(--shadow-glow);}
 .step-tab.done{color:var(--pearl);border-color:var(--slate);}
-.step-num{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:18px;height:18px;border-radius:50%;background:var(--slate);
-  color:var(--mist);font-family:var(--font-mono);font-size:10px;
-  font-weight:700;flex:none;
-}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--slate);color:var(--mist);font-family:var(--font-mono);font-size:10px;font-weight:700;flex:none;}
 .step-tab.active .step-num{background:var(--electric-blue);color:var(--void);}
-.step-tab.done .step-num{
-  background:transparent;color:var(--electric-blue);
-  border:1px solid var(--electric-blue);
-}
+.step-tab.done .step-num{background:transparent;color:var(--electric-blue);border:1px solid var(--electric-blue);}
 
-/* ============ STEP CONTENT ============ */
 .step{display:none;animation:fadeUp .35s ease;}
 .step.active{display:block;}
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(8px);}
-  to{opacity:1;transform:translateY(0);}
-}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);}}
 .step-head{margin-bottom:var(--sp-32);}
-.step-head h2{
-  font-family:var(--font-display);font-size:32px;line-height:1.05;
-  letter-spacing:-0.04em;font-weight:500;margin:0 0 var(--sp-10);
-  color:var(--bone);
-}
-.step-head p{
-  font-size:14px;color:var(--mist);margin:0;max-width:560px;
-  letter-spacing:-0.005em;
-}
+.step-head h2{font-family:var(--font-display);font-size:32px;line-height:1.05;letter-spacing:-0.04em;font-weight:500;margin:0 0 var(--sp-10);color:var(--bone);}
+.step-head p{font-size:14px;color:var(--mist);margin:0;max-width:560px;}
 @media(max-width:640px){.step-head h2{font-size:26px;}}
 
-/* ============ CARDS ============ */
-.card{
-  background:var(--graphite);border:1px solid var(--slate);
-  border-radius:var(--r-large);padding:var(--sp-40);
-  margin-bottom:var(--sp-20);transition:border-color .3s, box-shadow .3s;
-}
+.card{background:var(--graphite);border:1px solid var(--slate);border-radius:var(--r-large);padding:var(--sp-40);margin-bottom:var(--sp-20);transition:border-color .3s, box-shadow .3s;}
 .card.deep{background:var(--obsidian);}
-.card h3{
-  font-family:var(--font-body);font-size:15px;font-weight:600;
-  margin:0 0 var(--sp-20);color:var(--bone);letter-spacing:-0.02em;
-}
-.card.error{
-  border-color:var(--alert-red);
-  box-shadow:0 0 0 3px rgba(255,0,34,0.15);
-}
+.card h3{font-size:15px;font-weight:600;margin:0 0 var(--sp-20);color:var(--bone);letter-spacing:-0.02em;}
+.card.error{border-color:var(--alert-red);box-shadow:0 0 0 3px rgba(255,0,34,0.15);}
 @media(max-width:640px){.card{padding:var(--sp-25);}}
 
-/* ============ FIELDS ============ */
 .field{margin-bottom:var(--sp-20);}
 .field:last-child{margin-bottom:0;}
-.field > label,
-.field-label{
-  display:block;font-size:12px;font-weight:500;color:var(--mist);
-  margin-bottom:var(--sp-8);letter-spacing:-0.005em;
-}
+.field > label,.field-label{display:block;font-size:12px;font-weight:500;color:var(--mist);margin-bottom:var(--sp-8);}
 .req{color:var(--electric-blue);margin-left:3px;}
-.hint{
-  display:block;font-size:11px;color:var(--smoke);font-weight:400;
-  margin-top:6px;letter-spacing:0.01em;
-}
-input[type="text"],input[type="tel"],input[type="email"],input[type="number"],
-input[type="url"],select,textarea{
-  width:100%;padding:11px 14px;font-size:14px;color:var(--bone);
-  background:var(--obsidian);border:1px solid var(--slate);
-  border-radius:var(--r-input);outline:none;
-  transition:border-color .2s, box-shadow .2s, background .2s;
-  letter-spacing:-0.005em;line-height:1.35;
-}
+.hint{display:block;font-size:11px;color:var(--smoke);font-weight:400;margin-top:6px;}
+input[type="text"],input[type="tel"],input[type="email"],input[type="number"],input[type="url"],select,textarea{width:100%;padding:11px 14px;font-size:14px;color:var(--bone);background:var(--obsidian);border:1px solid var(--slate);border-radius:var(--r-input);outline:none;transition:border-color .2s, box-shadow .2s, background .2s;line-height:1.35;}
 input::placeholder,textarea::placeholder{color:var(--smoke);}
-input:focus,select:focus,textarea:focus{
-  background:var(--slate);border-color:var(--electric-blue);
-  box-shadow:0 0 0 3px rgba(0,153,255,0.12);
-}
+input:focus,select:focus,textarea:focus{background:var(--slate);border-color:var(--electric-blue);box-shadow:0 0 0 3px rgba(0,153,255,0.12);}
 textarea{resize:vertical;min-height:96px;line-height:1.5;}
-select{
-  appearance:none;
-  background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999999' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 12px center;
-  background-size:16px;padding-right:40px;
-}
+select{appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999999' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:16px;padding-right:40px;}
 select option{background:var(--obsidian);color:var(--bone);}
-.counter{
-  float:right;font-family:var(--font-mono);font-size:11px;
-  font-weight:400;color:var(--smoke);letter-spacing:0;
-}
+.counter{float:right;font-family:var(--font-mono);font-size:11px;font-weight:400;color:var(--smoke);}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--sp-20);}
 @media(max-width:560px){.grid-2{grid-template-columns:1fr;}}
 
-/* ============ CHIPS ============ */
 .chips{display:flex;flex-wrap:wrap;gap:var(--sp-8);}
 .chip{position:relative;display:inline-flex;}
 .chip input{position:absolute;opacity:0;width:0;height:0;}
-.chip span{
-  display:inline-block;padding:8px 14px;font-size:12px;font-weight:500;
-  border:1px solid var(--slate);border-radius:var(--r-pill);
-  background:var(--obsidian);color:var(--mist);cursor:pointer;
-  user-select:none;transition:all .2s ease;letter-spacing:-0.005em;
-}
+.chip span{display:inline-block;padding:8px 14px;font-size:12px;font-weight:500;border:1px solid var(--slate);border-radius:var(--r-pill);background:var(--obsidian);color:var(--mist);cursor:pointer;user-select:none;transition:all .2s ease;}
 .chip span:hover{border-color:var(--fog);color:var(--pearl);}
-.chip input:checked + span{
-  border-color:var(--electric-blue);background:var(--midnight-tide);
-  color:var(--bone);
-  box-shadow:0 0 0 1px var(--electric-blue), var(--shadow-glow);
-}
+.chip input:checked + span{border-color:var(--electric-blue);background:var(--midnight-tide);color:var(--bone);box-shadow:0 0 0 1px var(--electric-blue), var(--shadow-glow);}
 
-/* ============ CUSTOM OPTIONS ============ */
 .custom-add{display:flex;gap:var(--sp-8);margin-top:var(--sp-14);}
 .custom-add input{flex:1;}
 .custom-list{display:flex;flex-wrap:wrap;gap:var(--sp-8);margin-top:var(--sp-14);}
 .custom-list:empty{display:none;}
-.custom-chip{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:6px 10px 6px 12px;font-size:12px;font-weight:500;
-  background:var(--midnight-tide);border:1px solid var(--deep-current);
-  border-radius:var(--r-pill);color:var(--pearl);
-}
-.custom-chip button{
-  background:none;border:none;padding:0;width:16px;height:16px;
-  line-height:1;font-size:14px;color:var(--mist);cursor:pointer;
-  border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
-}
+.custom-chip{display:inline-flex;align-items:center;gap:8px;padding:6px 10px 6px 12px;font-size:12px;font-weight:500;background:var(--midnight-tide);border:1px solid var(--deep-current);border-radius:var(--r-pill);color:var(--pearl);}
+.custom-chip button{background:none;border:none;padding:0;width:16px;height:16px;line-height:1;font-size:14px;color:var(--mist);cursor:pointer;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;}
 .custom-chip button:hover{color:var(--bone);background:rgba(255,255,255,0.08);}
 
-/* ============ COST LIST ============ */
 .cost-list{display:flex;flex-direction:column;gap:var(--sp-8);}
-.cost-item{
-  display:flex;align-items:center;gap:var(--sp-14);padding:12px 14px;
-  background:var(--obsidian);border:1px solid var(--slate);
-  border-radius:var(--r-feature);transition:border-color .2s, background .2s;
-  flex-wrap:wrap;
-}
+.cost-item{display:flex;align-items:center;gap:var(--sp-14);padding:12px 14px;background:var(--obsidian);border:1px solid var(--slate);border-radius:var(--r-feature);transition:border-color .2s, background .2s;flex-wrap:wrap;}
 .cost-item.active{border-color:var(--deep-current);background:var(--midnight-tide);}
-.cost-check{
-  display:flex;align-items:center;gap:10px;cursor:pointer;
-  flex:1;min-width:180px;position:relative;
-}
+.cost-check{display:flex;align-items:center;gap:10px;cursor:pointer;flex:1;min-width:180px;position:relative;}
 .cost-check input{position:absolute;opacity:0;width:0;height:0;}
-.check-mark{
-  width:18px;height:18px;border-radius:5px;
-  border:1.5px solid var(--fog);background:transparent;
-  flex:none;display:inline-flex;align-items:center;justify-content:center;
-  transition:all .2s;position:relative;
-}
-.cost-check input:checked + .check-mark{
-  background:var(--electric-blue);border-color:var(--electric-blue);
-}
-.cost-check input:checked + .check-mark::after{
-  content:'';width:4px;height:8px;
-  border:solid var(--void);border-width:0 2px 2px 0;
-  transform:rotate(45deg) translate(-1px, -1px);
-}
-.cost-name{
-  font-size:13px;font-weight:500;color:var(--bone);
-  letter-spacing:-0.005em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-}
-.cost-name .tag{
-  display:inline-block;margin-left:8px;padding:1px 7px;
-  border-radius:var(--r-pill);font-family:var(--font-mono);
-  font-size:9px;font-weight:700;letter-spacing:0.06em;
-  text-transform:uppercase;background:var(--midnight-tide);
-  color:var(--electric-blue);border:1px solid var(--deep-current);
-  vertical-align:middle;
-}
-.cost-prices{
-  display:flex;gap:10px;flex-wrap:wrap;
-  opacity:0.35;transition:opacity .2s;pointer-events:none;
-}
+.check-mark{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--fog);background:transparent;flex:none;display:inline-flex;align-items:center;justify-content:center;transition:all .2s;position:relative;}
+.cost-check input:checked + .check-mark{background:var(--electric-blue);border-color:var(--electric-blue);}
+.cost-check input:checked + .check-mark::after{content:'';width:4px;height:8px;border:solid var(--void);border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px, -1px);}
+.cost-name{font-size:13px;font-weight:500;color:var(--bone);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cost-name .tag{display:inline-block;margin-left:8px;padding:1px 7px;border-radius:var(--r-pill);font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;background:var(--midnight-tide);color:var(--electric-blue);border:1px solid var(--deep-current);vertical-align:middle;}
+.cost-prices{display:flex;gap:10px;flex-wrap:wrap;opacity:0.35;transition:opacity .2s;pointer-events:none;}
 .cost-item.active .cost-prices{opacity:1;pointer-events:auto;}
-.price-field{
-  display:flex;align-items:center;gap:6px;
-  font-family:var(--font-mono);font-size:11px;color:var(--mist);
-  letter-spacing:0.02em;
-}
-.price-field input{
-  width:92px;padding:7px 9px;font-size:12px;
-  font-family:var(--font-mono);text-align:right;
-  background:var(--slate);border:1px solid var(--ash);
-}
+.price-field{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;color:var(--mist);}
+.price-field input{width:92px;padding:7px 9px;font-size:12px;font-family:var(--font-mono);text-align:right;background:var(--slate);border:1px solid var(--ash);}
 .price-field input:disabled{opacity:0.4;cursor:not-allowed;}
-@media(max-width:640px){
-  .cost-item{flex-direction:column;align-items:stretch;}
-  .cost-check{min-width:0;}
-  .cost-prices{justify-content:flex-end;}
-}
+@media(max-width:640px){.cost-item{flex-direction:column;align-items:stretch;} .cost-check{min-width:0;} .cost-prices{justify-content:flex-end;}}
 
-/* ============ BUTTONS ============ */
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  padding:10px 18px;font-family:var(--font-body);font-size:12px;
-  font-weight:500;letter-spacing:-0.005em;border-radius:var(--r-pill);
-  cursor:pointer;border:1px solid transparent;transition:all .25s ease;
-  text-decoration:none;white-space:nowrap;
-}
-.btn-primary{
-  background:var(--vivid-violet);color:var(--bone);border-color:var(--vivid-violet);
-}
-.btn-primary:hover{
-  background:#0052d6;border-color:#0052d6;
-  box-shadow:0 0 24px rgba(0,102,255,0.35);
-}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;font-family:var(--font-body);font-size:12px;font-weight:500;border-radius:var(--r-pill);cursor:pointer;border:1px solid transparent;transition:all .25s ease;text-decoration:none;white-space:nowrap;}
+.btn-primary{background:var(--vivid-violet);color:var(--bone);border-color:var(--vivid-violet);}
+.btn-primary:hover{background:#0052d6;border-color:#0052d6;box-shadow:0 0 24px rgba(0,102,255,0.35);}
 .btn-primary:disabled{opacity:.4;cursor:not-allowed;}
-.btn-ghost{
-  background:rgba(255,255,255,0.04);border-color:var(--slate);color:var(--pearl);
-}
-.btn-ghost:hover{
-  background:rgba(255,255,255,0.08);border-color:var(--fog);color:var(--bone);
-}
-.btn-danger{
-  background:transparent;border-color:rgba(255,0,34,0.3);color:#ff7a89;
-}
-.btn-danger:hover{
-  background:rgba(255,0,34,0.08);border-color:var(--alert-red);color:#ff9aa5;
-}
+.btn-ghost{background:rgba(255,255,255,0.04);border-color:var(--slate);color:var(--pearl);}
+.btn-ghost:hover{background:rgba(255,255,255,0.08);border-color:var(--fog);color:var(--bone);}
+.btn-danger{background:transparent;border-color:rgba(255,0,34,0.3);color:#ff7a89;}
+.btn-danger:hover{background:rgba(255,0,34,0.08);border-color:var(--alert-red);color:#ff9aa5;}
 .btn-sm{padding:6px 14px;font-size:11px;}
 
-/* ============ STEP NAV ============ */
-.step-nav{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:var(--sp-15);margin-top:var(--sp-40);
-  padding-top:var(--sp-30);border-top:1px solid var(--graphite);
-}
+.step-nav{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-15);margin-top:var(--sp-40);padding-top:var(--sp-30);border-top:1px solid var(--graphite);}
 .step-nav .spacer{flex:1;}
 
-/* ============ FILE DROP ============ */
-.file-drop{
-  display:block;border:1px dashed var(--slate);
-  border-radius:var(--r-feature);padding:var(--sp-40) var(--sp-25);
-  text-align:center;cursor:pointer;background:var(--obsidian);
-  transition:border-color .25s ease, background .25s ease, box-shadow .25s ease;
-}
-.file-drop:hover{
-  border-color:var(--electric-blue);background:var(--graphite);
-  box-shadow:var(--shadow-glow);
-}
+.file-drop{display:block;border:1px dashed var(--slate);border-radius:var(--r-feature);padding:var(--sp-40) var(--sp-25);text-align:center;cursor:pointer;background:var(--obsidian);transition:border-color .25s ease, background .25s ease, box-shadow .25s ease;}
+.file-drop:hover{border-color:var(--electric-blue);background:var(--graphite);box-shadow:var(--shadow-glow);}
 .file-drop input{display:none;}
-.file-drop .icon{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:48px;height:48px;border-radius:var(--r-icon);
-  background:var(--slate);border:1px solid var(--ash);
-  margin-bottom:var(--sp-14);color:var(--electric-blue);
-}
-.file-drop .label{
-  display:block;font-size:14px;font-weight:500;color:var(--bone);
-  margin-bottom:4px;letter-spacing:-0.005em;
-}
-.file-drop .sub{
-  display:block;font-size:11px;color:var(--smoke);
-  letter-spacing:0.02em;font-family:var(--font-mono);
-}
-.file-drop.has-error{
-  border-color:var(--alert-red);box-shadow:0 0 0 3px rgba(255,0,34,0.12);
-}
-.drop-required{
-  display:inline-flex;align-items:center;gap:6px;
-  font-family:var(--font-mono);font-size:10px;font-weight:700;
-  letter-spacing:0.08em;color:var(--electric-blue);
-  margin-bottom:var(--sp-14);
-}
+.file-drop .icon{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:var(--r-icon);background:var(--slate);border:1px solid var(--ash);margin-bottom:var(--sp-14);color:var(--electric-blue);}
+.file-drop .label{display:block;font-size:14px;font-weight:500;color:var(--bone);margin-bottom:4px;}
+.file-drop .sub{display:block;font-size:11px;color:var(--smoke);font-family:var(--font-mono);}
+.file-drop.has-error{border-color:var(--alert-red);box-shadow:0 0 0 3px rgba(255,0,34,0.12);}
+.drop-required{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0.08em;color:var(--electric-blue);margin-bottom:var(--sp-14);}
 
-/* ============ FILE PREVIEW ============ */
 .file-preview{margin-top:var(--sp-20);}
-.file-item{
-  display:flex;align-items:center;gap:var(--sp-14);
-  padding:12px 14px;background:var(--obsidian);
-  border:1px solid var(--slate);border-radius:var(--r-feature);
-  margin-bottom:8px;transition:border-color .2s;
-}
+.file-item{display:flex;align-items:center;gap:var(--sp-14);padding:12px 14px;background:var(--obsidian);border:1px solid var(--slate);border-radius:var(--r-feature);margin-bottom:8px;transition:border-color .2s;}
 .file-item:hover{border-color:var(--ash);}
-.file-thumb{
-  width:44px;height:44px;border-radius:var(--r-icon);
-  background:var(--slate);flex:none;display:flex;
-  align-items:center;justify-content:center;color:var(--mist);
-  overflow:hidden;font-family:var(--font-mono);font-size:9px;
-  font-weight:700;letter-spacing:0.06em;
-}
+.file-thumb{width:44px;height:44px;border-radius:var(--r-icon);background:var(--slate);flex:none;display:flex;align-items:center;justify-content:center;color:var(--mist);overflow:hidden;font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:0.06em;}
 .file-thumb img{width:100%;height:100%;object-fit:cover;}
 .file-meta{flex:1;min-width:0;}
-.file-meta strong{
-  display:block;font-size:13px;font-weight:500;color:var(--bone);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  letter-spacing:-0.005em;
-}
-.file-meta span{
-  display:block;font-family:var(--font-mono);font-size:10px;
-  color:var(--smoke);letter-spacing:0.02em;margin-top:2px;
-}
-.file-meta .url-link{
-  display:block;font-family:var(--font-mono);font-size:10px;
-  color:var(--electric-blue);text-decoration:none;margin-top:2px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
+.file-meta strong{display:block;font-size:13px;font-weight:500;color:var(--bone);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.file-meta span{display:block;font-family:var(--font-mono);font-size:10px;color:var(--smoke);margin-top:2px;}
+.file-meta .url-link{display:block;font-family:var(--font-mono);font-size:10px;color:var(--electric-blue);text-decoration:none;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .file-meta .url-link:hover{text-decoration:underline;}
-.file-remove{
-  background:none;border:1px solid transparent;padding:6px;
-  border-radius:8px;cursor:pointer;color:var(--smoke);
-  font-size:16px;line-height:1;transition:all .2s;
-}
-.file-remove:hover{
-  color:var(--alert-red);background:rgba(255,0,34,0.08);
-  border-color:rgba(255,0,34,0.2);
-}
+.file-remove{background:none;border:1px solid transparent;padding:6px;border-radius:8px;cursor:pointer;color:var(--smoke);font-size:16px;line-height:1;transition:all .2s;}
+.file-remove:hover{color:var(--alert-red);background:rgba(255,0,34,0.08);border-color:rgba(255,0,34,0.2);}
 
-/* ============ ERROR ============ */
-.error-text{
-  display:none;margin-top:var(--sp-10);font-size:12px;
-  font-weight:500;color:var(--alert-red);letter-spacing:-0.005em;
-}
+.error-text{display:none;margin-top:var(--sp-10);font-size:12px;font-weight:500;color:var(--alert-red);}
 .error-text.show{display:block;}
 
-/* ============ TOAST ============ */
-.toast{
-  display:none;margin:var(--sp-40) auto 0;max-width:520px;
-  padding:16px 22px;border-radius:var(--r-pill);font-size:13px;
-  font-weight:500;text-align:center;background:var(--midnight-tide);
-  border:1px solid var(--electric-blue);color:var(--bone);
-  box-shadow:var(--shadow-glow);letter-spacing:-0.005em;
-}
+.toast{display:none;margin:var(--sp-40) auto 0;max-width:520px;padding:16px 22px;border-radius:var(--r-pill);font-size:13px;font-weight:500;text-align:center;background:var(--midnight-tide);border:1px solid var(--electric-blue);color:var(--bone);box-shadow:var(--shadow-glow);}
 .toast.show{display:block;animation:fadeUp .35s ease;}
 
-/* ============ HISTORY DRAWER ============ */
-.drawer-backdrop{
-  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);
-  z-index:90;backdrop-filter:blur(4px);
-}
+.drawer-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:90;backdrop-filter:blur(4px);}
 .drawer-backdrop.show{display:block;animation:fade .25s ease;}
 @keyframes fade{from{opacity:0;}to{opacity:1;}}
-
-.drawer{
-  position:fixed;top:0;right:0;bottom:0;width:min(520px,100vw);
-  background:var(--void);border-left:1px solid var(--slate);
-  z-index:100;display:flex;flex-direction:column;
-  transform:translateX(100%);transition:transform .35s cubic-bezier(.22,.61,.36,1);
-}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(520px,100vw);background:var(--void);border-left:1px solid var(--slate);z-index:100;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.22,.61,.36,1);}
 .drawer.show{transform:translateX(0);}
-
-.drawer-head{
-  padding:var(--sp-30) var(--sp-30) var(--sp-20);
-  border-bottom:1px solid var(--graphite);
-  display:flex;justify-content:space-between;align-items:flex-start;gap:var(--sp-20);
-}
-.drawer-head h2{
-  font-family:var(--font-display);font-size:24px;line-height:1.1;
-  letter-spacing:-0.03em;font-weight:500;margin:0 0 4px;color:var(--bone);
-}
-.drawer-head p{
-  font-size:12px;color:var(--mist);margin:0;
-  font-family:var(--font-mono);letter-spacing:0.02em;
-}
-.drawer-close{
-  background:transparent;border:1px solid var(--slate);color:var(--mist);
-  width:32px;height:32px;border-radius:8px;cursor:pointer;
-  display:inline-flex;align-items:center;justify-content:center;
-  font-size:16px;flex:none;transition:all .2s;
-}
+.drawer-head{padding:var(--sp-30) var(--sp-30) var(--sp-20);border-bottom:1px solid var(--graphite);display:flex;justify-content:space-between;align-items:flex-start;gap:var(--sp-20);}
+.drawer-head h2{font-family:var(--font-display);font-size:24px;line-height:1.1;letter-spacing:-0.03em;font-weight:500;margin:0 0 4px;color:var(--bone);}
+.drawer-head p{font-size:12px;color:var(--mist);margin:0;font-family:var(--font-mono);}
+.drawer-close{background:transparent;border:1px solid var(--slate);color:var(--mist);width:32px;height:32px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:16px;flex:none;transition:all .2s;}
 .drawer-close:hover{background:var(--slate);color:var(--bone);}
-
-.drawer-body{
-  flex:1;overflow-y:auto;padding:var(--sp-20) var(--sp-30) var(--sp-30);
-}
-.drawer-foot{
-  padding:var(--sp-20) var(--sp-30);
-  border-top:1px solid var(--graphite);
-  display:flex;justify-content:space-between;gap:var(--sp-8);
-}
-
-.history-empty{
-  padding:var(--sp-60) var(--sp-20);text-align:center;
-  color:var(--mist);font-size:13px;letter-spacing:-0.005em;
-  border:1px dashed var(--slate);border-radius:var(--r-feature);
-}
-.history-empty strong{
-  display:block;color:var(--pearl);font-size:14px;margin-bottom:6px;
-  font-weight:500;
-}
-
-.history-item{
-  background:var(--graphite);border:1px solid var(--slate);
-  border-radius:var(--r-feature);padding:var(--sp-20);
-  margin-bottom:var(--sp-14);transition:border-color .2s;
-}
+.drawer-body{flex:1;overflow-y:auto;padding:var(--sp-20) var(--sp-30) var(--sp-30);}
+.drawer-foot{padding:var(--sp-20) var(--sp-30);border-top:1px solid var(--graphite);display:flex;justify-content:space-between;gap:var(--sp-8);}
+.history-empty{padding:var(--sp-60) var(--sp-20);text-align:center;color:var(--mist);font-size:13px;border:1px dashed var(--slate);border-radius:var(--r-feature);}
+.history-empty strong{display:block;color:var(--pearl);font-size:14px;margin-bottom:6px;font-weight:500;}
+.history-item{background:var(--graphite);border:1px solid var(--slate);border-radius:var(--r-feature);padding:var(--sp-20);margin-bottom:var(--sp-14);transition:border-color .2s;}
 .history-item:hover{border-color:var(--ash);}
-.history-item.err{
-  border-color:rgba(255,0,34,0.35);
-  background:linear-gradient(180deg, rgba(255,0,34,0.04), transparent);
-}
-.history-item-head{
-  display:flex;justify-content:space-between;align-items:flex-start;
-  gap:var(--sp-14);margin-bottom:var(--sp-14);
-}
-.history-item-head strong{
-  display:block;font-size:14px;font-weight:600;color:var(--bone);
-  letter-spacing:-0.01em;line-height:1.3;
-  word-break:break-word;
-}
-.history-meta{
-  display:flex;gap:var(--sp-10);align-items:center;flex-wrap:wrap;
-  margin-top:6px;
-}
-.history-meta span{
-  font-family:var(--font-mono);font-size:10px;color:var(--mist);
-  letter-spacing:0.02em;
-}
-.history-meta .status-pill{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:2px 8px;border-radius:var(--r-pill);
-  font-family:var(--font-mono);font-size:9px;font-weight:700;
-  letter-spacing:0.06em;text-transform:uppercase;
-}
-.history-meta .status-pill.ok{
-  background:rgba(76,217,99,0.12);color:#8ce6a1;
-  border:1px solid rgba(76,217,99,0.3);
-}
-.history-meta .status-pill.err{
-  background:rgba(255,0,34,0.12);color:#ff7a89;
-  border:1px solid rgba(255,0,34,0.3);
-}
-.history-summary{
-  display:flex;flex-direction:column;gap:4px;
-  padding:var(--sp-14) 0;
-  border-top:1px solid var(--slate);
-  border-bottom:1px solid var(--slate);
-  margin-bottom:var(--sp-14);
-}
-.history-summary .row{
-  display:flex;justify-content:space-between;gap:var(--sp-14);
-  font-size:12px;letter-spacing:-0.005em;
-}
+.history-item.err{border-color:rgba(255,0,34,0.35);background:linear-gradient(180deg, rgba(255,0,34,0.04), transparent);}
+.history-item-head{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--sp-14);margin-bottom:var(--sp-14);}
+.history-item-head strong{display:block;font-size:14px;font-weight:600;color:var(--bone);line-height:1.3;word-break:break-word;}
+.history-meta{display:flex;gap:var(--sp-10);align-items:center;flex-wrap:wrap;margin-top:6px;}
+.history-meta span{font-family:var(--font-mono);font-size:10px;color:var(--mist);}
+.history-meta .status-pill{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:var(--r-pill);font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;}
+.history-meta .status-pill.ok{background:rgba(76,217,99,0.12);color:#8ce6a1;border:1px solid rgba(76,217,99,0.3);}
+.history-meta .status-pill.err{background:rgba(255,0,34,0.12);color:#ff7a89;border:1px solid rgba(255,0,34,0.3);}
+.history-summary{display:flex;flex-direction:column;gap:4px;padding:var(--sp-14) 0;border-top:1px solid var(--slate);border-bottom:1px solid var(--slate);margin-bottom:var(--sp-14);}
+.history-summary .row{display:flex;justify-content:space-between;gap:var(--sp-14);font-size:12px;}
 .history-summary .row .lbl{color:var(--smoke);}
-.history-summary .row .val{
-  color:var(--pearl);text-align:right;
-  max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-}
-.history-actions{
-  display:flex;gap:var(--sp-8);flex-wrap:wrap;
-}
+.history-summary .row .val{color:var(--pearl);text-align:right;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.history-actions{display:flex;gap:var(--sp-8);flex-wrap:wrap;}
 
-/* ============ FOOTER ============ */
-.footnote{
-  text-align:center;font-family:var(--font-mono);font-size:10px;
-  color:var(--smoke);margin-top:var(--sp-120);
-  letter-spacing:0.08em;text-transform:uppercase;
-}
-.divider{
-  height:1px;
-  background:linear-gradient(90deg, transparent, var(--slate), transparent);
-  margin:var(--sp-40) 0;border:none;
-}
+.footnote{text-align:center;font-family:var(--font-mono);font-size:10px;color:var(--smoke);margin-top:var(--sp-120);letter-spacing:0.08em;text-transform:uppercase;}
+.divider{height:1px;background:linear-gradient(90deg, transparent, var(--slate), transparent);margin:var(--sp-40) 0;border:none;}
 
-/* ============ iOS ZOOM FIX ============ */
-@media (hover: none) and (pointer: coarse),
-       (max-width: 768px) {
-  input[type="text"],input[type="tel"],input[type="email"],
-  input[type="number"],input[type="url"],input[type="search"],
-  select,textarea,
-  .custom-add input,.price-field input,.cost-item input {
-    font-size: 16px !important;
-  }
+@media (hover: none) and (pointer: coarse),(max-width: 768px) {
+  input[type="text"],input[type="tel"],input[type="email"],input[type="number"],input[type="url"],input[type="search"],select,textarea,.custom-add input,.price-field input,.cost-item input{font-size: 16px !important;}
 }
 </style>
 </head>
@@ -606,18 +216,18 @@ select option{background:var(--obsidian);color:var(--bone);}
       <div class="brand-sub">Hospitality Group</div>
     </div>
     <div class="header-actions">
-      <button type="button" class="btn btn-ghost btn-sm" id="btnTestWebhook">
-        Probar conexión
-      </button>
-      <button type="button" class="btn btn-ghost btn-sm" id="btnOpenHistory">
-        Historial <span class="badge-count" id="historyCount">0</span>
-      </button>
+      <button type="button" class="btn btn-ghost btn-sm" id="btnTestWebhook">Probar conexión</button>
+      <button type="button" class="btn btn-ghost btn-sm" id="btnViewPayload">Ver último payload</button>
+      <button type="button" class="btn btn-ghost btn-sm" id="btnOpenHistory">Historial <span class="badge-count" id="historyCount">0</span></button>
     </div>
   </header>
 
   <div class="status-banner" id="statusBanner">
     <span class="dot"></span>
-    <span id="statusText"></span>
+    <div class="body">
+      <strong id="statusText"></strong>
+      <div class="detail" id="statusDetail"></div>
+    </div>
   </div>
 
   <form id="productoForm" novalidate>
@@ -636,29 +246,14 @@ select option{background:var(--obsidian);color:var(--bone);}
         <button type="button" class="step-tab" data-goto="5"><span class="step-num">05</span> Insumos</button>
       </nav>
 
-      <div class="step-head">
-        <h2>Datos del solicitante</h2>
-        <p>¿Quién está solicitando el alta de este producto?</p>
-      </div>
+      <div class="step-head"><h2>Datos del solicitante</h2><p>¿Quién está solicitando el alta de este producto?</p></div>
 
       <div class="card">
-        <div class="field">
-          <label for="nombre">Nombre completo <span class="req">*</span></label>
-          <input type="text" id="nombre" name="nombre" required />
-        </div>
-        <div class="field">
-          <label for="area">Área <span class="req">*</span></label>
-          <input type="text" id="area" name="area" required />
-        </div>
+        <div class="field"><label for="nombre">Nombre completo <span class="req">*</span></label><input type="text" id="nombre" name="nombre" required /></div>
+        <div class="field"><label for="area">Área <span class="req">*</span></label><input type="text" id="area" name="area" required /></div>
         <div class="grid-2">
-          <div class="field">
-            <label for="telefono">Teléfono <span style="color:var(--smoke);font-weight:400;">(opcional)</span></label>
-            <input type="tel" id="telefono" name="telefono" />
-          </div>
-          <div class="field">
-            <label for="correo">Correo <span style="color:var(--smoke);font-weight:400;">(opcional)</span></label>
-            <input type="email" id="correo" name="correo" />
-          </div>
+          <div class="field"><label for="telefono">Teléfono <span style="color:var(--smoke);font-weight:400;">(opcional)</span></label><input type="tel" id="telefono" name="telefono" /></div>
+          <div class="field"><label for="correo">Correo <span style="color:var(--smoke);font-weight:400;">(opcional)</span></label><input type="email" id="correo" name="correo" /></div>
         </div>
       </div>
     </section>
@@ -673,10 +268,7 @@ select option{background:var(--obsidian);color:var(--bone);}
         <button type="button" class="step-tab" data-goto="5"><span class="step-num">05</span> Insumos</button>
       </nav>
 
-      <div class="step-head">
-        <h2>Datos del producto</h2>
-        <p>Información general del platillo o bebida a dar de alta.</p>
-      </div>
+      <div class="step-head"><h2>Datos del producto</h2><p>Información general del platillo o bebida a dar de alta.</p></div>
 
       <div class="card">
         <div class="field">
@@ -693,30 +285,20 @@ select option{background:var(--obsidian);color:var(--bone);}
             <label class="chip"><input type="radio" name="marca" value="Otro" data-otro="1" /><span>Otro</span></label>
           </div>
         </div>
-
         <div class="field" id="marcaOtroField" style="display:none;">
           <label for="marca_otro">Especifica la marca</label>
           <input type="text" id="marca_otro" name="marca_otro" placeholder="Nombre de la marca" />
         </div>
-
         <div class="field">
-          <label for="nombre_producto">
-            Nombre del producto <span class="req">*</span>
-            <span class="counter" id="cntNombre">0/30</span>
-          </label>
+          <label for="nombre_producto">Nombre del producto <span class="req">*</span> <span class="counter" id="cntNombre">0/30</span></label>
           <input type="text" id="nombre_producto" name="nombre_producto" maxlength="30" required />
           <span class="hint">Máx. 30 caracteres incluidos espacios.</span>
         </div>
-
         <div class="field">
-          <label for="descripcion_producto">
-            Descripción del producto <span class="req">*</span>
-            <span class="counter" id="cntDesc">0/180</span>
-          </label>
+          <label for="descripcion_producto">Descripción del producto <span class="req">*</span> <span class="counter" id="cntDesc">0/180</span></label>
           <textarea id="descripcion_producto" name="descripcion_producto" maxlength="180" required></textarea>
           <span class="hint">Máx. 180 caracteres incluidos espacios.</span>
         </div>
-
         <div class="field">
           <label for="categoria">Categoría del producto <span class="req">*</span></label>
           <select id="categoria" name="categoria" required>
@@ -727,7 +309,6 @@ select option{background:var(--obsidian);color:var(--bone);}
             <option>Otra</option>
           </select>
         </div>
-
         <div class="field">
           <span class="field-label">Válido para <span class="req">*</span></span>
           <div class="chips">
@@ -752,10 +333,7 @@ select option{background:var(--obsidian);color:var(--bone);}
         <button type="button" class="step-tab" data-goto="5"><span class="step-num">05</span> Insumos</button>
       </nav>
 
-      <div class="step-head">
-        <h2>Modificadores o agregadores</h2>
-        <p>Selecciona los modificadores aplicables y añade opciones personalizadas si es necesario.</p>
-      </div>
+      <div class="step-head"><h2>Modificadores o agregadores</h2><p>Selecciona los modificadores aplicables y añade opciones personalizadas si es necesario.</p></div>
 
       <div class="card">
         <div class="field">
@@ -797,20 +375,15 @@ select option{background:var(--obsidian);color:var(--bone);}
         </div>
 
         <div class="field" id="costListField" style="display:none;">
-          <span class="field-label">
-            Marca los modificadores que llevan costo y asigna sus precios <span class="req">*</span>
-          </span>
-          <span class="hint" style="margin-top:0;margin-bottom:var(--sp-14);display:block;">
-            Elige los modificadores a los que se les añadirá precio y define cuánto cuesta en Foodbot y en Apps. Ambos precios son obligatorios.
-          </span>
+          <span class="field-label">Marca los modificadores que llevan costo y asigna sus precios <span class="req">*</span></span>
+          <span class="hint" style="margin-top:0;margin-bottom:var(--sp-14);display:block;">Elige los modificadores a los que se les añadirá precio y define cuánto cuesta en Foodbot y en Apps. Ambos precios son obligatorios.</span>
           <div class="cost-list" id="costList"></div>
           <span class="error-text" id="errCost">Marca al menos un modificador y asigna sus precios Foodbot y Apps (mayor a 0).</span>
         </div>
 
         <div class="field">
           <label for="detalle_modificadores">¿Cómo deben visualizar los clientes estos modificadores en el producto?</label>
-          <textarea id="detalle_modificadores" name="detalle_modificadores"
-            placeholder="Ejemplo: Los clientes deben poder elegir si desean tallarines o arroz; también, como es un combo que lleva refresco, deben poder elegir su sabor; y deben poder elegir entre los distintos tamaños del platillo, que considera un precio adicional de +$20 el mediano y +$30 el grande, etc."></textarea>
+          <textarea id="detalle_modificadores" name="detalle_modificadores" placeholder="Ejemplo: Los clientes deben poder elegir si desean tallarines o arroz..."></textarea>
         </div>
       </div>
     </section>
@@ -825,22 +398,13 @@ select option{background:var(--obsidian);color:var(--bone);}
         <button type="button" class="step-tab" data-goto="5"><span class="step-num">05</span> Insumos</button>
       </nav>
 
-      <div class="step-head">
-        <h2>Precios e imagen</h2>
-        <p>Define los precios por canal y adjunta la fotografía del producto.</p>
-      </div>
+      <div class="step-head"><h2>Precios e imagen</h2><p>Define los precios por canal y adjunta la fotografía del producto.</p></div>
 
       <div class="card">
         <h3>Precios</h3>
         <div class="grid-2">
-          <div class="field">
-            <label for="precio_foodbot">Precio Foodbot (Ecom y POS) <span class="req">*</span></label>
-            <input type="number" id="precio_foodbot" name="precio_foodbot" step="0.01" min="0" placeholder="0.00" required />
-          </div>
-          <div class="field">
-            <label for="precio_apps">Precio apps <span class="req">*</span></label>
-            <input type="number" id="precio_apps" name="precio_apps" step="0.01" min="0" placeholder="0.00" required />
-          </div>
+          <div class="field"><label for="precio_foodbot">Precio Foodbot (Ecom y POS) <span class="req">*</span></label><input type="number" id="precio_foodbot" name="precio_foodbot" step="0.01" min="0" placeholder="0.00" required /></div>
+          <div class="field"><label for="precio_apps">Precio apps <span class="req">*</span></label><input type="number" id="precio_apps" name="precio_apps" step="0.01" min="0" placeholder="0.00" required /></div>
         </div>
       </div>
 
@@ -851,9 +415,7 @@ select option{background:var(--obsidian);color:var(--bone);}
           <span class="drop-required">● OBLIGATORIO</span>
           <span class="icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="3"/>
-              <circle cx="9" cy="9" r="2"/>
-              <path d="M21 15l-5-5L5 21"/>
+              <rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>
             </svg>
           </span>
           <span class="label">Haz clic para subir una imagen</span>
@@ -865,9 +427,7 @@ select option{background:var(--obsidian);color:var(--bone);}
 
       <div class="card">
         <h3>Comentarios adicionales</h3>
-        <div class="field" style="margin-bottom:0;">
-          <textarea id="comentarios" name="comentarios" placeholder="¿Algo que debamos saber sobre este producto?" style="min-height:110px;"></textarea>
-        </div>
+        <div class="field" style="margin-bottom:0;"><textarea id="comentarios" name="comentarios" placeholder="¿Algo que debamos saber sobre este producto?" style="min-height:110px;"></textarea></div>
       </div>
     </section>
 
@@ -881,32 +441,24 @@ select option{background:var(--obsidian);color:var(--bone);}
         <button type="button" class="step-tab active" data-goto="5"><span class="step-num">05</span> Insumos</button>
       </nav>
 
-      <div class="step-head">
-        <h2>Insumos y empaque</h2>
-        <p>Adjunta el archivo que contiene la receta, ficha técnica o listado de insumos requeridos para programar el descuento correcto en sistema.</p>
-      </div>
+      <div class="step-head"><h2>Insumos y empaque</h2><p>Adjunta el archivo que contiene la receta, ficha técnica o listado de insumos requeridos.</p></div>
 
       <div class="card deep">
         <h3>¿Qué se debe restar para la gestión de inventario?</h3>
-        <div class="field" style="margin-bottom:0;">
-          <textarea id="restar_inventario" name="restar_inventario"
-            placeholder="Describe brevemente qué insumos y empaques deben descontarse del inventario al vender este producto."></textarea>
-        </div>
+        <div class="field" style="margin-bottom:0;"><textarea id="restar_inventario" name="restar_inventario" placeholder="Describe brevemente qué insumos y empaques deben descontarse del inventario."></textarea></div>
       </div>
 
       <div class="card" id="cardReceta">
         <h3>Archivo de receta o insumos requeridos <span class="req">*</span></h3>
-        <p style="font-size:13px;color:var(--mist);margin:0 0 20px;line-height:1.5;letter-spacing:-0.005em;">
-          Sube la receta, ficha técnica o cualquier archivo que contenga la información de insumos y cantidades a programar. Puede ser una imagen, PDF, Excel o Word.
+        <p style="font-size:13px;color:var(--mist);margin:0 0 20px;line-height:1.5;">
+          Sube la receta, ficha técnica o cualquier archivo que contenga la información de insumos y cantidades a programar.
         </p>
         <label class="file-drop" for="archivos_receta" id="dropReceta">
           <input type="file" id="archivos_receta" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt" />
           <span class="drop-required">● OBLIGATORIO</span>
           <span class="icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="17 8 12 3 7 8"/>
-              <line x1="12" y1="3" x2="12" y2="15"/>
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
             </svg>
           </span>
           <span class="label">Haz clic o arrastra el archivo aquí</span>
@@ -943,16 +495,12 @@ select option{background:var(--obsidian);color:var(--bone);}
   <div class="drawer-body" id="historyBody">
     <div class="history-empty">
       <strong>Aún no hay solicitudes</strong>
-      Cuando envíes un formulario, aparecerá aquí para que puedas revisarlo o rellenarlo de nuevo.
+      Cuando envíes un formulario, aparecerá aquí.
     </div>
   </div>
   <div class="drawer-foot">
-    <button type="button" class="btn btn-danger btn-sm" id="btnClearHistory">
-      Borrar todo
-    </button>
-    <button type="button" class="btn btn-ghost btn-sm" id="btnCloseHistoryFoot">
-      Cerrar
-    </button>
+    <button type="button" class="btn btn-danger btn-sm" id="btnClearHistory">Borrar todo</button>
+    <button type="button" class="btn btn-ghost btn-sm" id="btnCloseHistoryFoot">Cerrar</button>
   </div>
 </aside>
 
@@ -970,15 +518,10 @@ const HISTORY_MAX = 30;
 document.addEventListener('DOMContentLoaded', function () {
 
   const state = {
-    current: 1,
-    total: 5,
-    imagenFile: null,
-    imagenUrl: '',
-    isUploading: false,
-    archivosReceta: [],
-    customMods: [],
-    modCosts: {},
-    history: []
+    current: 1, total: 5,
+    imagenFile: null, imagenUrl: '', isUploading: false,
+    archivosReceta: [], customMods: [], modCosts: {}, history: [],
+    lastPayload: ''
   };
 
   const form      = document.getElementById('productoForm');
@@ -995,48 +538,24 @@ document.addEventListener('DOMContentLoaded', function () {
   const checksArr = (name) => Array.from(form.querySelectorAll('input[name="' + name + '"]:checked')).map(i => String(i.value));
   const checks = (name) => checksArr(name).join(' | ');
 
-  function formatBytes(bytes) {
-    if (!bytes) return '0 B';
-    const k = 1024, units = ['B','KB','MB','GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return (bytes / Math.pow(k, i)).toFixed(1) + ' ' + units[i];
-  }
+  function formatBytes(b){if(!b)return'0 B';const k=1024,u=['B','KB','MB','GB'];const i=Math.floor(Math.log(b)/Math.log(k));return(b/Math.pow(k,i)).toFixed(1)+' '+u[i];}
+  function fmtDateTime(iso){try{return new Date(iso).toLocaleString('es-MX',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});}catch(e){return iso;}}
 
-  function fmtDateTime(iso) {
-    try {
-      const d = new Date(iso);
-      return d.toLocaleString('es-MX', {
-        day:'2-digit', month:'short', year:'numeric',
-        hour:'2-digit', minute:'2-digit'
-      });
-    } catch(e) { return iso; }
-  }
-
-  /* ============================================================
-     STATUS BANNER
-  ============================================================ */
+  /* ============ STATUS BANNER ============ */
   const statusBanner = document.getElementById('statusBanner');
   const statusText   = document.getElementById('statusText');
+  const statusDetail = document.getElementById('statusDetail');
   let statusTimer = null;
 
-  function showStatus(kind, text, autoHideMs) {
+  function showStatus(kind, text, detail, autoHideMs) {
     statusBanner.className = 'status-banner show ' + kind;
     statusText.textContent = text;
+    statusDetail.textContent = detail || '';
     if (statusTimer) clearTimeout(statusTimer);
-    if (autoHideMs) {
-      statusTimer = setTimeout(() => {
-        statusBanner.classList.remove('show');
-      }, autoHideMs);
-    }
-  }
-  function hideStatus() {
-    statusBanner.classList.remove('show');
-    if (statusTimer) clearTimeout(statusTimer);
+    if (autoHideMs) statusTimer = setTimeout(() => statusBanner.classList.remove('show'), autoHideMs);
   }
 
-  /* ============================================================
-     NAVEGACIÓN
-  ============================================================ */
+  /* ============ NAVEGACIÓN ============ */
   function renderStep(n) {
     state.current = n;
     steps.forEach(s => s.classList.toggle('active', Number(s.dataset.step) === n));
@@ -1057,165 +576,71 @@ document.addEventListener('DOMContentLoaded', function () {
     $$('.file-drop.has-error', stepEl).forEach(c => c.classList.remove('has-error'));
     $$('.error-text', stepEl).forEach(e => e.classList.remove('show'));
   }
-
   function flagError(el) {
     if (!el) return;
-    if (el.classList.contains('file-drop')) {
-      el.classList.add('has-error');
-      const card = el.closest('.card');
-      if (card) card.classList.add('error');
-      return;
-    }
-    const card = el.closest('.card') || el;
-    card.classList.add('error');
+    if (el.classList.contains('file-drop')) { el.classList.add('has-error'); const c = el.closest('.card'); if (c) c.classList.add('error'); return; }
+    const card = el.closest('.card') || el; card.classList.add('error');
   }
 
-  /* ============================================================
-     COSTOS DE MODIFICADORES
-  ============================================================ */
+  /* ============ COSTOS ============ */
   const costListField = document.getElementById('costListField');
   const costList      = document.getElementById('costList');
   const errCost       = document.getElementById('errCost');
   const radioCostoSI  = document.getElementById('radioCostoSI');
   const radioCostoNO  = document.getElementById('radioCostoNO');
 
-  function getSelectedModNames() {
-    const predefined = checksArr('modificadores');
-    return [...state.customMods, ...predefined];
-  }
-
+  function getSelectedModNames() { return [...state.customMods, ...checksArr('modificadores')]; }
   function isCostMode() { return radio('modificadores_costo') === 'SI'; }
-
-  function ensureModCostEntry(name) {
-    if (!state.modCosts[name]) {
-      state.modCosts[name] = { selected: false, foodbot: '', apps: '' };
-    }
-    return state.modCosts[name];
-  }
-
-  function pruneModCosts() {
-    const current = new Set(getSelectedModNames());
-    Object.keys(state.modCosts).forEach(k => {
-      if (!current.has(k)) delete state.modCosts[k];
-    });
-  }
+  function ensureModCostEntry(n) { if (!state.modCosts[n]) state.modCosts[n] = { selected:false, foodbot:'', apps:'' }; return state.modCosts[n]; }
+  function pruneModCosts() { const cur = new Set(getSelectedModNames()); Object.keys(state.modCosts).forEach(k => { if (!cur.has(k)) delete state.modCosts[k]; }); }
 
   function renderCostList() {
     const active = isCostMode() && getSelectedModNames().length > 0;
     costListField.style.display = active ? 'block' : 'none';
-
-    if (!active) {
-      costList.innerHTML = '';
-      errCost.classList.remove('show');
-      return;
-    }
-
+    if (!active) { costList.innerHTML = ''; errCost.classList.remove('show'); return; }
     const names = getSelectedModNames();
     const customSet = new Set(state.customMods);
-
     costList.innerHTML = '';
     names.forEach(name => {
       const entry = ensureModCostEntry(name);
-
       const row = document.createElement('div');
-      row.className = 'cost-item';
-      if (entry.selected) row.classList.add('active');
-
-      const checkWrap = document.createElement('label');
-      checkWrap.className = 'cost-check';
-
-      const check = document.createElement('input');
-      check.type = 'checkbox';
-      check.checked = entry.selected;
-
-      const checkMark = document.createElement('span');
-      checkMark.className = 'check-mark';
-
-      const nameEl = document.createElement('span');
-      nameEl.className = 'cost-name';
-      nameEl.title = name;
-      nameEl.textContent = name;
-      if (customSet.has(name)) {
-        const tag = document.createElement('span');
-        tag.className = 'tag';
-        tag.textContent = 'Custom';
-        nameEl.appendChild(tag);
-      }
-
-      checkWrap.appendChild(check);
-      checkWrap.appendChild(checkMark);
-      checkWrap.appendChild(nameEl);
-
-      const prices = document.createElement('div');
-      prices.className = 'cost-prices';
-
-      const fLabel = document.createElement('label');
-      fLabel.className = 'price-field';
-      const fText = document.createElement('span');
-      fText.textContent = 'Foodbot $';
-      const fInput = document.createElement('input');
-      fInput.type = 'number';
-      fInput.step = '0.01';
-      fInput.min = '0';
-      fInput.placeholder = '0.00';
-      fInput.value = entry.foodbot || '';
-      fInput.disabled = !entry.selected;
-      fInput.setAttribute('aria-label', 'Precio Foodbot de ' + name);
-      fInput.addEventListener('input', () => {
-        entry.foodbot = fInput.value;
-        if (Number(entry.foodbot) > 0 && Number(entry.apps) > 0) errCost.classList.remove('show');
-      });
-      fLabel.appendChild(fText);
-      fLabel.appendChild(fInput);
-
-      const aLabel = document.createElement('label');
-      aLabel.className = 'price-field';
-      const aText = document.createElement('span');
-      aText.textContent = 'Apps $';
-      const aInput = document.createElement('input');
-      aInput.type = 'number';
-      aInput.step = '0.01';
-      aInput.min = '0';
-      aInput.placeholder = '0.00';
-      aInput.value = entry.apps || '';
-      aInput.disabled = !entry.selected;
-      aInput.setAttribute('aria-label', 'Precio Apps de ' + name);
-      aInput.addEventListener('input', () => {
-        entry.apps = aInput.value;
-        if (Number(entry.foodbot) > 0 && Number(entry.apps) > 0) errCost.classList.remove('show');
-      });
-      aLabel.appendChild(aText);
-      aLabel.appendChild(aInput);
-
-      prices.appendChild(fLabel);
-      prices.appendChild(aLabel);
-
-      check.addEventListener('change', () => {
-        entry.selected = check.checked;
-        renderCostList();
-      });
-
-      row.appendChild(checkWrap);
-      row.appendChild(prices);
+      row.className = 'cost-item' + (entry.selected ? ' active' : '');
+      const cw = document.createElement('label'); cw.className = 'cost-check';
+      const chk = document.createElement('input'); chk.type='checkbox'; chk.checked = entry.selected;
+      const cm = document.createElement('span'); cm.className = 'check-mark';
+      const nm = document.createElement('span'); nm.className = 'cost-name'; nm.title=name; nm.textContent = name;
+      if (customSet.has(name)) { const t=document.createElement('span'); t.className='tag'; t.textContent='Custom'; nm.appendChild(t); }
+      cw.appendChild(chk); cw.appendChild(cm); cw.appendChild(nm);
+      const prices = document.createElement('div'); prices.className = 'cost-prices';
+      const fL = document.createElement('label'); fL.className='price-field';
+      const fT = document.createElement('span'); fT.textContent='Foodbot $';
+      const fI = document.createElement('input'); fI.type='number'; fI.step='0.01'; fI.min='0'; fI.placeholder='0.00';
+      fI.value = entry.foodbot || ''; fI.disabled = !entry.selected;
+      fI.addEventListener('input', () => { entry.foodbot = fI.value; if (Number(entry.foodbot)>0 && Number(entry.apps)>0) errCost.classList.remove('show'); });
+      fL.appendChild(fT); fL.appendChild(fI);
+      const aL = document.createElement('label'); aL.className='price-field';
+      const aT = document.createElement('span'); aT.textContent='Apps $';
+      const aI = document.createElement('input'); aI.type='number'; aI.step='0.01'; aI.min='0'; aI.placeholder='0.00';
+      aI.value = entry.apps || ''; aI.disabled = !entry.selected;
+      aI.addEventListener('input', () => { entry.apps = aI.value; if (Number(entry.foodbot)>0 && Number(entry.apps)>0) errCost.classList.remove('show'); });
+      aL.appendChild(aT); aL.appendChild(aI);
+      prices.appendChild(fL); prices.appendChild(aL);
+      chk.addEventListener('change', () => { entry.selected = chk.checked; renderCostList(); });
+      row.appendChild(cw); row.appendChild(prices);
       costList.appendChild(row);
     });
   }
 
-  form.querySelectorAll('input[name="modificadores"]').forEach(cb => {
-    cb.addEventListener('change', () => { pruneModCosts(); renderCostList(); });
-  });
+  form.querySelectorAll('input[name="modificadores"]').forEach(cb => cb.addEventListener('change', () => { pruneModCosts(); renderCostList(); }));
   radioCostoSI.addEventListener('change', renderCostList);
   radioCostoNO.addEventListener('change', renderCostList);
 
-  /* ============================================================
-     CHIPS EXCLUSIVOS
-  ============================================================ */
+  /* ============ CHIPS EXCLUSIVOS ============ */
   form.querySelectorAll('input[type="checkbox"][data-exclusive]').forEach(cb => {
     cb.addEventListener('change', () => {
       if (!cb.checked) return;
       form.querySelectorAll('input[name="' + cb.name + '"]').forEach(o => { if (o !== cb) o.checked = false; });
-      pruneModCosts();
-      renderCostList();
+      pruneModCosts(); renderCostList();
     });
   });
   form.querySelectorAll('input[type="checkbox"]').forEach(cb => {
@@ -1225,9 +650,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ============================================================
-     MARCA "OTRO"
-  ============================================================ */
+  /* ============ MARCA OTRO ============ */
   const marcaOtroField = document.getElementById('marcaOtroField');
   form.querySelectorAll('input[name="marca"]').forEach(r => {
     r.addEventListener('change', () => {
@@ -1237,23 +660,17 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ============================================================
-     CONTADORES
-  ============================================================ */
+  /* ============ CONTADORES ============ */
   function bindCounter(inputId, counterId, max) {
-    const input = document.getElementById(inputId);
-    const counter = document.getElementById(counterId);
-    if (!input || !counter) return;
-    const update = () => { counter.textContent = input.value.length + '/' + max; };
-    input.addEventListener('input', update);
-    update();
+    const i = document.getElementById(inputId), c = document.getElementById(counterId);
+    if (!i || !c) return;
+    const u = () => { c.textContent = i.value.length + '/' + max; };
+    i.addEventListener('input', u); u();
   }
   bindCounter('nombre_producto', 'cntNombre', 30);
   bindCounter('descripcion_producto', 'cntDesc', 180);
 
-  /* ============================================================
-     MODIFICADORES PERSONALIZADOS
-  ============================================================ */
+  /* ============ CUSTOM MODS ============ */
   const customModInput  = document.getElementById('customModInput');
   const customModList   = document.getElementById('customModList');
   const btnAddCustomMod = document.getElementById('btnAddCustomMod');
@@ -1261,48 +678,31 @@ document.addEventListener('DOMContentLoaded', function () {
   function renderCustomMods() {
     customModList.innerHTML = '';
     state.customMods.forEach((text, idx) => {
-      const chip = document.createElement('span');
-      chip.className = 'custom-chip';
-      const label = document.createElement('span');
-      label.textContent = text;
-      const rm = document.createElement('button');
-      rm.type = 'button';
-      rm.setAttribute('aria-label', 'Eliminar');
-      rm.textContent = '×';
-      rm.addEventListener('click', () => {
-        state.customMods.splice(idx, 1);
-        pruneModCosts();
-        renderCustomMods();
-      });
-      chip.appendChild(label);
-      chip.appendChild(rm);
-      customModList.appendChild(chip);
+      const chip = document.createElement('span'); chip.className = 'custom-chip';
+      const l = document.createElement('span'); l.textContent = text;
+      const rm = document.createElement('button'); rm.type='button'; rm.textContent='×';
+      rm.addEventListener('click', () => { state.customMods.splice(idx,1); pruneModCosts(); renderCustomMods(); });
+      chip.appendChild(l); chip.appendChild(rm); customModList.appendChild(chip);
     });
     renderCostList();
   }
-
   function addCustomMod() {
     const v = String(customModInput.value || '').trim();
     if (!v) return;
-    if (state.customMods.includes(v)) { customModInput.value = ''; return; }
-    state.customMods.push(v);
-    customModInput.value = '';
-    renderCustomMods();
+    if (state.customMods.includes(v)) { customModInput.value=''; return; }
+    state.customMods.push(v); customModInput.value=''; renderCustomMods();
   }
   btnAddCustomMod.addEventListener('click', addCustomMod);
-  customModInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') { e.preventDefault(); addCustomMod(); }
-  });
+  customModInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addCustomMod(); } });
 
-  /* ============================================================
-     SUBIDA DE IMAGEN A IMGBB
-  ============================================================ */
+  /* ============ IMAGEN / IMGBB ============ */
   const imagenInput   = document.getElementById('imagen_file');
   const imagenPreview = document.getElementById('imagenPreview');
   const dropImagen    = document.getElementById('dropImagen');
   const errImagen     = document.getElementById('errImagen');
 
   async function uploadToImgBB(file) {
+    console.log('[ImgBB] Iniciando subida:', file.name, file.size, 'bytes');
     const base64 = await new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
@@ -1313,17 +713,16 @@ document.addEventListener('DOMContentLoaded', function () {
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
-
-    const formData = new FormData();
-    formData.append('image', base64);
-
+    const fd = new FormData();
+    fd.append('image', base64);
     const url = 'https://api.imgbb.com/1/upload?key=' + encodeURIComponent(IMGBB_API_KEY);
-    const res = await fetch(url, { method: 'POST', body: formData });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-
+    console.log('[ImgBB] POST a:', url);
+    const res = await fetch(url, { method: 'POST', body: fd });
+    console.log('[ImgBB] Respuesta status:', res.status);
     const data = await res.json();
-    if (!data || !data.data || !data.data.url) {
-      const msg = data && data.error && data.error.message ? data.error.message : 'Respuesta inválida';
+    console.log('[ImgBB] Datos:', data);
+    if (!res.ok || !data || !data.data || !data.data.url) {
+      const msg = (data && data.error && data.error.message) ? data.error.message : ('HTTP ' + res.status);
       throw new Error(msg);
     }
     return data.data.url;
@@ -1332,122 +731,56 @@ document.addEventListener('DOMContentLoaded', function () {
   function renderImagenPreview() {
     imagenPreview.innerHTML = '';
     if (!state.imagenFile && !state.imagenUrl) return;
-
-    const item = document.createElement('div');
-    item.className = 'file-item';
-
-    const thumb = document.createElement('div');
-    thumb.className = 'file-thumb';
-
+    const item = document.createElement('div'); item.className = 'file-item';
+    const thumb = document.createElement('div'); thumb.className = 'file-thumb';
     if (state.imagenFile && state.imagenFile.type.startsWith('image/')) {
-      const img = document.createElement('img');
-      img.alt = '';
-      const url = URL.createObjectURL(state.imagenFile);
-      img.src = url;
-      img.onload = () => URL.revokeObjectURL(url);
-      thumb.appendChild(img);
+      const img = document.createElement('img'); const u = URL.createObjectURL(state.imagenFile);
+      img.src = u; img.onload = () => URL.revokeObjectURL(u); thumb.appendChild(img);
     } else if (state.imagenUrl && state.imagenUrl.startsWith('http')) {
-      const img = document.createElement('img');
-      img.alt = '';
-      img.src = state.imagenUrl;
-      thumb.appendChild(img);
-    } else {
-      thumb.textContent = 'IMG';
-    }
-
-    const meta = document.createElement('div');
-    meta.className = 'file-meta';
-
-    const name = document.createElement('strong');
-    name.textContent = state.imagenFile ? state.imagenFile.name : 'Imagen subida';
-
+      const img = document.createElement('img'); img.src = state.imagenUrl; thumb.appendChild(img);
+    } else { thumb.textContent = 'IMG'; }
+    const meta = document.createElement('div'); meta.className = 'file-meta';
+    const name = document.createElement('strong'); name.textContent = state.imagenFile ? state.imagenFile.name : 'Imagen subida';
     const size = document.createElement('span');
-    if (state.isUploading) {
-      size.textContent = 'Subiendo a ImgBB...';
-    } else if (state.imagenUrl && state.imagenUrl.startsWith('http')) {
-      size.textContent = formatBytes(state.imagenFile ? state.imagenFile.size : 0) + ' · Enlace listo';
-    } else if (state.imagenUrl && state.imagenUrl.startsWith('Error')) {
-      size.textContent = 'Error al subir. Intenta de nuevo.';
-    } else {
-      size.textContent = formatBytes(state.imagenFile ? state.imagenFile.size : 0);
-    }
-
-    meta.appendChild(name);
-    meta.appendChild(size);
-
+    if (state.isUploading) size.textContent = 'Subiendo a ImgBB...';
+    else if (state.imagenUrl && state.imagenUrl.startsWith('http')) size.textContent = formatBytes(state.imagenFile ? state.imagenFile.size : 0) + ' · Enlace listo';
+    else if (state.imagenUrl && state.imagenUrl.startsWith('Error')) size.textContent = 'Error al subir. Intenta de nuevo.';
+    else size.textContent = formatBytes(state.imagenFile ? state.imagenFile.size : 0);
+    meta.appendChild(name); meta.appendChild(size);
     if (state.imagenUrl && state.imagenUrl.startsWith('http')) {
-      const link = document.createElement('a');
-      link.href = state.imagenUrl;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.className = 'url-link';
-      link.textContent = state.imagenUrl;
-      meta.appendChild(link);
+      const a = document.createElement('a'); a.href = state.imagenUrl; a.target='_blank'; a.rel='noopener noreferrer';
+      a.className = 'url-link'; a.textContent = state.imagenUrl; meta.appendChild(a);
     }
-
-    const rm = document.createElement('button');
-    rm.type = 'button';
-    rm.className = 'file-remove';
-    rm.setAttribute('aria-label', 'Eliminar imagen');
-    rm.textContent = '×';
-    rm.addEventListener('click', () => {
-      state.imagenFile = null;
-      state.imagenUrl = '';
-      imagenInput.value = '';
-      renderImagenPreview();
-    });
-
+    const rm = document.createElement('button'); rm.type='button'; rm.className='file-remove'; rm.textContent='×';
+    rm.addEventListener('click', () => { state.imagenFile=null; state.imagenUrl=''; imagenInput.value=''; renderImagenPreview(); });
     item.appendChild(thumb); item.appendChild(meta); item.appendChild(rm);
     imagenPreview.appendChild(item);
   }
 
   imagenInput.addEventListener('change', async (e) => {
     const f = e.target.files && e.target.files[0];
-    if (!f) {
-      state.imagenFile = null;
-      state.imagenUrl = '';
-      renderImagenPreview();
-      return;
-    }
+    if (!f) { state.imagenFile=null; state.imagenUrl=''; renderImagenPreview(); return; }
     if (f.size > 5 * 1024 * 1024) {
       alert('La imagen supera los 5 MB permitidos.');
-      imagenInput.value = '';
-      state.imagenFile = null;
-      state.imagenUrl = '';
-      renderImagenPreview();
-      return;
+      imagenInput.value=''; state.imagenFile=null; state.imagenUrl=''; renderImagenPreview(); return;
     }
-
-    state.imagenFile = f;
-    state.imagenUrl = '';
-    state.isUploading = true;
-    renderImagenPreview();
-
-    dropImagen.classList.remove('has-error');
-    errImagen.classList.remove('show');
-    const card = dropImagen.closest('.card');
-    if (card) card.classList.remove('error');
-
+    state.imagenFile = f; state.imagenUrl=''; state.isUploading = true; renderImagenPreview();
+    dropImagen.classList.remove('has-error'); errImagen.classList.remove('show');
+    const card = dropImagen.closest('.card'); if (card) card.classList.remove('error');
     try {
       const url = await uploadToImgBB(f);
       state.imagenUrl = url;
-      showStatus('ok', 'Imagen subida correctamente a ImgBB.', 4000);
+      showStatus('ok', 'Imagen subida correctamente a ImgBB.', url, 5000);
     } catch (err) {
-      console.error('Error ImgBB:', err);
+      console.error('[ImgBB] Error:', err);
       state.imagenUrl = 'Error al subir';
-      showStatus('err',
-        'No se pudo subir la imagen a ImgBB: ' + err.message + '. Intenta de nuevo.',
-        8000
-      );
+      showStatus('err', 'Error al subir la imagen a ImgBB', err.message + '\n\nPuedes continuar y enviar sin imagen, o intentar de nuevo.', 12000);
     } finally {
-      state.isUploading = false;
-      renderImagenPreview();
+      state.isUploading = false; renderImagenPreview();
     }
   });
 
-  /* ============================================================
-     ARCHIVOS DE RECETA
-  ============================================================ */
+  /* ============ RECETA ============ */
   const recetaInput = document.getElementById('archivos_receta');
   const recetaList  = document.getElementById('archivosRecetaList');
   const dropReceta  = document.getElementById('dropReceta');
@@ -1456,117 +789,66 @@ document.addEventListener('DOMContentLoaded', function () {
   function renderRecetaList() {
     recetaList.innerHTML = '';
     state.archivosReceta.forEach((f, idx) => {
-      const item = document.createElement('div');
-      item.className = 'file-item';
-
-      const thumb = document.createElement('div');
-      thumb.className = 'file-thumb';
+      const item = document.createElement('div'); item.className = 'file-item';
+      const thumb = document.createElement('div'); thumb.className = 'file-thumb';
       if (f.type.startsWith('image/')) {
-        const img = document.createElement('img');
-        img.alt = '';
-        const url = URL.createObjectURL(f);
-        img.src = url;
-        img.onload = () => URL.revokeObjectURL(url);
-        thumb.appendChild(img);
-      } else {
-        const ext = (f.name.split('.').pop() || 'FILE').slice(0, 4).toUpperCase();
-        thumb.textContent = ext;
-      }
-
-      const meta = document.createElement('div');
-      meta.className = 'file-meta';
-      const name = document.createElement('strong'); name.textContent = f.name;
-      const size = document.createElement('span'); size.textContent = formatBytes(f.size) + ' · ' + (f.type || 'archivo');
-      meta.appendChild(name); meta.appendChild(size);
-
-      const rm = document.createElement('button');
-      rm.type = 'button';
-      rm.className = 'file-remove';
-      rm.setAttribute('aria-label', 'Eliminar archivo');
-      rm.textContent = '×';
-      rm.addEventListener('click', () => { state.archivosReceta.splice(idx, 1); renderRecetaList(); });
-
+        const img = document.createElement('img'); const u = URL.createObjectURL(f);
+        img.src = u; img.onload = () => URL.revokeObjectURL(u); thumb.appendChild(img);
+      } else { thumb.textContent = (f.name.split('.').pop() || 'FILE').slice(0,4).toUpperCase(); }
+      const meta = document.createElement('div'); meta.className='file-meta';
+      const nm = document.createElement('strong'); nm.textContent = f.name;
+      const sz = document.createElement('span'); sz.textContent = formatBytes(f.size) + ' · ' + (f.type || 'archivo');
+      meta.appendChild(nm); meta.appendChild(sz);
+      const rm = document.createElement('button'); rm.type='button'; rm.className='file-remove'; rm.textContent='×';
+      rm.addEventListener('click', () => { state.archivosReceta.splice(idx,1); renderRecetaList(); });
       item.appendChild(thumb); item.appendChild(meta); item.appendChild(rm);
       recetaList.appendChild(item);
     });
   }
-
   function clearRecetaError() {
     if (state.archivosReceta.length > 0) {
-      dropReceta.classList.remove('has-error');
-      errReceta.classList.remove('show');
-      const card = dropReceta.closest('.card');
-      if (card) card.classList.remove('error');
+      dropReceta.classList.remove('has-error'); errReceta.classList.remove('show');
+      const card = dropReceta.closest('.card'); if (card) card.classList.remove('error');
     }
   }
-
-  recetaInput.addEventListener('change', (e) => {
-    const files = Array.from(e.target.files || []);
-    files.forEach(f => {
+  recetaInput.addEventListener('change', e => {
+    Array.from(e.target.files || []).forEach(f => {
       const exists = state.archivosReceta.some(x => x.name === f.name && x.size === f.size);
       if (!exists) state.archivosReceta.push(f);
     });
-    recetaInput.value = '';
-    renderRecetaList();
-    clearRecetaError();
+    recetaInput.value=''; renderRecetaList(); clearRecetaError();
   });
-
-  ['dragenter','dragover'].forEach(ev => {
-    dropReceta.addEventListener(ev, (e) => {
-      e.preventDefault(); e.stopPropagation();
-      dropReceta.style.borderColor = 'var(--electric-blue)';
-      dropReceta.style.boxShadow   = 'var(--shadow-glow)';
-      dropReceta.style.background  = 'var(--graphite)';
-    });
-  });
-  ['dragleave','drop'].forEach(ev => {
-    dropReceta.addEventListener(ev, (e) => {
-      e.preventDefault(); e.stopPropagation();
-      dropReceta.style.borderColor = '';
-      dropReceta.style.boxShadow   = '';
-      dropReceta.style.background  = '';
-    });
-  });
-  dropReceta.addEventListener('drop', (e) => {
-    const files = Array.from(e.dataTransfer.files || []);
-    files.forEach(f => {
+  ['dragenter','dragover'].forEach(ev => dropReceta.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); dropReceta.style.borderColor='var(--electric-blue)'; dropReceta.style.boxShadow='var(--shadow-glow)'; dropReceta.style.background='var(--graphite)'; }));
+  ['dragleave','drop'].forEach(ev => dropReceta.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); dropReceta.style.borderColor=''; dropReceta.style.boxShadow=''; dropReceta.style.background=''; }));
+  dropReceta.addEventListener('drop', e => {
+    Array.from(e.dataTransfer.files || []).forEach(f => {
       const exists = state.archivosReceta.some(x => x.name === f.name && x.size === f.size);
       if (!exists) state.archivosReceta.push(f);
     });
-    renderRecetaList();
-    clearRecetaError();
+    renderRecetaList(); clearRecetaError();
   });
 
-  /* ============================================================
-     VALIDACIÓN
-  ============================================================ */
+  /* ============ VALIDACIÓN ============ */
   function validateStep(n) {
     const stepEl = steps.find(s => Number(s.dataset.step) === n);
     if (!stepEl) return true;
     clearErrors(stepEl);
-
     let firstInvalid = null;
 
     $$('input[required], select[required], textarea[required]', stepEl).forEach(el => {
       if (el.type === 'radio' || el.type === 'checkbox') return;
-      if (!String(el.value || '').trim()) {
-        if (!firstInvalid) firstInvalid = el;
-      }
+      if (!String(el.value || '').trim()) { if (!firstInvalid) firstInvalid = el; }
     });
 
     const requiredRadios = new Set($$('input[type="radio"][required]', stepEl).map(r => r.name));
     requiredRadios.forEach(name => {
-      const anyChecked = form.querySelector('input[name="' + name + '"]:checked');
-      if (!anyChecked && !firstInvalid) {
+      if (!form.querySelector('input[name="' + name + '"]:checked') && !firstInvalid)
         firstInvalid = form.querySelector('input[name="' + name + '"]');
-      }
     });
 
     if (n === 2) {
-      const valido = form.querySelectorAll('input[name="valido_para"]:checked');
-      if (valido.length === 0 && !firstInvalid) {
+      if (form.querySelectorAll('input[name="valido_para"]:checked').length === 0 && !firstInvalid)
         firstInvalid = form.querySelector('input[name="valido_para"]');
-      }
     }
 
     if (n === 3 && isCostMode()) {
@@ -1583,33 +865,20 @@ document.addEventListener('DOMContentLoaded', function () {
           if (!firstInvalid) firstInvalid = costList.querySelector('input[type="checkbox"]') || costListField;
         } else {
           let allOk = true;
-          withCost.forEach(name => {
-            const e = state.modCosts[name];
-            if (!e.foodbot || Number(e.foodbot) <= 0 || !e.apps || Number(e.apps) <= 0) allOk = false;
-          });
+          withCost.forEach(name => { const e = state.modCosts[name]; if (!e.foodbot || Number(e.foodbot)<=0 || !e.apps || Number(e.apps)<=0) allOk=false; });
           if (!allOk) {
             errCost.textContent = 'Asigna precio Foodbot y Apps (mayor a 0) a cada modificador marcado.';
             errCost.classList.add('show');
-            if (!firstInvalid) {
-              firstInvalid = costList.querySelector('.cost-item.active input[type="number"]') || costListField;
-            }
+            if (!firstInvalid) firstInvalid = costList.querySelector('.cost-item.active input[type="number"]') || costListField;
           }
         }
       }
     }
 
     if (n === 4) {
-      if (!state.imagenFile) {
-        if (!firstInvalid) firstInvalid = dropImagen;
-        errImagen.classList.add('show');
-      } else if (state.isUploading) {
-        showStatus('info', 'Espera un momento mientras la imagen termina de subirse...', 4000);
-        return false;
-      } else if (state.imagenUrl && state.imagenUrl.startsWith('Error')) {
-        if (!firstInvalid) firstInvalid = dropImagen;
-        errImagen.textContent = 'Hubo un error al subir la imagen. Por favor, intenta de nuevo.';
-        errImagen.classList.add('show');
-      }
+      if (!state.imagenFile) { if (!firstInvalid) firstInvalid = dropImagen; errImagen.classList.add('show'); }
+      else if (state.isUploading) { showStatus('info', 'Espera a que la imagen termine de subirse...', '', 4000); return false; }
+      // NOTA: ya NO bloqueamos por error de ImgBB, permitimos enviar de todos modos
     }
 
     if (n === 5 && state.archivosReceta.length === 0) {
@@ -1626,103 +895,58 @@ document.addEventListener('DOMContentLoaded', function () {
     return true;
   }
 
-  btnNext.addEventListener('click', () => {
-    if (!validateStep(state.current)) return;
-    if (state.current < state.total) renderStep(state.current + 1);
-  });
-  btnPrev.addEventListener('click', () => {
-    if (state.current > 1) renderStep(state.current - 1);
-  });
+  btnNext.addEventListener('click', () => { if (!validateStep(state.current)) return; if (state.current < state.total) renderStep(state.current + 1); });
+  btnPrev.addEventListener('click', () => { if (state.current > 1) renderStep(state.current - 1); });
 
-  form.addEventListener('click', (e) => {
-    const t = e.target.closest('.step-tab');
-    if (!t) return;
+  form.addEventListener('click', e => {
+    const t = e.target.closest('.step-tab'); if (!t) return;
     const target = Number(t.dataset.goto);
     if (target === state.current) return;
     if (target < state.current) { renderStep(target); return; }
-    for (let i = state.current; i < target; i++) {
-      if (!validateStep(i)) { renderStep(i); return; }
-    }
+    for (let i = state.current; i < target; i++) { if (!validateStep(i)) { renderStep(i); return; } }
     renderStep(target);
   });
 
-  /* ============================================================
-     SNAPSHOT
-  ============================================================ */
+  /* ============ SNAPSHOT / PARAMS ============ */
   function snapshotData() {
-    const modsCostDetails = [];
-    if (isCostMode()) {
-      getSelectedModNames()
-        .filter(name => state.modCosts[name] && state.modCosts[name].selected)
-        .forEach(name => {
-          const e = state.modCosts[name];
-          modsCostDetails.push({
-            nombre: name,
-            foodbot: String(e.foodbot || ''),
-            apps: String(e.apps || '')
-          });
-        });
-    }
-
     return {
       timestamp: new Date().toISOString(),
-      nombre: txt('nombre'),
-      area: txt('area'),
-      telefono: txt('telefono'),
-      correo: txt('correo'),
-      marca: radio('marca'),
-      marca_otro: txt('marca_otro'),
-      nombre_producto: txt('nombre_producto'),
-      descripcion_producto: txt('descripcion_producto'),
-      categoria: txt('categoria'),
-      valido_para: checksArr('valido_para'),
-      modificadores: checksArr('modificadores'),
-      modificadores_custom: state.customMods.slice(),
-      modificadores_costo: radio('modificadores_costo'),
-      detalle_modificadores: txt('detalle_modificadores'),
+      nombre: txt('nombre'), area: txt('area'), telefono: txt('telefono'), correo: txt('correo'),
+      marca: radio('marca'), marca_otro: txt('marca_otro'),
+      nombre_producto: txt('nombre_producto'), descripcion_producto: txt('descripcion_producto'),
+      categoria: txt('categoria'), valido_para: checksArr('valido_para'),
+      modificadores: checksArr('modificadores'), modificadores_custom: state.customMods.slice(),
+      modificadores_costo: radio('modificadores_costo'), detalle_modificadores: txt('detalle_modificadores'),
       modCosts: JSON.parse(JSON.stringify(state.modCosts)),
-      precio_foodbot: txt('precio_foodbot'),
-      precio_apps: txt('precio_apps'),
-      comentarios: txt('comentarios'),
-      restar_inventario: txt('restar_inventario'),
+      precio_foodbot: txt('precio_foodbot'), precio_apps: txt('precio_apps'),
+      comentarios: txt('comentarios'), restar_inventario: txt('restar_inventario'),
       imagenNombre: state.imagenFile ? state.imagenFile.name : '',
       imagenUrl: state.imagenUrl || '',
-      archivosReceta: state.archivosReceta.map(f => ({
-        nombre: f.name, tipo: f.type, tamano: String(f.size)
-      }))
+      archivosReceta: state.archivosReceta.map(f => ({ nombre: f.name, tipo: f.type, tamano: String(f.size) }))
     };
   }
 
-  /* ============================================================
-     PARÁMETROS → URLSearchParams
-  ============================================================ */
   function buildParamsFromSnapshot(snap) {
     const p = new URLSearchParams();
-
     p.append('test', '1');
     p.append('origen', 'form_alta_producto_web');
     p.append('enviado_en', snap.timestamp);
-
     p.append('nombre', snap.nombre);
     p.append('area', snap.area);
     p.append('telefono', snap.telefono);
     p.append('correo', snap.correo);
-
     p.append('marca', snap.marca);
     p.append('marca_otro', snap.marca_otro);
     p.append('nombre_producto', snap.nombre_producto);
     p.append('descripcion_producto', snap.descripcion_producto);
     p.append('categoria', snap.categoria);
     p.append('valido_para', snap.valido_para.join(' | '));
-
     p.append('modificadores', snap.modificadores.join(' | '));
     p.append('modificadores_costo', snap.modificadores_costo);
     p.append('detalle_modificadores', snap.detalle_modificadores);
     p.append('modificadores_custom_total', String(snap.modificadores_custom.length));
     p.append('modificadores_custom', snap.modificadores_custom.join(' | '));
-    snap.modificadores_custom.forEach((m, i) => {
-      p.append('modificador_custom_' + (i + 1), m);
-    });
+    snap.modificadores_custom.forEach((m, i) => p.append('modificador_custom_' + (i + 1), m));
 
     const modsWithCost = [];
     if (snap.modificadores_costo === 'SI') {
@@ -1738,18 +962,14 @@ document.addEventListener('DOMContentLoaded', function () {
       p.append('mod_costo_' + idx + '_apps', String(m.apps || ''));
     });
     p.append('modificadores_con_costo_total', String(modsWithCost.length));
-    p.append('modificadores_con_costo_detalle',
-      modsWithCost.map(m => m.name + ': Foodbot $' + m.foodbot + ' / Apps $' + m.apps).join(' | ')
-    );
+    p.append('modificadores_con_costo_detalle', modsWithCost.map(m => m.name + ': Foodbot $' + m.foodbot + ' / Apps $' + m.apps).join(' | '));
 
     p.append('precio_foodbot', snap.precio_foodbot);
     p.append('precio_apps', snap.precio_apps);
     p.append('comentarios', snap.comentarios);
     p.append('restar_inventario', snap.restar_inventario);
-
     p.append('imagen_url', snap.imagenUrl);
     p.append('imagen_nombre', snap.imagenNombre);
-
     p.append('archivos_receta_total', String(snap.archivosReceta.length));
     snap.archivosReceta.forEach((f, i) => {
       const idx = i + 1;
@@ -1757,206 +977,127 @@ document.addEventListener('DOMContentLoaded', function () {
       p.append('archivo_receta_' + idx + '_tipo', f.tipo || '');
       p.append('archivo_receta_' + idx + '_tamano', f.tamano);
     });
-
     return p;
   }
 
   function sendToMake(params) {
+    console.log('[Make] POST a:', MAKE_WEBHOOK_URL);
+    console.log('[Make] Body length:', params.toString().length, 'chars');
+    console.log('[Make] Body preview:', params.toString().substring(0, 500));
     return fetch(MAKE_WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
       body: params.toString()
     }).then(res => {
+      console.log('[Make] Status:', res.status);
       if (!res.ok) throw new Error('HTTP ' + res.status);
       return { ok: true, status: res.status };
     });
   }
 
-  /* ============================================================
-     HISTORIAL
-  ============================================================ */
-  const drawer         = document.getElementById('historyDrawer');
+  /* ============ HISTORIAL ============ */
+  const drawer = document.getElementById('historyDrawer');
   const drawerBackdrop = document.getElementById('drawerBackdrop');
-  const historyBody    = document.getElementById('historyBody');
-  const historyCount   = document.getElementById('historyCount');
-  const historyMeta    = document.getElementById('historyMeta');
+  const historyBody = document.getElementById('historyBody');
+  const historyCount = document.getElementById('historyCount');
+  const historyMeta = document.getElementById('historyMeta');
 
-  function loadHistory() {
-    try {
-      const raw = localStorage.getItem(HISTORY_KEY);
-      state.history = raw ? JSON.parse(raw) : [];
-      if (!Array.isArray(state.history)) state.history = [];
-    } catch (e) { state.history = []; }
-  }
-
-  function saveHistory() {
-    try {
-      localStorage.setItem(HISTORY_KEY, JSON.stringify(state.history.slice(0, HISTORY_MAX)));
-    } catch (e) { /* silencioso */ }
-  }
-
-  function addToHistory(snap, status) {
-    state.history.unshift({ ...snap, status: status || 'ok' });
-    if (state.history.length > HISTORY_MAX) state.history.length = HISTORY_MAX;
-    saveHistory();
-    renderHistory();
-  }
-
-  function truncate(str, n) {
-    str = String(str || '');
-    return str.length > n ? str.slice(0, n - 1) + '…' : str;
-  }
+  function loadHistory() { try { const r = localStorage.getItem(HISTORY_KEY); state.history = r ? JSON.parse(r) : []; if (!Array.isArray(state.history)) state.history = []; } catch(e) { state.history = []; } }
+  function saveHistory() { try { localStorage.setItem(HISTORY_KEY, JSON.stringify(state.history.slice(0, HISTORY_MAX))); } catch(e){} }
+  function addToHistory(snap, status) { state.history.unshift({ ...snap, status: status || 'ok' }); if (state.history.length > HISTORY_MAX) state.history.length = HISTORY_MAX; saveHistory(); renderHistory(); }
+  function truncate(s, n) { s = String(s || ''); return s.length > n ? s.slice(0, n-1) + '…' : s; }
+  function escapeHtml(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
   function renderHistory() {
     historyCount.textContent = String(state.history.length);
-    historyMeta.textContent  = state.history.length === 1
-      ? '1 guardada en este dispositivo'
-      : state.history.length + ' guardadas en este dispositivo';
-
+    historyMeta.textContent = state.history.length === 1 ? '1 guardada en este dispositivo' : state.history.length + ' guardadas en este dispositivo';
     if (state.history.length === 0) {
-      historyBody.innerHTML =
-        '<div class="history-empty">' +
-          '<strong>Aún no hay solicitudes</strong>' +
-          'Cuando envíes un formulario, aparecerá aquí para que puedas revisarlo o rellenarlo de nuevo.' +
-        '</div>';
+      historyBody.innerHTML = '<div class="history-empty"><strong>Aún no hay solicitudes</strong>Cuando envíes un formulario, aparecerá aquí.</div>';
       return;
     }
-
     historyBody.innerHTML = '';
     state.history.forEach((h, idx) => {
       const el = document.createElement('div');
       el.className = 'history-item' + (h.status === 'err' ? ' err' : '');
-
-      const statusPill = h.status === 'err'
-        ? '<span class="status-pill err">Error</span>'
-        : '<span class="status-pill ok">Enviada</span>';
-
+      const statusPill = h.status === 'err' ? '<span class="status-pill err">Error</span>' : '<span class="status-pill ok">Enviada</span>';
       const modsTxt = (h.modificadores || []).concat(h.modificadores_custom || []).join(', ') || '—';
       const validoTxt = (h.valido_para || []).join(', ') || '—';
-
       el.innerHTML =
-        '<div class="history-item-head">' +
-          '<div style="min-width:0;flex:1;">' +
-            '<strong>' + escapeHtml(truncate(h.nombre_producto || '(sin nombre)', 60)) + '</strong>' +
-            '<div class="history-meta">' +
-              '<span>' + escapeHtml(fmtDateTime(h.timestamp)) + '</span>' +
-              statusPill +
-            '</div>' +
-          '</div>' +
-        '</div>' +
+        '<div class="history-item-head"><div style="min-width:0;flex:1;">' +
+          '<strong>' + escapeHtml(truncate(h.nombre_producto || '(sin nombre)', 60)) + '</strong>' +
+          '<div class="history-meta"><span>' + escapeHtml(fmtDateTime(h.timestamp)) + '</span>' + statusPill + '</div>' +
+        '</div></div>' +
         '<div class="history-summary">' +
           '<div class="row"><span class="lbl">Marca</span><span class="val">' + escapeHtml(h.marca || '—') + '</span></div>' +
           '<div class="row"><span class="lbl">Solicitante</span><span class="val">' + escapeHtml(h.nombre || '—') + '</span></div>' +
           '<div class="row"><span class="lbl">Área</span><span class="val">' + escapeHtml(h.area || '—') + '</span></div>' +
-          '<div class="row"><span class="lbl">Categoría</span><span class="val">' + escapeHtml(h.categoria || '—') + '</span></div>' +
           '<div class="row"><span class="lbl">Válido para</span><span class="val">' + escapeHtml(validoTxt) + '</span></div>' +
           '<div class="row"><span class="lbl">Modificadores</span><span class="val">' + escapeHtml(truncate(modsTxt, 50)) + '</span></div>' +
           '<div class="row"><span class="lbl">Precio Foodbot</span><span class="val">$' + escapeHtml(h.precio_foodbot || '—') + '</span></div>' +
           '<div class="row"><span class="lbl">Precio Apps</span><span class="val">$' + escapeHtml(h.precio_apps || '—') + '</span></div>' +
+          '<div class="row"><span class="lbl">Imagen URL</span><span class="val">' + escapeHtml(h.imagenUrl ? 'Sí' : 'No') + '</span></div>' +
         '</div>' +
         '<div class="history-actions">' +
           '<button type="button" class="btn btn-primary btn-sm" data-action="refill" data-idx="' + idx + '">Rellenar de nuevo</button>' +
           '<button type="button" class="btn btn-ghost btn-sm" data-action="details" data-idx="' + idx + '">Ver detalles</button>' +
           '<button type="button" class="btn btn-danger btn-sm" data-action="delete" data-idx="' + idx + '">Eliminar</button>' +
         '</div>';
-
       historyBody.appendChild(el);
     });
   }
 
-  function escapeHtml(s) {
-    return String(s || '')
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
-
   function refillFromHistory(h) {
     form.reset();
-    state.imagenFile = null;
-    state.imagenUrl = '';
-    state.archivosReceta = [];
-    state.customMods = [];
-    state.modCosts = {};
-    renderImagenPreview();
-    renderRecetaList();
+    state.imagenFile = null; state.imagenUrl = ''; state.archivosReceta = [];
+    state.customMods = []; state.modCosts = {};
+    renderImagenPreview(); renderRecetaList();
 
-    document.getElementById('nombre').value   = h.nombre || '';
-    document.getElementById('area').value     = h.area || '';
+    document.getElementById('nombre').value = h.nombre || '';
+    document.getElementById('area').value = h.area || '';
     document.getElementById('telefono').value = h.telefono || '';
-    document.getElementById('correo').value   = h.correo || '';
-
-    form.querySelectorAll('input[name="marca"]').forEach(r => {
-      r.checked = (r.value === h.marca);
-    });
+    document.getElementById('correo').value = h.correo || '';
+    form.querySelectorAll('input[name="marca"]').forEach(r => { r.checked = (r.value === h.marca); });
     document.getElementById('marca_otro').value = h.marca_otro || '';
     marcaOtroField.style.display = (h.marca === 'Otro') ? 'block' : 'none';
     document.getElementById('nombre_producto').value = h.nombre_producto || '';
     document.getElementById('descripcion_producto').value = h.descripcion_producto || '';
     document.getElementById('categoria').value = h.categoria || '';
-
-    const valido = h.valido_para || [];
-    form.querySelectorAll('input[name="valido_para"]').forEach(cb => {
-      cb.checked = valido.includes(cb.value);
-    });
-
-    const mods = h.modificadores || [];
-    form.querySelectorAll('input[name="modificadores"]').forEach(cb => {
-      cb.checked = mods.includes(cb.value);
-    });
-
+    const v = h.valido_para || [];
+    form.querySelectorAll('input[name="valido_para"]').forEach(cb => { cb.checked = v.includes(cb.value); });
+    const m = h.modificadores || [];
+    form.querySelectorAll('input[name="modificadores"]').forEach(cb => { cb.checked = m.includes(cb.value); });
     state.customMods = Array.isArray(h.modificadores_custom) ? h.modificadores_custom.slice() : [];
     renderCustomMods();
-
-    form.querySelectorAll('input[name="modificadores_costo"]').forEach(r => {
-      r.checked = (r.value === h.modificadores_costo);
-    });
-
+    form.querySelectorAll('input[name="modificadores_costo"]').forEach(r => { r.checked = (r.value === h.modificadores_costo); });
     state.modCosts = JSON.parse(JSON.stringify(h.modCosts || {}));
     renderCostList();
-
     document.getElementById('detalle_modificadores').value = h.detalle_modificadores || '';
     document.getElementById('precio_foodbot').value = h.precio_foodbot || '';
-    document.getElementById('precio_apps').value    = h.precio_apps || '';
-    document.getElementById('comentarios').value    = h.comentarios || '';
+    document.getElementById('precio_apps').value = h.precio_apps || '';
+    document.getElementById('comentarios').value = h.comentarios || '';
     document.getElementById('restar_inventario').value = h.restar_inventario || '';
-
     document.getElementById('cntNombre').textContent = (h.nombre_producto || '').length + '/30';
-    document.getElementById('cntDesc').textContent   = (h.descripcion_producto || '').length + '/180';
-
-    closeHistory();
-    renderStep(1);
-    showStatus('info',
-      'Datos cargados desde el historial. Vuelve a adjuntar la imagen y los archivos de receta antes de enviar.',
-      7000
-    );
+    document.getElementById('cntDesc').textContent = (h.descripcion_producto || '').length + '/180';
+    closeHistory(); renderStep(1);
+    showStatus('info', 'Datos cargados desde el historial', 'Vuelve a adjuntar la imagen y los archivos de receta antes de enviar.', 7000);
   }
 
   function showHistoryDetails(h) {
     const lines = [
-      'Nombre: ' + (h.nombre || '—'),
-      'Área: ' + (h.area || '—'),
-      'Teléfono: ' + (h.telefono || '—'),
-      'Correo: ' + (h.correo || '—'),
-      '',
-      'Marca: ' + (h.marca || '—'),
-      'Marca (otro): ' + (h.marca_otro || '—'),
-      'Nombre producto: ' + (h.nombre_producto || '—'),
-      'Descripción: ' + (h.descripcion_producto || '—'),
-      'Categoría: ' + (h.categoria || '—'),
-      'Válido para: ' + ((h.valido_para || []).join(', ') || '—'),
-      '',
-      'Modificadores: ' + ((h.modificadores || []).join(', ') || '—'),
+      'Nombre: ' + (h.nombre || '—'), 'Área: ' + (h.area || '—'),
+      'Teléfono: ' + (h.telefono || '—'), 'Correo: ' + (h.correo || '—'),
+      '', 'Marca: ' + (h.marca || '—'), 'Marca (otro): ' + (h.marca_otro || '—'),
+      'Nombre producto: ' + (h.nombre_producto || '—'), 'Descripción: ' + (h.descripcion_producto || '—'),
+      'Categoría: ' + (h.categoria || '—'), 'Válido para: ' + ((h.valido_para || []).join(', ') || '—'),
+      '', 'Modificadores: ' + ((h.modificadores || []).join(', ') || '—'),
       'Custom: ' + ((h.modificadores_custom || []).join(', ') || '—'),
       'Costo adicional: ' + (h.modificadores_costo || '—'),
       'Detalle: ' + (h.detalle_modificadores || '—'),
-      '',
-      'Precio Foodbot: $' + (h.precio_foodbot || '—'),
+      '', 'Precio Foodbot: $' + (h.precio_foodbot || '—'),
       'Precio Apps: $' + (h.precio_apps || '—'),
       'Comentarios: ' + (h.comentarios || '—'),
-      '',
-      'Restar inventario: ' + (h.restar_inventario || '—'),
-      '',
-      'Imagen: ' + (h.imagenNombre || '—'),
+      '', 'Restar inventario: ' + (h.restar_inventario || '—'),
+      '', 'Imagen: ' + (h.imagenNombre || '—'),
       'URL Imagen: ' + (h.imagenUrl || '—'),
       'Archivos receta: ' + ((h.archivosReceta || []).map(f => f.nombre).join(', ') || '—')
     ];
@@ -1964,64 +1105,55 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function openHistory() {
-    renderHistory();
-    drawer.classList.add('show');
-    drawerBackdrop.classList.add('show');
-    drawer.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
+    renderHistory(); drawer.classList.add('show'); drawerBackdrop.classList.add('show');
+    drawer.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
   }
   function closeHistory() {
-    drawer.classList.remove('show');
-    drawerBackdrop.classList.remove('show');
-    drawer.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
+    drawer.classList.remove('show'); drawerBackdrop.classList.remove('show');
+    drawer.setAttribute('aria-hidden', 'true'); document.body.style.overflow = '';
   }
 
   document.getElementById('btnOpenHistory').addEventListener('click', openHistory);
   document.getElementById('btnCloseHistory').addEventListener('click', closeHistory);
   document.getElementById('btnCloseHistoryFoot').addEventListener('click', closeHistory);
   drawerBackdrop.addEventListener('click', closeHistory);
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && drawer.classList.contains('show')) closeHistory();
-  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.classList.contains('show')) closeHistory(); });
 
-  historyBody.addEventListener('click', (e) => {
-    const btn = e.target.closest('button[data-action]');
-    if (!btn) return;
-    const idx = Number(btn.dataset.idx);
-    const entry = state.history[idx];
-    if (!entry) return;
-
-    if (btn.dataset.action === 'refill') {
-      refillFromHistory(entry);
-    } else if (btn.dataset.action === 'details') {
-      showHistoryDetails(entry);
-    } else if (btn.dataset.action === 'delete') {
-      state.history.splice(idx, 1);
-      saveHistory();
-      renderHistory();
-    }
+  historyBody.addEventListener('click', e => {
+    const btn = e.target.closest('button[data-action]'); if (!btn) return;
+    const idx = Number(btn.dataset.idx); const entry = state.history[idx]; if (!entry) return;
+    if (btn.dataset.action === 'refill') refillFromHistory(entry);
+    else if (btn.dataset.action === 'details') showHistoryDetails(entry);
+    else if (btn.dataset.action === 'delete') { state.history.splice(idx, 1); saveHistory(); renderHistory(); }
   });
 
   document.getElementById('btnClearHistory').addEventListener('click', () => {
     if (state.history.length === 0) return;
-    if (!confirm('¿Borrar todo el historial de este dispositivo?')) return;
-    state.history = [];
-    saveHistory();
-    renderHistory();
+    if (!confirm('¿Borrar todo el historial?')) return;
+    state.history = []; saveHistory(); renderHistory();
   });
 
-  /* ============================================================
-     TEST DE WEBHOOK
-  ============================================================ */
-  document.getElementById('btnTestWebhook').addEventListener('click', () => {
-    if (!MAKE_WEBHOOK_URL || MAKE_WEBHOOK_URL.includes('REEMPLAZA')) {
-      showStatus('err', 'Configura primero la URL del webhook en el código (constante MAKE_WEBHOOK_URL).', 6000);
+  /* ============ VER ÚLTIMO PAYLOAD ============ */
+  document.getElementById('btnViewPayload').addEventListener('click', () => {
+    if (!state.lastPayload) {
+      showStatus('info', 'Aún no has enviado ningún formulario real.', 'Llena el formulario y pulsa "Enviar solicitud". Luego podrás ver el payload aquí.', 7000);
       return;
     }
+    // Abrir una pestaña con el payload formateado
+    const w = window.open('', '_blank');
+    if (!w) { alert('Permite pop-ups para ver el payload.'); return; }
+    const decoded = {};
+    new URLSearchParams(state.lastPayload).forEach((v, k) => { decoded[k] = v; });
+    w.document.write('<pre style="font-family:monospace;font-size:12px;padding:20px;background:#111;color:#fff;white-space:pre-wrap;word-break:break-all;">' + JSON.stringify(decoded, null, 2).replace(/</g, '&lt;') + '</pre>');
+    w.document.title = 'Payload enviado a Make';
+  });
 
-    showStatus('info', 'Enviando ping de prueba al webhook…');
-
+  /* ============ TEST WEBHOOK ============ */
+  document.getElementById('btnTestWebhook').addEventListener('click', () => {
+    if (!MAKE_WEBHOOK_URL || MAKE_WEBHOOK_URL.includes('REEMPLAZA')) {
+      showStatus('err', 'Webhook no configurado', 'Edita la constante MAKE_WEBHOOK_URL.', 6000); return;
+    }
+    showStatus('info', 'Enviando ping de prueba al webhook…', MAKE_WEBHOOK_URL);
     const p = new URLSearchParams();
     p.append('test', '1');
     p.append('origen', 'form_alta_producto_web__ping');
@@ -2037,48 +1169,49 @@ document.addEventListener('DOMContentLoaded', function () {
       body: p.toString()
     }).then(res => {
       if (!res.ok) throw new Error('HTTP ' + res.status);
-      showStatus('ok',
-        'Webhook respondió correctamente (' + res.status + ').',
-        9000
-      );
+      showStatus('ok', '✓ Webhook respondió correctamente (' + res.status + ')', 'En Make: haz clic en "Redetermine data structure" para ver los campos.', 9000);
     }).catch(err => {
-      showStatus('err',
-        'Error al contactar el webhook: ' + err.message + '. Revisa la URL, CORS o si el escenario está activo en Make.',
-        10000
-      );
+      showStatus('err', 'Error al contactar el webhook: ' + err.message, 'Revisa la URL, CORS o si el escenario está activo en Make.', 10000);
     });
   });
 
-  /* ============================================================
-     SUBMIT
-  ============================================================ */
-  form.addEventListener('submit', (e) => {
+  /* ============ SUBMIT ============ */
+  form.addEventListener('submit', e => {
     e.preventDefault();
+    console.log('[Submit] Iniciando envío real...');
 
+    // Validar todos los pasos
     for (let i = 1; i <= state.total; i++) {
-      if (!validateStep(i)) { renderStep(i); return; }
+      if (!validateStep(i)) {
+        console.warn('[Submit] Validación falló en paso', i);
+        renderStep(i);
+        showStatus('err', 'Falta completar campos en el paso ' + i, 'Revisa los campos marcados en rojo.', 6000);
+        return;
+      }
     }
 
     if (!MAKE_WEBHOOK_URL || MAKE_WEBHOOK_URL.includes('REEMPLAZA')) {
-      showStatus('err', 'La URL del webhook no está configurada. Edita la constante MAKE_WEBHOOK_URL.', 8000);
-      return;
+      showStatus('err', 'Webhook no configurado', 'Edita la constante MAKE_WEBHOOK_URL.', 8000); return;
     }
 
-    if (state.isUploading) {
-      showStatus('info', 'Espera a que la imagen termine de subirse antes de enviar.', 4000);
-      return;
-    }
-
-    const snap   = snapshotData();
+    const snap = snapshotData();
     const params = buildParamsFromSnapshot(snap);
+    state.lastPayload = params.toString();
+
+    // Log completo en consola para debug
+    console.log('[Submit] Snapshot:', snap);
+    console.log('[Submit] Payload completo:', state.lastPayload);
 
     btnSubmit.disabled = true;
     btnSubmit.textContent = 'Enviando…';
-    showStatus('info', 'Enviando solicitud…');
+    showStatus('info', 'Enviando solicitud a Make…', 'Campos: ' + (state.lastPayload.split('&').length) + ' · Tamaño: ' + state.lastPayload.length + ' chars', 0);
 
     sendToMake(params)
-      .then(() => {
-        showStatus('ok', '✓ Solicitud enviada correctamente al webhook.', 6000);
+      .then(res => {
+        console.log('[Submit] Éxito:', res);
+        showStatus('ok', '✓ Solicitud enviada correctamente a Make (' + res.status + ')',
+          'Ve a Make → Webhook → "Redetermine data structure" para ver los campos. También revisa la ejecución en el historial del escenario.',
+          10000);
         const toast = document.getElementById('toast');
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 6000);
@@ -2086,10 +1219,10 @@ document.addEventListener('DOMContentLoaded', function () {
         resetForm();
       })
       .catch(err => {
-        showStatus('err',
-          'No se pudo enviar: ' + err.message + '. La solicitud se guardó en el historial para reintentar.',
-          10000
-        );
+        console.error('[Submit] Error:', err);
+        showStatus('err', 'No se pudo enviar: ' + err.message,
+          'La solicitud se guardó en el historial. Abre la consola (F12) para más detalles.',
+          12000);
         addToHistory(snap, 'err');
       })
       .finally(() => {
@@ -2098,28 +1231,18 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   });
 
-  /* ============================================================
-     RESET
-  ============================================================ */
   function resetForm() {
     form.reset();
     marcaOtroField.style.display = 'none';
-    state.imagenFile = null;
-    state.imagenUrl = '';
-    state.archivosReceta = [];
-    state.customMods = [];
-    state.modCosts = {};
-    renderImagenPreview();
-    renderRecetaList();
-    renderCustomMods();
+    state.imagenFile = null; state.imagenUrl = '';
+    state.archivosReceta = []; state.customMods = []; state.modCosts = {};
+    renderImagenPreview(); renderRecetaList(); renderCustomMods();
     document.getElementById('cntNombre').textContent = '0/30';
-    document.getElementById('cntDesc').textContent   = '0/180';
+    document.getElementById('cntDesc').textContent = '0/180';
     renderStep(1);
   }
 
-  /* ============================================================
-     INIT
-  ============================================================ */
+  /* ============ INIT ============ */
   loadHistory();
   renderStep(1);
   renderCustomMods();
@@ -2127,6 +1250,12 @@ document.addEventListener('DOMContentLoaded', function () {
   renderRecetaList();
   renderCostList();
   renderHistory();
+
+  console.log('=== DIAGNÓSTICO ===');
+  console.log('Webhook URL:', MAKE_WEBHOOK_URL);
+  console.log('ImgBB Key:', IMGBB_API_KEY ? IMGBB_API_KEY.slice(0, 8) + '...' : '(vacía)');
+  console.log('Abriendo el formulario en modo diagnóstico.');
+  console.log('Abre F12 → Console y Network para ver todo lo que pasa al enviar.');
 
 });
 </script>
