@@ -258,6 +258,39 @@ input[type="text"],input[type="tel"],input[type="email"],input[type="number"],in
   border-radius:var(--radius-inputs);outline:none;
   transition:border-color .2s, box-shadow .2s, background-color .2s, color .2s;line-height:1.4;
 }
+
+/* Correcciones para el campo de fecha */
+input[type="date"] {
+  text-align: left;
+  position: relative;
+  padding-right: 44px; /* Espacio para el ícono */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 18px;
+  cursor: pointer;
+}
+/* Ajusta el padding del texto interno de la fecha para que se vea alineado */
+input[type="date"]::-webkit-datetime-edit {
+  padding: 0;
+}
+/* Hacemos invisible el ícono nativo pero mantenemos funcional el clic para abrir el calendario */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0; 
+  cursor: pointer;
+}
+/* Cambia el color del ícono en modo oscuro */
+[data-theme="dark"] input[type="date"] {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
+}
+
 input::placeholder,textarea::placeholder{color:var(--color-ash);}
 input:focus,select:focus,textarea:focus{
   border-color:var(--color-ember);
