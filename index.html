@@ -19,6 +19,10 @@
 </script>
 <style>
 :root{
+  /* ── AMG Brand Colors ── */
+  --brand-red: #e34949;      /* Rojo del logo */
+  --brand-orange: #f78a52;   /* Naranja del logo */
+  
   /* ── Awesomic color tokens (light) ── */
   --color-obsidian:#09090b;
   --color-graphite:#18181b;
@@ -32,14 +36,18 @@
   --color-paper:#f4f4f5;
   --color-snow:#ffffff;
   --color-subtle:#fafafa;
-  --color-ember:#ff5a00;
+  
+  --color-ember: var(--brand-red); /* Reemplazamos el naranja genérico por el rojo de la marca */
   --color-magenta-spark:#fe45e2;
+  
   --color-ok:#16a34a;
   --color-ok-soft:#dcfce7;
   --color-err:#dc2626;
   --color-err-soft:#fee2e2;
   --color-info:#18181b;
   --color-info-soft:#f4f4f5;
+  --color-warning-soft: #fff7ed;
+  --color-warning-border: #fdba74;
 
   --font-cosmica:'DM Sans',ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   --font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -56,7 +64,7 @@
   --radius-buttons:14px;
   --radius-chips:12px;
 
-  --shadow-button:rgba(255,255,255,0.5) 0px 0.5px 0px 0px inset, rgba(117,123,133,0.4) 0px 9px 14px -5px inset, rgb(44,46,52) 0px 0px 0px 1.5px, rgba(0,0,0,0.14) 0px 4px 6px 0px;
+  --shadow-button:rgba(255,255,255,0.5) 0px 0.5px 0px 0px inset, rgba(117,123,133,0.4) 0px 9px 14px -5px inset, var(--color-ember) 0px 0px 0px 1.5px, rgba(0,0,0,0.14) 0px 4px 6px 0px;
   --shadow-md:rgba(0,0,0,0.04) 0px 4px 12px 0px;
 }
 
@@ -81,6 +89,8 @@
   --color-err-soft:rgba(239,68,68,0.14);
   --color-info:#e4e4e7;
   --color-info-soft:#1f1f23;
+  --color-warning-soft: rgba(249, 115, 22, 0.1);
+  --color-warning-border: rgba(249, 115, 22, 0.4);
 }
 
 *{box-sizing:border-box;}
@@ -105,9 +115,10 @@ input,select,textarea{font-family:inherit;}
 }
 .brand{display:flex;align-items:center;gap:var(--sp-12);}
 .brand-mark{
-  font-size:22px;font-weight:700;letter-spacing:-0.04em;
+  font-size:22px;font-weight:800;letter-spacing:-0.04em;
   color:var(--color-obsidian);line-height:1;
 }
+.brand-mark span { color: var(--color-ember); }
 .brand-divider{width:1px;height:18px;background:var(--color-cloud);}
 .brand-sub{
   font-size:11px;font-weight:500;letter-spacing:0.14em;
@@ -240,7 +251,7 @@ h1.hero-title{
 }
 .req{color:var(--color-ember);margin-left:3px;font-weight:600;}
 .hint{display:block;font-size:12px;color:var(--color-fog);font-weight:400;margin-top:6px;line-height:1.4;}
-input[type="text"],input[type="tel"],input[type="email"],input[type="number"],input[type="url"],select,textarea{
+input[type="text"],input[type="tel"],input[type="email"],input[type="number"],input[type="url"],input[type="date"],select,textarea{
   width:100%;padding:12px 16px;font-size:15px;color:var(--color-obsidian);
   background:var(--color-snow);border:1px solid var(--color-cloud);
   border-radius:var(--radius-inputs);outline:none;
@@ -248,14 +259,8 @@ input[type="text"],input[type="tel"],input[type="email"],input[type="number"],in
 }
 input::placeholder,textarea::placeholder{color:var(--color-ash);}
 input:focus,select:focus,textarea:focus{
-  border-color:var(--color-obsidian);
-  box-shadow:0 0 0 3px rgba(9,9,11,0.06);
-}
-[data-theme="dark"] input:focus,
-[data-theme="dark"] select:focus,
-[data-theme="dark"] textarea:focus{
   border-color:var(--color-ember);
-  box-shadow:0 0 0 3px rgba(255,90,0,0.15);
+  box-shadow:0 0 0 3px rgba(227,73,73,0.15);
 }
 textarea{resize:vertical;min-height:96px;line-height:1.5;}
 select{
@@ -266,6 +271,43 @@ select{
 .counter{float:right;font-family:var(--font-mono);font-size:11px;font-weight:400;color:var(--color-fog);}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--sp-20);}
 @media(max-width:560px){.grid-2{grid-template-columns:1fr;}}
+
+/* ─────────── WARNING BOX (NEW) ─────────── */
+.warning-box {
+  background: var(--color-warning-soft);
+  border: 1px solid var(--color-warning-border);
+  border-radius: var(--radius-inputs);
+  padding: 16px;
+  margin-top: 12px;
+}
+.warning-box p {
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  color: var(--color-graphite);
+  line-height: 1.5;
+}
+.warning-box strong {
+  color: var(--color-ember);
+}
+.warning-box .chip {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.warning-box .chip input {
+  margin-top: 3px;
+  accent-color: var(--color-ember);
+  width: 16px;
+  height: 16px;
+}
+.warning-box .chip span {
+  font-weight: 500;
+  color: var(--color-obsidian);
+  font-size: 13px;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
 
 /* ─────────── DIVIDER ─────────── */
 .divider{height:1px;background:var(--color-cloud);margin:var(--sp-24) 0;border:none;}
@@ -282,12 +324,9 @@ select{
 }
 .chip span:hover{border-color:var(--color-mist);background:var(--color-subtle);}
 .chip input:checked + span{
-  border-color:var(--color-obsidian);background:var(--color-obsidian);color:#fff;
-}
-[data-theme="dark"] .chip input:checked + span{
   border-color:var(--color-ember);background:var(--color-ember);color:#fff;
 }
-.chip input:focus-visible + span{box-shadow:0 0 0 3px rgba(9,9,11,0.08);}
+.chip input:focus-visible + span{box-shadow:0 0 0 3px rgba(227,73,73,0.2);}
 
 /* Custom-add input row */
 .custom-add{display:flex;gap:var(--sp-8);margin-top:var(--sp-14);}
@@ -308,10 +347,7 @@ select{
 .custom-chip .tag-custom{
   display:inline-block;margin-left:6px;padding:1px 7px;border-radius:var(--radius-badges);
   font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:0.06em;
-  text-transform:uppercase;background:var(--color-ember);color:#fff;font-style:normal;
-}
-[data-theme="dark"] .custom-chip .tag-custom{
-  background:rgba(0,0,0,0.35);color:#fff;
+  text-transform:uppercase;background:var(--brand-orange);color:#fff;font-style:normal;
 }
 .custom-chip button{
   background:none;border:none;padding:0;width:20px;height:20px;line-height:1;
@@ -327,11 +363,9 @@ select{
   transition:all .15s ease;
 }
 .marca-custom-row:hover{border-color:var(--color-mist);}
-.marca-custom-row.is-selected{border-color:var(--color-obsidian);background:var(--color-obsidian);}
-[data-theme="dark"] .marca-custom-row.is-selected{border-color:var(--color-ember);background:var(--color-ember);}
+.marca-custom-row.is-selected{border-color:var(--color-ember);background:var(--color-ember);}
 .marca-custom-row.is-selected .marca-custom-label{color:#fff;}
-.marca-custom-row.is-selected .tag-custom{background:var(--color-ember);}
-[data-theme="dark"] .marca-custom-row.is-selected .tag-custom{background:rgba(0,0,0,0.35);color:#fff;}
+.marca-custom-row.is-selected .tag-custom{background:var(--brand-orange);}
 .marca-custom-row.is-selected .marca-remove{color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.2);}
 .marca-custom-row .marca-custom-label{
   display:inline-flex;align-items:center;gap:6px;padding:8px 4px 8px 14px;
@@ -354,8 +388,7 @@ select{
   background:var(--color-subtle);border:1px solid var(--color-cloud);
   border-radius:var(--radius-inputs);transition:all .2s;flex-wrap:wrap;
 }
-.cost-item.active{border-color:var(--color-obsidian);background:var(--color-snow);}
-[data-theme="dark"] .cost-item.active{border-color:var(--color-ember);}
+.cost-item.active{border-color:var(--color-ember);background:var(--color-snow);}
 .cost-check{display:flex;align-items:center;gap:10px;cursor:pointer;flex:1;min-width:180px;position:relative;}
 .cost-check input{position:absolute;opacity:0;width:0;height:0;}
 .check-mark{
@@ -363,8 +396,7 @@ select{
   background:var(--color-snow);flex:none;display:inline-flex;align-items:center;
   justify-content:center;transition:all .2s;position:relative;
 }
-.cost-check input:checked + .check-mark{background:var(--color-obsidian);border-color:var(--color-obsidian);}
-[data-theme="dark"] .cost-check input:checked + .check-mark{background:var(--color-ember);border-color:var(--color-ember);}
+.cost-check input:checked + .check-mark{background:var(--color-ember);border-color:var(--color-ember);}
 .cost-check input:checked + .check-mark::after{
   content:'';width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;
   transform:rotate(45deg) translate(-1px, -1px);
@@ -376,7 +408,7 @@ select{
 .cost-name .tag{
   display:inline-block;margin-left:8px;padding:2px 8px;border-radius:var(--radius-badges);
   font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:0.06em;
-  text-transform:uppercase;background:var(--color-ember);color:#fff;vertical-align:middle;
+  text-transform:uppercase;background:var(--brand-orange);color:#fff;vertical-align:middle;
 }
 .cost-prices{display:flex;gap:12px;flex-wrap:wrap;opacity:0.4;transition:opacity .2s;pointer-events:none;}
 .cost-item.active .cost-prices{opacity:1;pointer-events:auto;}
@@ -397,19 +429,13 @@ select{
   text-decoration:none;white-space:nowrap;
 }
 .btn-primary{
-  background:var(--color-obsidian);color:#fff;border:1.5px solid #2c2e34;
-  box-shadow:var(--shadow-button);
+  background:var(--color-ember);color:#fff;border:1.5px solid var(--brand-red);
+  box-shadow:0 4px 14px rgba(227,73,73,0.25);
 }
-[data-theme="dark"] .btn-primary{
-  background:var(--color-ember);border-color:var(--color-ember);color:#fff;
-  box-shadow:0 4px 14px rgba(255,90,0,0.25);
-}
-.btn-primary:hover{background:var(--color-graphite);}
-[data-theme="dark"] .btn-primary:hover{background:#ff6b1a;border-color:#ff6b1a;}
+.btn-primary:hover{background:#d13a3a;border-color:#d13a3a;}
 .btn-primary:disabled{opacity:.4;cursor:not-allowed;}
 .btn-ghost{background:var(--color-snow);border-color:var(--color-cloud);color:var(--color-graphite);}
 .btn-ghost:hover{background:var(--color-subtle);border-color:var(--color-mist);color:var(--color-obsidian);}
-[data-theme="dark"] .btn-ghost:hover{border-color:var(--color-iron);}
 .btn-danger{background:transparent;border-color:var(--color-cloud);color:var(--color-err);}
 .btn-danger:hover{background:var(--color-err-soft);border-color:#fca5a5;}
 .btn-sm{padding:8px 14px;font-size:13px;border-radius:var(--radius-buttons);}
@@ -427,8 +453,7 @@ select{
   padding:var(--sp-32) var(--sp-24);text-align:center;cursor:pointer;
   background:var(--color-subtle);transition:all .25s ease;
 }
-.file-drop:hover{border-color:var(--color-obsidian);background:var(--color-snow);}
-[data-theme="dark"] .file-drop:hover{border-color:var(--color-ember);}
+.file-drop:hover{border-color:var(--color-ember);background:var(--color-snow);}
 .file-drop input{display:none;}
 .file-drop .icon{
   display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;
@@ -480,9 +505,8 @@ select{
 .toast{
   display:none;margin:var(--sp-32) auto 0;max-width:520px;padding:14px 20px;
   border-radius:var(--radius-pills);font-size:14px;font-weight:500;text-align:center;
-  background:var(--color-obsidian);color:#fff;border:1px solid var(--color-obsidian);
+  background:var(--color-ember);color:#fff;border:1px solid var(--color-ember);
 }
-[data-theme="dark"] .toast{background:var(--color-ember);border-color:var(--color-ember);color:#fff;}
 .toast.show{display:block;animation:fadeUp .3s ease;}
 
 /* ─────────── DRAWER ─────────── */
@@ -560,7 +584,7 @@ select{
 .autosave-bar{display:none !important;}
 
 @media (hover: none) and (pointer: coarse),(max-width: 768px) {
-  input[type="text"],input[type="tel"],input[type="email"],input[type="number"],
+  input[type="text"],input[type="tel"],input[type="email"],input[type="number"],input[type="date"],
   input[type="url"],input[type="search"],select,textarea,
   .custom-add input,.price-field input,.cost-item input{font-size:16px !important;}
 }
@@ -572,7 +596,7 @@ select{
 
   <header class="top-bar">
     <div class="brand">
-      <div class="brand-mark">AMG</div>
+      <div class="brand-mark">A<span>M</span>G</div>
       <div class="brand-divider"></div>
       <div class="brand-sub">Hospitality Group</div>
     </div>
@@ -838,8 +862,8 @@ select{
       </nav>
 
       <div class="step-head">
-        <h2>Insumos y empaque</h2>
-        <p>Adjunta la imagen de la receta, ficha técnica o listado de insumos requeridos para programar el descuento correcto en sistema.</p>
+        <h2>Insumos, empaque y activación</h2>
+        <p>Adjunta la receta, define la fecha de activación y confirma la disponibilidad en sucursales.</p>
       </div>
 
       <div class="card deep">
@@ -866,6 +890,27 @@ select{
         <div class="file-preview" id="archivosRecetaList"></div>
         <span class="error-text" id="errReceta">Debes adjuntar al menos una imagen de receta o insumos.</span>
       </div>
+
+      <!-- NUEVA SECCIÓN: FECHA DE ACTIVACIÓN Y CONFIRMACIÓN -->
+      <div class="card" id="cardActivacion">
+        <h3>Fecha de Activación en Sistema <span class="req">*</span></h3>
+        <div class="field">
+          <label for="fecha_activacion">Selecciona la fecha en la que el producto debe estar activo</label>
+          <input type="date" id="fecha_activacion" name="fecha_activacion" required />
+        </div>
+        
+        <div class="warning-box">
+          <p>
+            <strong>Advertencia:</strong> Debes confirmar que para esta fecha las sucursales ya están abastecidas con los insumos necesarios para activar el sistema y que el producto sea visible para los clientes.
+          </p>
+          <label class="chip">
+            <input type="checkbox" id="confirmacion_abastecimiento" name="confirmacion_abastecimiento" required />
+            <span>Confirmo que las sucursales estarán abastecidas y listas para operar con este producto en la fecha indicada.</span>
+          </label>
+          <span class="error-text" id="errActivacion">Debes seleccionar una fecha y confirmar el abastecimiento.</span>
+        </div>
+      </div>
+
     </section>
 
     <div class="step-nav">
@@ -875,7 +920,7 @@ select{
       <button type="submit" class="btn btn-primary" id="btnSubmit" style="display:none;">Enviar solicitud</button>
     </div>
 
-    <div class="toast" id="toast">✓ Solicitud enviada — el equipo de Sistemas la revisará en breve.</div>
+    <div class="toast" id="toast">✓ Solicitud enviada correctamente.</div>
   </form>
 
   <div class="footnote">Sistemas & Tecnología — AMG Hospitality Group</div>
@@ -1083,9 +1128,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function renderCustomMarcas() {
-    /* Preservar checkboxes activos antes de re-renderizar */
     const checked = new Set(checksArr('marca'));
-
     customMarcaList.innerHTML = '';
     state.customMarcas.forEach((text, idx) => {
       const wrap = document.createElement('div');
@@ -1341,7 +1384,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   recetaInput.addEventListener('change', e => { addRecetaFiles(Array.from(e.target.files || [])); recetaInput.value=''; });
-  ['dragenter','dragover'].forEach(ev => dropReceta.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); dropReceta.style.borderColor='var(--color-obsidian)'; dropReceta.style.background='var(--color-snow)'; }));
+  ['dragenter','dragover'].forEach(ev => dropReceta.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); dropReceta.style.borderColor='var(--color-ember)'; dropReceta.style.background='var(--color-snow)'; }));
   ['dragleave','drop'].forEach(ev => dropReceta.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); dropReceta.style.borderColor=''; dropReceta.style.background=''; }));
   dropReceta.addEventListener('drop', e => { addRecetaFiles(Array.from(e.dataTransfer.files || [])); });
 
@@ -1414,6 +1457,16 @@ document.addEventListener('DOMContentLoaded', function () {
         errReceta.textContent = 'Hubo un error al subir las imágenes de receta. Intenta de nuevo.';
         errReceta.classList.add('show');
       }
+
+      /* Validación de Fecha y Confirmación */
+      const fechaActivacion = txt('fecha_activacion');
+      const confirmacion = document.getElementById('confirmacion_abastecimiento');
+      
+      if (!fechaActivacion || !confirmacion.checked) {
+        if (!firstInvalid) firstInvalid = !fechaActivacion ? document.getElementById('fecha_activacion') : confirmacion;
+        document.getElementById('errActivacion').classList.add('show');
+        flagError(document.getElementById('cardActivacion'));
+      }
     }
 
     if (firstInvalid) {
@@ -1442,7 +1495,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return {
       timestamp: new Date().toISOString(),
       nombre: txt('nombre'), area: txt('area'), telefono: txt('telefono'), correo: txt('correo'),
-      marca: checksArr('marca'),                       /* ← ahora es array */
+      marca: checksArr('marca'),
       customMarcas: state.customMarcas.slice(),
       nombre_producto: txt('nombre_producto'), descripcion_producto: txt('descripcion_producto'),
       categoria: txt('categoria'), valido_para: checksArr('valido_para'),
@@ -1459,7 +1512,9 @@ document.addEventListener('DOMContentLoaded', function () {
         tamano: e.file ? String(e.file.size) : '',
         url: e.url || '',
         uploading: !!e.uploading
-      }))
+      })),
+      fecha_activacion: txt('fecha_activacion'),
+      confirmacion_abastecimiento: document.getElementById('confirmacion_abastecimiento').checked ? 'SI' : 'NO'
     };
   }
 
@@ -1474,7 +1529,6 @@ document.addEventListener('DOMContentLoaded', function () {
     p.append('telefono', snap.telefono);
     p.append('correo', snap.correo);
 
-    /* Marcas (múltiples) */
     p.append('marca', snap.marca.join(' | '));
     p.append('marcas_total', String(snap.marca.length));
     snap.marca.forEach((m, i) => p.append('marca_' + (i + 1), m));
@@ -1525,6 +1579,11 @@ document.addEventListener('DOMContentLoaded', function () {
       p.append('receta_' + idx + '_link', f.url || '');
     });
     p.append('recetas_links', snap.archivosReceta.map(f => f.url).filter(u => u && u.startsWith('http')).join(' | '));
+
+    /* Nuevos campos */
+    p.append('fecha_activacion', snap.fecha_activacion);
+    p.append('confirmacion_abastecimiento', snap.confirmacion_abastecimiento);
+
     return p;
   }
 
@@ -1583,6 +1642,7 @@ document.addEventListener('DOMContentLoaded', function () {
           '<div class="row"><span class="lbl">Modificadores</span><span class="val">' + escapeHtml(truncate(modsTxt, 50)) + '</span></div>' +
           '<div class="row"><span class="lbl">Precio Foodbot</span><span class="val">$' + escapeHtml(h.precio_foodbot || '—') + '</span></div>' +
           '<div class="row"><span class="lbl">Precio Apps</span><span class="val">$' + escapeHtml(h.precio_apps || '—') + '</span></div>' +
+          '<div class="row"><span class="lbl">Fecha Activación</span><span class="val">' + escapeHtml(h.fecha_activacion || '—') + '</span></div>' +
           '<div class="row"><span class="lbl">Imagen producto</span><span class="val">' + escapeHtml(h.imagenUrl ? 'Sí' : 'No') + '</span></div>' +
           '<div class="row"><span class="lbl">Imágenes receta</span><span class="val">' + (h.archivosReceta ? h.archivosReceta.filter(f => f.url && f.url.startsWith('http')).length : 0) + '</span></div>' +
         '</div>' +
@@ -1610,7 +1670,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const marcasGuardadas = marcaToArray(h.marca);
     form.querySelectorAll('input[name="marca"]').forEach(cb => { cb.checked = marcasGuardadas.includes(cb.value); });
-    /* Re-aplicar clase is-selected a customs */
     $$('.marca-custom-row').forEach((row) => {
       const inp = row.querySelector('input[name="marca"]');
       row.classList.toggle('is-selected', !!(inp && inp.checked));
@@ -1633,6 +1692,11 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('precio_apps').value = h.precio_apps || '';
     document.getElementById('comentarios').value = h.comentarios || '';
     document.getElementById('restar_inventario').value = h.restar_inventario || '';
+    
+    /* Nuevos campos */
+    document.getElementById('fecha_activacion').value = h.fecha_activacion || '';
+    document.getElementById('confirmacion_abastecimiento').checked = (h.confirmacion_abastecimiento === 'SI');
+
     document.getElementById('cntNombre').textContent = (h.nombre_producto || '').length + '/30';
     document.getElementById('cntDesc').textContent = (h.descripcion_producto || '').length + '/180';
     closeHistory(); renderStep(1);
@@ -1655,6 +1719,8 @@ document.addEventListener('DOMContentLoaded', function () {
       'Precio Apps: $' + (h.precio_apps || '—'),
       'Comentarios: ' + (h.comentarios || '—'),
       '', 'Restar inventario: ' + (h.restar_inventario || '—'),
+      'Fecha Activación: ' + (h.fecha_activacion || '—'),
+      'Confirmación Abastecimiento: ' + (h.confirmacion_abastecimiento || '—'),
       '', 'Imagen producto: ' + (h.imagenNombre || '—'),
       'URL imagen producto: ' + (h.imagenUrl || '—'),
       '', 'Imágenes receta:'
@@ -1723,9 +1789,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     sendToMake(params)
       .then(res => {
-        showStatus('ok', '✓ Solicitud enviada correctamente a Make (' + res.status + ')',
-          'Ve a Make → Webhook → "Redetermine data structure" si es la primera vez con estos campos.',
-          10000);
+        showStatus('ok', 'Solicitud enviada correctamente.', 'El equipo de Sistemas y Tecnología revisará tu solicitud a la brevedad.', 8000);
         const toast = document.getElementById('toast');
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 6000);
